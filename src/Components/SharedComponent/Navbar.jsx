@@ -57,11 +57,11 @@ const Navbar = () => {
 
         <div className="flex space-x-4  items-center gap-3">
           <IoCartOutline className="text-2xl" />
-          <Link to="/" className="hover:underline">
+          <Link to="/signin" className="hover:underline">
             Log in
           </Link>
           <Link
-            to="/"
+            to="/signup"
             className="px-4 py-2 bg-primary text-bg-secondary rounded-full hover:bg-accent/80 transition"
           >
             Register
