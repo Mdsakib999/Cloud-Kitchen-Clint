@@ -3,6 +3,7 @@ import "./App.css";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Components/SharedComponent/Navbar";
 import Footer from "./Components/SharedComponent/Footer";
+import InfoBar from "./Components/SharedComponent/InfoBar";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -10,6 +11,7 @@ function App() {
   return (
     <div className="">
       {/* Nav bar */}
+      <InfoBar />
       <Navbar></Navbar>
 
       {/* Children component */}

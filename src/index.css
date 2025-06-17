@@ -1,7 +1,8 @@
+@import "tailwindcss";
 
-.b {
-  border: 2px solid;
-}
-.bb {
-  border: 2px solid red;
+@theme {
+  --color-accent: #e6a344; /* Accent color */
+  --color-primary: #102b2a; /* Background primary */
+  --color-secondary: #091d1c; /* Background secondary */
+  --color-footer: #052c21; /* Footer background */
 }
