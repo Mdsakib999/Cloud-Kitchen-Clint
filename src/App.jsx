@@ -1,16 +1,14 @@
-import { useState } from "react";
-import "./App.css";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Components/SharedComponent/Navbar";
 import Footer from "./Components/SharedComponent/Footer";
+import InfoBar from "./Components/SharedComponent/InfoBar";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="">
+    <div className="bg-bg-primary min-h-screen">
       {/* Nav bar */}
-      <Navbar></Navbar>
+      <InfoBar />
+      <Navbar />
 
       {/* Children component */}
       <div className="min-h-[calc(100vh-196px)] ">
@@ -18,7 +16,7 @@ function App() {
       </div>
 
       {/* Footer */}
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 }
