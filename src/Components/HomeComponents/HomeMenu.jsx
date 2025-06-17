@@ -41,7 +41,7 @@ const HomeMenu = () => {
       : MENU_ITEMS.filter((item) => item.category === activeCategory);
 
   return (
-    <section className="py-16 px-4 bg-secondary text-white">
+    <section className="py-16 px-4 bg-bg-secondary text-white">
       <div className="max-w-6xl mx-auto">
         <p className="text-sm text-accent uppercase mb-2">
           Taste the Best, Enjoy the Rest
@@ -60,7 +60,7 @@ const HomeMenu = () => {
               className={`px-4 py-2 rounded-full border border-accent transition focus:outline-none focus:ring-2 focus:ring-accent 
                   ${
                     activeCategory === cat
-                      ? "bg-accent text-secondary"
+                      ? "bg-accent text-primary"
                       : "text-accent hover:bg-accent hover:text-secondary"
                   }`}
             >
@@ -79,12 +79,12 @@ const HomeMenu = () => {
                   alt={item.title}
                   className="w-full h-60 object-cover"
                 />
-                {/* Hover icon overlay */}
+
                 <div className="absolute inset-0 flex items-center justify-center bg-black/60 bg-opacity-40 opacity-0 group-hover:opacity-100 transition">
-                  <span className="p-3 bg-accent rounded-full">
+                  <span className="p-3 bg-primary rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-secondary"
+                      className="h-6 w-6 text-bg-secondary"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -109,11 +109,11 @@ const HomeMenu = () => {
 
         {/* Footer Text and Button */}
         <div className="text-center">
-          <p className="text-accent italic mb-6 text-2xl">
+          <p className="text-primary italic mb-6 text-2xl">
             Delicious Food, Fresh Ingredients, Crafted with Love, Satisfy Your
             Cravings!
           </p>
-          <button className="px-8 py-3 bg-accent text-secondary rounded-full font-medium transition hover:opacity-90">
+          <button className="px-8 py-3 bg-primary text-bg-primary rounded-full font-medium transition hover:opacity-90">
             View Full Menu →
           </button>
         </div>

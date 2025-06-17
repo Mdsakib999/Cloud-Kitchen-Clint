@@ -18,7 +18,7 @@ const InfoBar = () => {
       className={`w-full fixed top-0 left-0 z-50 ${
         isTransparent
           ? "bg-transparent text-white"
-          : "bg-secondary text-white shadow-lg"
+          : "bg-bg-primary text-white shadow-lg"
       }`}
     >
       <div className=" mx-auto flex justify-between items-center px-6 py-4 h-14 border-b border-b-gray-400">

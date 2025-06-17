@@ -5,7 +5,7 @@ import img3 from "../../assets/foodBanner.jpg";
 
 const HomeStats = () => {
   return (
-    <section className="bg-secondary py-16 px-6 text-white">
+    <section className="bg-bg-secondary py-16 px-6 text-white">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
         <div className="flex items-center justify-center md:justify-start space-x-6">
           {/* Overlapping images */}
@@ -43,7 +43,7 @@ const HomeStats = () => {
 
         {/* Right: Text and stats */}
         <div className="space-y-6">
-          <p className="text-sm text-[#e5b567] uppercase">
+          <p className="text-sm text-primary uppercase">
             Bringing Flavor to Life
           </p>
           <h2 className="text-3xl md:text-4xl font-bold leading-snug">
@@ -74,7 +74,7 @@ const HomeStats = () => {
           </div>
 
           {/* Button */}
-          <button className="mt-4 inline-block bg-[#e5b567] text-[#0f2f2f] px-6 py-3 rounded-full font-medium hover:opacity-90 transition">
+          <button className="mt-4 inline-block bg-primary text-bg-primary px-6 py-3 rounded-full font-medium hover:opacity-90 transition">
             Book Now
           </button>
         </div>
