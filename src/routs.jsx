@@ -3,6 +3,8 @@ import App from "./App";
 import Home from "./Pages/Home/Home";
 import Contact from "./Pages/Contact/Contact";
 import About from "./Pages/About/About";
+import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
+import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/all-food",
+        element: <AllFoodItem />,
+      },
+      {
+        path: "/food-details/:id",
+        element: <FoodDetails />,
       },
     ],
   },
