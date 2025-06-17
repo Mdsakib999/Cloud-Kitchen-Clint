@@ -39,10 +39,10 @@ const WhyUs = () => {
   );
 
   return (
-    <section className="bg-primary text-white py-16 px-6">
+    <section className="bg-bg-primary text-white py-16 px-6">
       <div className="max-w-6xl mx-auto md:flex md:space-x-12">
         <div className="md:w-1/2 mb-12 md:mb-0">
-          <p className="text-sm text-[#e5b567] uppercase mb-2">
+          <p className="text-sm text-primary uppercase mb-2">
             Experience the Best
           </p>
           <h2 className="text-4xl font-semibold mb-4">Why People Love Us</h2>
@@ -67,13 +67,12 @@ const WhyUs = () => {
           </ul>
           <Link
             to="/menu"
-            className="inline-block mt-8 bg-[#e5b567] text-[#0f2f2f] px-6 py-3 rounded-full font-medium hover:opacity-90 transition"
+            className="inline-block mt-8 bg-primary text-[#0f2f2f] px-6 py-3 rounded-full font-medium hover:opacity-90 transition"
           >
             View Entire Menu
           </Link>
         </div>
 
-        {/* Right Column: Slider showing only visibleFeatures */}
         <div className="md:w-1/2 overflow-hidden">
           <div className="flex transition-transform duration-500">
             {visibleFeatures.map((feat) => (
@@ -101,9 +100,7 @@ const WhyUs = () => {
                   key={idx}
                   onClick={() => setActiveIndex(idx)}
                   className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                    idx === activeIndex
-                      ? "bg-[#e5b567] border-2 "
-                      : "bg-gray-500"
+                    idx === activeIndex ? "bg-primary border-2 " : "bg-gray-500"
                   }`}
                 />
               ))}

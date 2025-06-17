@@ -1,9 +1,11 @@
-import React from 'react';
+import { AboutHero } from "../../Components/AboutPageComponents/AboutHero";
+import { EatSocially } from "../../Components/AboutPageComponents/EatSocially";
 
 const About = () => {
   return (
     <div>
-      <p>This about</p>
+      <AboutHero />
+      <EatSocially />
     </div>
   );
 };

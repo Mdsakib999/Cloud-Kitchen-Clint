@@ -86,13 +86,13 @@ const ClientTestimonials = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary text-white relative overflow-hidden">
+    <div className="min-h-screen bg-bg-secondary text-white relative overflow-hidden">
       <div className="container mx-auto px-6 py-20 relative z-10">
         {/* Header Section */}
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <LuQuote className="w-8 h-8 text-accent" />
-            <span className="text-accent font-medium tracking-wider uppercase text-sm">
+            <LuQuote className="w-8 h-8 text-primary" />
+            <span className="text-primary font-medium tracking-wider uppercase text-sm">
               Client Testimonials
             </span>
           </div>
@@ -107,16 +107,16 @@ const ClientTestimonials = () => {
           {/* Navigation Arrows */}
           <button
             onClick={prevTestimonial}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 bg-primary hover:bg-teal-600/50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-teal-500/30"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 bg-bg-primary rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-secondary"
           >
-            <LuArrowLeft className="w-6 h-6 text-teal-300" />
+            <LuArrowLeft className="w-6 h-6 text-secondary" />
           </button>
 
           <button
             onClick={nextTestimonial}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 bg-teal-600/30 hover:bg-teal-600/50 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-teal-500/30"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 bg-bg-primary rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-secondary"
           >
-            <LuArrowRight className="w-6 h-6 text-teal-300" />
+            <LuArrowRight className="w-6 h-6 text-secondary" />
           </button>
 
           {/* Testimonials Grid */}
@@ -139,10 +139,10 @@ const ClientTestimonials = () => {
                     animationDelay: `${index * 200}ms`,
                   }}
                 >
-                  <div className="bg-primary backdrop-blur-sm rounded-3xl p-8 border border-slate-700/50 hover:border-teal-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-teal-500/20 relative overflow-hidden">
+                  <div className="bg-bg-primary backdrop-blur-sm rounded-3xl p-8 border border-slate-700/50 hover:border-secondary transition-all duration-500 hover:shadow-2xl relative overflow-hidden">
                     {/* Quote Icon */}
                     <div className="absolute top-4 right-6 opacity-20">
-                      <LuQuote className="w-16 h-16 text-teal-400" />
+                      <LuQuote className="w-16 h-16 text-secondary" />
                     </div>
 
                     {/* Profile Section */}
@@ -157,27 +157,22 @@ const ClientTestimonials = () => {
                       </div>
 
                       <div>
-                        <h3 className="text-2xl font-bold text-white group-hover:text-teal-300 transition-colors duration-300">
+                        <h3 className="text-2xl font-bold text-white group-hover:text-primary transition-colors duration-300">
                           {testimonial.name}
                         </h3>
-                        <p className="text-teal-300 font-medium capitalize text-sm tracking-wide">
+                        <p className="text-primary font-medium capitalize text-sm tracking-wide">
                           {testimonial.role}
                         </p>
                       </div>
                     </div>
 
-                    {/* Testimonial Text */}
                     <p className="text-slate-300 text-lg leading-relaxed mb-6 relative z-10">
                       "{testimonial.text}"
                     </p>
 
-                    {/* Rating */}
                     <div className="flex gap-1">
                       {renderStars(testimonial.rating)}
                     </div>
-
-                    {/* Hover Glow Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-teal-500/5 to-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
                   </div>
                 </div>
               ))}
@@ -191,7 +186,7 @@ const ClientTestimonials = () => {
                 onClick={() => goToTestimonial(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
                   index === currentTestimonial
-                    ? "bg-accent w-8"
+                    ? "bg-primary w-8"
                     : "bg-slate-600 hover:bg-slate-500"
                 }`}
               />
@@ -202,7 +197,7 @@ const ClientTestimonials = () => {
           <div className="mt-8 max-w-md mx-auto">
             <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-300"
+                className="h-full bg-gradient-to-r from-bg-primary to-primary rounded-full transition-all duration-300"
                 style={{
                   width: `${
                     ((currentTestimonial + 1) / testimonials.length) * 100
@@ -221,7 +216,7 @@ const ClientTestimonials = () => {
 
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <button className="bg-gradient-to-r from-teal-500 to-amber-500 hover:from-teal-600 hover:to-amber-600 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-teal-500/25">
+          <button className="bg-primary text-bg-primary font-bold py-4 px-8 rounded-full transition-all duration-300 transform  hover:shadow-lg ">
             Share Your Experience
           </button>
         </div>

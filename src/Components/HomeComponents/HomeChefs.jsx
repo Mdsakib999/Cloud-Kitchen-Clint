@@ -60,12 +60,12 @@ const HomeChefs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-primary text-white relative overflow-hidden ">
+    <div className="min-h-screen bg-bg-primary text-white relative overflow-hidden ">
       <div className=" mx-auto px-6 py-16 relative z-10 max-w-6xl">
         {/* Header Section */}
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-accent font-medium tracking-wider uppercase text-sm">
+            <span className="text-primary font-medium tracking-wider uppercase text-sm">
               Meet the Maestro
             </span>
           </div>
@@ -97,7 +97,7 @@ const HomeChefs = () => {
               onClick={() => setActiveChef(index)}
               onMouseEnter={() => setActiveChef(index)}
             >
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-primary to-secondary border border-slate-700 hover:border-accent transition-all duration-300">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-bg-primary to-bg-secondary border border-slate-700 hover:border-primary transition-all duration-300">
                 <div className="relative h-80 overflow-hidden">
                   <img
                     src={chef.image}
@@ -106,17 +106,17 @@ const HomeChefs = () => {
                   />
 
                   {/* Experience Badge */}
-                  <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
                     {chef.experience}
                   </div>
                 </div>
 
                 {/* Chef Info */}
                 <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-2 text-white group-hover:text-accent transition-colors">
+                  <h3 className="text-2xl font-bold mb-2 text-white group-hover:text-primary transition-colors">
                     {chef.name}
                   </h3>
-                  <p className="text-accent font-medium mb-3 uppercase tracking-wide text-sm">
+                  <p className="text-primary font-medium mb-3 uppercase tracking-wide text-sm">
                     {chef.title}
                   </p>
                   <p className="text-slate-300 text-sm mb-4 leading-relaxed">
@@ -133,13 +133,13 @@ const HomeChefs = () => {
 
                   {/* Social Icons Placeholder */}
                   <div className="flex gap-3">
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-accent transition-colors cursor-pointer">
+                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors cursor-pointer">
                       <LuUser className="w-4 h-4" />
                     </div>
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-accent transition-colors cursor-pointer">
+                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors cursor-pointer">
                       <LuAward className="w-4 h-4" />
                     </div>
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-accent transition-colors cursor-pointer">
+                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors cursor-pointer">
                       <LuStar className="w-4 h-4" />
                     </div>
                   </div>

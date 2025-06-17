@@ -11,6 +11,7 @@ const Banner = () => {
         <div className="absolute inset-0 bg-black/60"></div>
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+          <p className="text-md text-white">Savor Every Bite</p>
           <h1 className="text-3xl md:text-5xl font-bold mb-4 max-w-4xl text-white">
             Satisfy Your Cravings With Our Signature Flavors
           </h1>
@@ -19,7 +20,7 @@ const Banner = () => {
             our cloud kitchen, made just for you. Order now and enjoy
             restaurant-quality food at home.
           </p>
-          <button className="px-6 py-3 bg-accent hover:bg-accent rounded-full text-white font-medium transition">
+          <button className="px-6 py-3 bg-primary hover:bg-primary/90 hover:shadow-2xl rounded-full text-bg-primary font-medium transition">
             Order Now
           </button>
         </div>
@@ -28,7 +29,7 @@ const Banner = () => {
           {/* Hours */}
           <div className="flex items-start space-x-3">
             <svg
-              className="w-6 h-6 text-accent flex-shrink-0"
+              className="w-6 h-6 text-primary flex-shrink-0"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -51,7 +52,7 @@ const Banner = () => {
           {/* Address */}
           <div className="flex items-start space-x-3">
             <svg
-              className="w-6 h-6 text-accent flex-shrink-0"
+              className="w-6 h-6 text-primary flex-shrink-0"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
