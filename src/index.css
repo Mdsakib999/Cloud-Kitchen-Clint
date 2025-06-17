@@ -1,7 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import "tailwindcss";
 
+@theme {
+  --color-primary: #e6a344;
+  --color-secondary: #938888;
+
+  --color-bg-primary: #102b2a;
+  --color-bg-secondary: #091d1c;
+  --color-bg-tertiary: #0b2422;
+  --color-bg-input: #314544;
+  --color-bg-cart: #02403d;
+
+  --font-inter: "Inter", sans-serif;
+  --font-inknut: "Inknut Antiqua", serif;
+  --font-doto: "Doto", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-playfair-display: "Playfair Display", serif;
+}
+@layer base {
+  /* Chrome, Safari, Edge, Opera */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
 .b {
   border: 2px solid;
 }
 .bb {
   border: 2px solid red;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
