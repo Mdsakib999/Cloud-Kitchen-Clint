@@ -1,11 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Components/SharedComponent/Navbar";
 import Footer from "./Components/SharedComponent/Footer";
+import InfoBar from "./Components/SharedComponent/InfoBar";
 
 function App() {
   return (
     <div className="bg-bg-primary min-h-screen">
       {/* Nav bar */}
+      <InfoBar />
       <Navbar />
 
       {/* Children component */}
