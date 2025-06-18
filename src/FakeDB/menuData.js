@@ -249,7 +249,10 @@ export const categories = [
 ];
 
 export const sidebarCategories = [
+    { key: 'indian', label: 'Indian', count: 7 },
     { key: 'starters', label: 'Starters', count: 7 },
+    { key: 'seafood', label: 'Seafood', count: 7 },
+    { key: 'wraps', label: 'Wraps', count: 7 },
     { key: 'burgers', label: 'Burgers', count: 6 },
     { key: 'sandwich', label: 'Sandwich', count: 2 },
     { key: 'pizza', label: 'Pizza', count: 4 },
