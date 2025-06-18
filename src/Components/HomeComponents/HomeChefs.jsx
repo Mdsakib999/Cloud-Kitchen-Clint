@@ -125,7 +125,7 @@ const HomeChefs = () => {
 
                   {/* Specialty */}
                   <div className="flex items-center gap-2 mb-4">
-                    <LuStar className="w-4 h-4 text-amber-400" />
+                    <LuStar className="w-4 h-4 text-primary" />
                     <span className="text-slate-300 text-sm">
                       {chef.specialty}
                     </span>
