@@ -34,12 +34,12 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/" className="hover:underline">
+            <Link to="/all-food" className="hover:underline">
               Menu
             </Link>
           </li>
           <li>
-            <Link to="/" className="hover:underline">
+            <Link to="/order-now" className="hover:underline">
               Order Now
             </Link>
           </li>
