@@ -79,7 +79,7 @@ const ClientTestimonials = () => {
       <LuStar
         key={i}
         className={`w-5 h-5 ${
-          i < rating ? "text-amber-400 fill-amber-400" : "text-gray-500"
+          i < rating ? "text-primary fill-amber-400" : "text-gray-500"
         }`}
       />
     ));
