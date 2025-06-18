@@ -7,6 +7,7 @@ import Contact from "./Pages/Contact/Contact";
 import About from "./Pages/About/About";
 import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
 import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
+import { OrderNow } from "./Pages/OrderNow/OrderNow";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: "/food-details/:id",
         element: <FoodDetails />,
+      },
+      {
+        path: "/order-now",
+        element: <OrderNow />,
       },
     ],
   },

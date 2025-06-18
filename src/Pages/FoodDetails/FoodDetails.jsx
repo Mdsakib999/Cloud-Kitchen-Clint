@@ -46,15 +46,15 @@ export const FoodDetails = () => {
   }
 
   return (
-    <div className="">
+    <div className="pt-30">
       {/* Header */}
       <div className=" sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <button
             onClick={handleBack}
-            className="flex items-center gap-2 text-primary hover:text-white transition-colors"
+            className="flex items-center gap-2 text-primary text-xl hover:text-white transition-colors"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-8 h-8" />
             Back
           </button>
         </div>
