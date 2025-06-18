@@ -8,6 +8,7 @@ import About from "./Pages/About/About";
 import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
 import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
 import { OrderNow } from "./Pages/OrderNow/OrderNow";
+import { CheckoutForm } from "./Pages/Checkout/CheckoutForm";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: "/order",
         element: <OrderNow />,
+      },
+      {
+        path: "/checkout",
+        element: <CheckoutForm />,
       },
     ],
   },
