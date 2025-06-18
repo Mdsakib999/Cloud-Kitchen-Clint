@@ -47,7 +47,7 @@ export const ChefSpecial = () => {
 
               {/* Rating */}
               <div className="absolute top-4 right-4 flex items-center gap-1 bg-black/70 backdrop-blur px-2 py-1 rounded-full">
-                <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                <Star className="w-4 h-4 text-primary fill-yellow-400" />
                 <span className="text-white text-xs">{item.rating}</span>
               </div>
 
