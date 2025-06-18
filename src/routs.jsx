@@ -5,6 +5,9 @@ import SignIn from "./Pages/Authentication/SignIn";
 import SignUp from "./Pages/Authentication/SignUp";
 import Contact from "./Pages/Contact/Contact";
 import About from "./Pages/About/About";
+import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
+import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
+import { OrderNow } from "./Pages/OrderNow/OrderNow";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +25,18 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/menu",
+        element: <AllFoodItem />,
+      },
+      {
+        path: "/food-details/:id",
+        element: <FoodDetails />,
+      },
+      {
+        path: "/order",
+        element: <OrderNow />,
       },
     ],
   },
