@@ -1,0 +1,136 @@
+import { useState, useEffect, useRef } from "react";
+import {
+  useLocation,
+  useNavigate,
+  useSearchParams,
+  Link,
+} from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { auth, useAuth } from "../../providers/AuthProvider";
+import { applyActionCode } from "firebase/auth";
+import axiosInstance from "../../Utils/axios";
+import { Mail, RefreshCw } from "lucide-react";
+
+const VerifyEmail = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const hasVerifiedRef = useRef(false); // ✅ Prevent multiple toasts
+  const { user, checkEmailVerification } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const from = location.state?.from || "/";
+  const email = location.state?.email || user?.email;
+
+  // ✅ Apply verification link from email
+  useEffect(() => {
+    const verifyEmail = async () => {
+      const oobCode = searchParams.get("oobCode");
+      if (!oobCode || !user || hasVerifiedRef.current) return;
+
+      setIsLoading(true);
+      try {
+        await applyActionCode(auth, oobCode);
+        const idToken = await user.getIdToken(true);
+        await axiosInstance.post("/auth/verify-email", { idToken });
+        await checkEmailVerification();
+
+        if (!hasVerifiedRef.current) {
+          hasVerifiedRef.current = true;
+          toast.success(<h1 className="font-serif">Email verified!</h1>);
+          navigate(from, { replace: true });
+        }
+      } catch (error) {
+        console.error("applyActionCode error:", error.code);
+        const verified = await checkEmailVerification();
+        if (verified && !hasVerifiedRef.current) {
+          hasVerifiedRef.current = true;
+          toast.success(<h1 className="font-serif">Email already verified</h1>);
+          navigate(from, { replace: true });
+        } else if (!verified) {
+          toast.error(<h1 className="font-serif">Invalid or expired link</h1>);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    verifyEmail();
+  }, [user, searchParams, checkEmailVerification, navigate, from]);
+
+  // ✅ Fallback polling in case user verifies manually
+  useEffect(() => {
+    if (!user || searchParams.get("oobCode")) return;
+
+    const interval = setInterval(async () => {
+      if (hasVerifiedRef.current) return;
+
+      try {
+        const verified = await checkEmailVerification();
+        if (verified && !hasVerifiedRef.current) {
+          hasVerifiedRef.current = true;
+          toast.success(<h1 className="font-serif">Email verified!</h1>);
+          navigate(from, { replace: true });
+        }
+      } catch (err) {
+        console.error("Polling error:", err);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [user, checkEmailVerification, from, navigate, searchParams]);
+
+  // ✅ Resend email
+  const handleResend = async () => {
+    if (cooldown > 0 || !user) return;
+    setIsLoading(true);
+    try {
+      await auth.sendEmailVerification(user, {
+        url: "http://localhost:5173/verify-email",
+        handleCodeInApp: true,
+      });
+      toast.success(<h1 className="font-serif">Verification email sent!</h1>);
+      setCooldown(60);
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        err.code === "auth/too-many-requests"
+          ? "Too many attempts. Try later."
+          : "Failed to resend verification."
+      );
+      setCooldown(120);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // ⏳ Cooldown countdown
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown((prev) => prev - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldown]);
+
+  if (!email || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#102B2A] font-serif">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-white mb-4">No email found</h1>
+          <Link to="/signin" className="text-green-600 hover:underline">
+            Go back to sign in
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#102B2A] font-serif">
+      <div className="w-16 h-16 border-4 border-t-green-600 border-gray-700 rounded-full animate-spin"></div>
+    </div>
+  );
+};
+
+export default VerifyEmail;
