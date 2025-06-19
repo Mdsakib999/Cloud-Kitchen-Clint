@@ -9,6 +9,7 @@ import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
 import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
 import { OrderNow } from "./Pages/OrderNow/OrderNow";
 import { CheckoutForm } from "./Pages/Checkout/CheckoutForm";
+import TrackOrder from "./Components/SharedComponent/TrackOrder/TrackOrder";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: "/order",
         element: <OrderNow />,
+      },
+      {
+        path: "/order-track",
+        element: <TrackOrder></TrackOrder>,
       },
       {
         path: "/checkout",
