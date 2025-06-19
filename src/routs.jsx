@@ -5,6 +5,8 @@ import SignIn from "./Pages/Authentication/SignIn";
 import SignUp from "./Pages/Authentication/SignUp";
 import Contact from "./Pages/Contact/Contact";
 import About from "./Pages/About/About";
+import VerifyEmail from "./Pages/Authentication/VerifyEmail";
+import ShowEmailVerification from "./Pages/Authentication/ShowEmailVerification";
 
 export const router = createBrowserRouter([
   {
@@ -32,5 +34,13 @@ export const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/verify-email",
+    element: <VerifyEmail />,
+  },
+  {
+    path: "/verification-email",
+    element: <ShowEmailVerification />,
   },
 ]);
