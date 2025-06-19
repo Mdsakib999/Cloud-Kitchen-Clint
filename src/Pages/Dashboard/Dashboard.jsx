@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { DashBoardLeftNav } from "./DasboardLeftNav";
 import { ScrollToTop } from "../../utils/ScrollToTop";
 import Navbar from "../../Components/SharedComponent/Navbar";
 import InfoBar from "../../Components/SharedComponent/InfoBar";
 
 export const Dashboard = () => {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   useEffect(() => {
     if (sidebarOpen) {
@@ -17,7 +19,7 @@ export const Dashboard = () => {
       <ScrollToTop />
       <InfoBar />
       <Navbar />
-      <div className="bg-bg-primary">
+      <div className={`${isAdmin ? "bg-white" : "bg-bg-primary"}`}>
         {/* Main Dashboard Container */}
         <div className="flex min-h-screen">
           {/* Mobile Sidebar Toggle Button */}
