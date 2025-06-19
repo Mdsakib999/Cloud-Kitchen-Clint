@@ -1,17 +1,16 @@
 import { toast } from "react-hot-toast";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../providers/AuthProvider";
 import { LoaderCircle } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-import axiosInstance from "../../utils/axios";
+import axiosInstance from "../../Utils/axios";
+import { useAuth } from "../../providers/AuthProvider";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -19,16 +18,122 @@ const SignIn = () => {
     getValues,
   } = useForm();
 
-  const { googleSignIn, user, forgotPassword } = useAuth(); // Removed signIn since we're using backend
+  const { signIn, googleSignIn, forgotPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  useEffect(() => {
-    if (user) {
-      navigate(from, { replace: true });
+  const saveUserToDB = async (userData, idToken) => {
+    try {
+      const { data } = await axiosInstance.post("/auth/register", userData, {
+        headers: { Authorization: `Bearer ${idToken}` },
+      });
+      return data;
+    } catch (error) {
+      // If user already exists, that's fine for Google sign-in
+      if (
+        error?.response?.status === 400 &&
+        error?.response?.data?.message?.includes("already exists")
+      ) {
+        return null; // User exists, continue with sign-in
+      }
+      console.error("Error saving user to DB: ", error);
+      toast.error(error?.response?.data?.message || "Failed to save user");
+      throw error;
     }
-  }, [user, navigate, from]);
+  };
+
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+    try {
+      const result = await signIn(data.email, data.password);
+
+      // Verify token with backend
+      const idToken = await result.user.getIdToken();
+      await axiosInstance.post(
+        "/auth/verify-token",
+        {},
+        { headers: { Authorization: `Bearer ${idToken}` } }
+      );
+
+      // Check email verification status
+      if (!result.user.emailVerified) {
+        toast.success(<h1 className="font-serif">Signed in successfully!</h1>);
+        // Redirect to verification page for unverified email users
+        navigate("/verification-email", {
+          state: {
+            email: data.email,
+            from: from,
+          },
+        });
+      } else {
+        toast.success(<h1 className="font-serif">Signed in successfully!</h1>);
+        navigate(from, { replace: true });
+      }
+    } catch (error) {
+      console.error("Error signing in: ", error?.message);
+      if (error.code === "auth/user-not-found") {
+        toast.error(
+          <h1 className="font-serif">No user found with this email</h1>
+        );
+      } else if (error.code === "auth/wrong-password") {
+        toast.error(<h1 className="font-serif">Incorrect password</h1>);
+      } else if (error.code === "auth/invalid-email") {
+        toast.error(<h1 className="font-serif">Invalid email address</h1>);
+      } else if (error.code === "auth/invalid-credential") {
+        toast.error(<h1 className="font-serif">Invalid email or password</h1>);
+      } else {
+        toast.error(<h1 className="font-serif">Failed to sign in</h1>);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const result = await googleSignIn();
+      const idToken = await result.user.getIdToken();
+
+      // Check if user exists in database, if not create them
+      try {
+        await axiosInstance.post(
+          "/auth/verify-token",
+          {},
+          { headers: { Authorization: `Bearer ${idToken}` } }
+        );
+      } catch (error) {
+        // If user doesn't exist, create them
+        if (error.response?.status === 404) {
+          const userData = {
+            name: result.user.displayName,
+            email: result.user.email,
+            phone: "",
+            address: "",
+            provider: result.user.providerData[0]?.providerId,
+            uid: result.user.uid,
+            role: "user",
+          };
+          await saveUserToDB(userData, idToken);
+        } else {
+          throw error;
+        }
+      }
+
+      toast.success(
+        <h1 className="font-serif">Signed in with Google successfully!</h1>
+      );
+
+      // Google accounts are already verified, navigate directly
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error("Error signing in with Google: ", error?.message);
+      toast.error(error.message || "Failed to sign in with Google");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleResetPassword = async () => {
     const email = getValues("email");
@@ -45,82 +150,13 @@ const SignIn = () => {
       );
     } catch (error) {
       console.error("Password reset error:", error);
-      toast.error(<h1 className="font-serif">Failed to send reset email</h1>);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const saveUserToDB = async (userData) => {
-    try {
-      const { data } = await axiosInstance.post("/auth/register", userData);
-      localStorage.setItem("user", JSON.stringify(data));
-      return data;
-    } catch (error) {
-      console.error("Error saving user to DB: ", error);
-      toast.error(
-        <h1 className="font-serif">
-          {error?.response?.data?.message || "Failed to save user"}
-        </h1>
-      );
-      throw error;
-    }
-  };
-
-  const onSubmit = async (data) => {
-    setIsLoading(true);
-    try {
-      // Call backend /auth/login endpoint
-      const response = await axiosInstance.post("/auth/login", {
-        email: data.email,
-        password: data.password,
-      });
-
-      // Store user data and token in localStorage
-      localStorage.setItem("user", JSON.stringify(response.data));
-
-      toast.success(<h1 className="font-serif">Signed in successfully!</h1>);
-      navigate(from, { replace: true });
-    } catch (error) {
-      let errorMessage = "Failed to sign in";
-      if (error.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.response?.status === 400) {
-        errorMessage = error.response.data.message || "Invalid credentials";
+      if (error.code === "auth/user-not-found") {
+        toast.error(
+          <h1 className="font-serif">No user found with this email</h1>
+        );
+      } else {
+        toast.error(<h1 className="font-serif">Failed to send reset email</h1>);
       }
-      toast.error(<h1 className="font-serif">{errorMessage}</h1>);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    try {
-      const result = await googleSignIn();
-
-      const userData = {
-        name: result.user.displayName,
-        email: result.user.email,
-        provider: result.user.providerData[0]?.providerId,
-        uid: result.user.uid,
-      };
-
-      await saveUserToDB(userData);
-
-      toast.success(
-        <h1 className="font-serif">Signed in with Google successfully</h1>
-      );
-      navigate(from, { replace: true });
-    } catch (error) {
-      console.error("Error signing in with Google: ", error?.message);
-      let errorMessage = "Failed to sign in with Google";
-      if (error.code === "auth/popup-closed-by-user") {
-        errorMessage = "Google sign-in was cancelled";
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-      toast.error(<h1 className="font-serif">{errorMessage}</h1>);
     } finally {
       setIsLoading(false);
     }
@@ -138,8 +174,8 @@ const SignIn = () => {
             Sign in to access your account
           </p>
         </div>
+
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-          {/* Email Field */}
           <div className="relative">
             <label htmlFor="email" className="sr-only">
               Email address
@@ -151,7 +187,7 @@ const SignIn = () => {
               <input
                 id="email"
                 type="email"
-                className="w-full px-4 py-3 focus:outline-none placeholder-gray-400"
+                className="w-full px-4 py-3 bg-transparent focus:outline-none placeholder-gray-400"
                 placeholder="Email address"
                 {...register("email", {
                   required: "Email is required",
@@ -163,11 +199,12 @@ const SignIn = () => {
               />
             </div>
             {errors.email && (
-              <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+              <p className="mt-1 text-sm text-red-500">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
-          {/* Password Field */}
           <div className="relative">
             <label htmlFor="password" className="sr-only">
               Password
@@ -208,7 +245,6 @@ const SignIn = () => {
             )}
           </div>
 
-          {/* Forgot Password */}
           <div className="flex items-center justify-end">
             <button
               onClick={handleResetPassword}
@@ -219,7 +255,6 @@ const SignIn = () => {
             </button>
           </div>
 
-          {/* Submit Button */}
           <div>
             <button
               type="submit"
@@ -244,7 +279,7 @@ const SignIn = () => {
               <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-white text-gray-600">
+              <span className="px-3 bg-[#0c2424] text-gray-400">
                 Or continue with
               </span>
             </div>
@@ -274,9 +309,6 @@ const SignIn = () => {
             Sign up
           </Link>
         </div>
-      </div>
-      <div>
-        <img src="" alt="" />
       </div>
     </div>
   );
