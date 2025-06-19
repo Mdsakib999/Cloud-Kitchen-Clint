@@ -7,6 +7,11 @@ import Contact from "./Pages/Contact/Contact";
 import About from "./Pages/About/About";
 import VerifyEmail from "./Pages/Authentication/VerifyEmail";
 import ShowEmailVerification from "./Pages/Authentication/ShowEmailVerification";
+import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
+import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
+import { OrderNow } from "./Pages/OrderNow/OrderNow";
+import { CheckoutForm } from "./Pages/Checkout/CheckoutForm";
+import TrackOrder from "./Components/SharedComponent/TrackOrder/TrackOrder";
 
 export const router = createBrowserRouter([
   {
@@ -25,22 +30,42 @@ export const router = createBrowserRouter([
         path: "/about",
         element: <About />,
       },
+      {
+        path: "/menu",
+        element: <AllFoodItem />,
+      },
+      {
+        path: "/food-details/:id",
+        element: <FoodDetails />,
+      },
+      {
+        path: "/order",
+        element: <OrderNow />,
+      },
+      {
+        path: "/order-track",
+        element: <TrackOrder></TrackOrder>,
+      },
+      {
+        path: "/checkout",
+        element: <CheckoutForm />,
+      },
+      {
+        path: "/signin",
+        element: <SignIn />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
+      {
+        path: "/verify-email",
+        element: <VerifyEmail />,
+      },
+      {
+        path: "/verification-email",
+        element: <ShowEmailVerification />,
+      },
     ],
-  },
-  {
-    path: "/signin",
-    element: <SignIn />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
-  },
-  {
-    path: "/verify-email",
-    element: <VerifyEmail />,
-  },
-  {
-    path: "/verification-email",
-    element: <ShowEmailVerification />,
   },
 ]);

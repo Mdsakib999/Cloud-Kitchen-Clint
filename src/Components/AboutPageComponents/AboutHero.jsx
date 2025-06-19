@@ -36,7 +36,7 @@ export const AboutHero = () => {
   ];
 
   return (
-    <div className="text-white font-inter px-6 py-16 md:px-12 lg:px-20">
+    <div className="text-white font-inter px-6 py-16 md:px-12 lg:px-20 my-20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
         {/* Left Content */}
         <div className="w-full md:w-1/2 lg:w-full">
@@ -85,7 +85,7 @@ export const AboutHero = () => {
           </div>
 
           {/* Rotated Title */}
-          <div className="hidden md:block absolute bottom-20 right-[-15rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap z-[2]">
+          <div className="hidden md:block absolute bottom-20 right-[-17rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap z-[2]">
             <h1 className="text-4xl lg:text-5xl font-semibold text-white font-inknut">
               About Us
             </h1>

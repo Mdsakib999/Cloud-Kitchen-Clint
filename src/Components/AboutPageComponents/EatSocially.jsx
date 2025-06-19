@@ -10,9 +10,9 @@ export const EatSocially = () => {
       {/* Header Text */}
       <div className="text-center mb-16">
         <p className="text-white font-inter text-lg mb-3">
-          <span className="text-yellow-400">Follow Us @</span>{" "}
+          <span className="text-primary">Follow Us @</span>{" "}
           <span className="text-white">Flavour</span>
-          <span className="text-yellow-400">Verse</span>
+          <span className="text-primary">Verse</span>
         </p>
         <h1 className="text-4xl md:text-6xl font-bold text-white font-inknut">
           Eat Socially
