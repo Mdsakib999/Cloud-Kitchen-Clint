@@ -1,16 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { IoCartOutline, IoMenuOutline, IoCloseOutline } from "react-icons/io5";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  IoCartOutline,
+  IoMenuOutline,
+  IoCloseOutline,
+  IoPersonCircleOutline,
+} from "react-icons/io5";
 import CartSlider from "./CartSlider";
 import { useSelector } from "react-redux";
+import { useAuth } from "../../providers/AuthProvider";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const cartItems = useSelector((state) => state.cart);
   const totalQty = cartItems.ids.length;
+  const location = useLocation();
 
   const [isTransparent, setIsTransparent] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCart, setShowCart] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const { user, logout } = useAuth();
+
+  const dropdownRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setIsTransparent(window.scrollY < 80);
@@ -18,17 +31,65 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setShowUserDropdown(false);
+  }, [location.pathname]);
+
+  // Handle click outside for both dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close user dropdown if clicked outside
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowUserDropdown(false);
+      }
+
+      // Close mobile menu if clicked outside
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
     setShowCart(false);
+    setShowUserDropdown(false);
   };
+
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const openCart = () => {
     setShowCart(true);
     closeMobileMenu();
+    setShowUserDropdown(false);
   };
+
   const closeCart = () => setShowCart(false);
+
+  const toggleUserDropdown = () => {
+    setShowUserDropdown((prev) => !prev);
+    setIsMobileMenuOpen(false);
+  };
+
+  const closeUserDropdown = () => setShowUserDropdown(false);
+
+  const handleLogout = async () => {
+    // Add your logout logic here
+    await logout();
+    toast.success(
+      <h1 className="text-center font-serif">Logged out successfully</h1>
+    );
+    setShowUserDropdown(false);
+    // Example: dispatch logout action, clear tokens, redirect, etc.
+  };
 
   return (
     <>
@@ -38,6 +99,7 @@ const Navbar = () => {
             ? "bg-transparent text-white"
             : "bg-bg-primary text-white shadow-lg"
         }`}
+        ref={mobileMenuRef}
       >
         <div className="flex items-center justify-between w-full">
           {/* Logo */}
@@ -73,7 +135,7 @@ const Navbar = () => {
 
           {/* Desktop Right Side */}
           <div className="hidden md:flex space-x-4 items-center gap-3">
-            <button onClick={openCart} className="relative">
+            <button onClick={openCart} className="relative cursor-pointer">
               <IoCartOutline className="text-2xl hover:text-primary transition-colors" />
               {totalQty > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -81,20 +143,65 @@ const Navbar = () => {
                 </span>
               )}
             </button>
-            <Link to="/signin" className="hover:underline">
-              Log in
-            </Link>
-            <Link
-              to="/signup"
-              className="px-4 py-2 bg-primary text-bg-secondary rounded-full hover:bg-accent/80 transition"
-            >
-              Register
-            </Link>
+
+            {user ? (
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={toggleUserDropdown}
+                  className="flex items-center hover:text-primary transition-colors cursor-pointer"
+                >
+                  <IoPersonCircleOutline className="text-3xl" />
+                </button>
+
+                {/* Desktop User Dropdown */}
+                {showUserDropdown && (
+                  <div className="absolute right-0 mt-2 w-64 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden">
+                    <div className="flex justify-between items-center p-3 border-b border-white/20">
+                      <span className="text-sm font-medium">Account</span>
+                      <button
+                        onClick={closeUserDropdown}
+                        className="text-xl hover:text-primary transition-colors cursor-pointer"
+                      >
+                        <IoCloseOutline />
+                      </button>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      <div>
+                        <p className="text-sm text-gray-300">Name</p>
+                        <p className="font-medium">{user.name}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-300">Email</p>
+                        <p className="font-medium">{user.email}</p>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Link to="/signin" className="hover:underline cursor-pointer">
+                  Log in
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-4 py-2 bg-primary text-bg-secondary rounded-full hover:bg-accent/80 transition cursor-pointer"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile Right Side */}
           <div className="flex md:hidden items-center space-x-3">
-            <button onClick={openCart} className="relative">
+            <button onClick={openCart} className="relative cursor-pointer">
               <IoCartOutline className="text-2xl hover:text-primary transition-colors" />
               {totalQty > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -102,9 +209,10 @@ const Navbar = () => {
                 </span>
               )}
             </button>
+
             <button
               onClick={toggleMobileMenu}
-              className="text-2xl focus:outline-none"
+              className="text-2xl focus:outline-none cursor-pointer"
               aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? <IoCloseOutline /> : <IoMenuOutline />}
@@ -126,7 +234,7 @@ const Navbar = () => {
                   <li key={label}>
                     <Link
                       to={to}
-                      className="block hover:text-primary transition-colors"
+                      className="block hover:text-primary transition-colors cursor-pointer"
                       onClick={closeMobileMenu}
                     >
                       {label}
@@ -135,20 +243,39 @@ const Navbar = () => {
                 ))}
               </ul>
               <div className="pt-4 border-t border-white/20 space-y-3">
-                <Link
-                  to="/signin"
-                  className="block text-center py-2 hover:text-primary transition-colors"
-                  onClick={closeMobileMenu}
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="block text-center px-4 py-2 bg-primary text-bg-secondary rounded-full hover:bg-accent/80 transition"
-                  onClick={closeMobileMenu}
-                >
-                  Register
-                </Link>
+                {user ? (
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-gray-300">Name</p>
+                      <p className="font-medium">{user.name}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-300">Email</p>
+                      <p className="font-medium">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col space-y-3">
+                    <Link
+                      to="/signin"
+                      className="hover:underline cursor-pointer"
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="px-4 py-2 bg-primary text-bg-secondary rounded-full hover:bg-accent/80 transition text-center cursor-pointer"
+                    >
+                      Register
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
