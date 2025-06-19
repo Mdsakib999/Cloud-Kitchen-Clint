@@ -15,7 +15,9 @@ import { UpdateProfile } from "./Components/UserDashBoardPageComponents/UpdatePr
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { OrderHistory } from "./Components/UserDashBoardPageComponents/OrderHistory";
 import TrackOrder from "./Components/SharedComponent/TrackOrder/TrackOrder";
-import { DashStatics } from "./Components/AdminDashBoardPageComponent/DashStatics";
+import { DashStatics } from "./Components/AdminDashBoardPageComponent/StaticsPage/DashStatics";
+import { AllCustomer } from "./Components/AdminDashBoardPageComponent/CustomerPage.jsx/AllCustomer";
+import { CustomerDetails } from "./Components/AdminDashBoardPageComponent/CustomerPage.jsx/CustomerDetails";
 
 export const router = createBrowserRouter([
   {
@@ -99,6 +101,14 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <UpdateProfile />,
+      },
+      {
+        path: "customers",
+        element: <AllCustomer />,
+      },
+      {
+        path: "customer-deatils/:id",
+        element: <CustomerDetails />,
       },
     ],
   },
