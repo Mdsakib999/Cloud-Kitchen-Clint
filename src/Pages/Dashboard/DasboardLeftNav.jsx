@@ -25,7 +25,7 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     {
       label: "Customers",
       icon: <FaUsers size={20} />,
-      path: "/admin/customers",
+      path: "/admin/dashboard/customers",
     },
     {
       label: "Order List",
