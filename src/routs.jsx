@@ -5,6 +5,8 @@ import SignIn from "./Pages/Authentication/SignIn";
 import SignUp from "./Pages/Authentication/SignUp";
 import Contact from "./Pages/Contact/Contact";
 import About from "./Pages/About/About";
+import VerifyEmail from "./Pages/Authentication/VerifyEmail";
+import ShowEmailVerification from "./Pages/Authentication/ShowEmailVerification";
 import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
 import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
 import { OrderNow } from "./Pages/OrderNow/OrderNow";
@@ -48,14 +50,22 @@ export const router = createBrowserRouter([
         path: "/checkout",
         element: <CheckoutForm />,
       },
+      {
+        path: "/signin",
+        element: <SignIn />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
+      {
+        path: "/verify-email",
+        element: <VerifyEmail />,
+      },
+      {
+        path: "/verification-email",
+        element: <ShowEmailVerification />,
+      },
     ],
-  },
-  {
-    path: "/signin",
-    element: <SignIn />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
   },
 ]);
