@@ -1,9 +1,11 @@
+import { Link } from "lucide-react";
 import React, { useState } from "react";
 
 const MENU_ITEMS = [
   {
     id: 1,
     title: "Chickpea Pancakes",
+    price: "10.99$",
     image:
       "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "Indian",
@@ -11,6 +13,7 @@ const MENU_ITEMS = [
   {
     id: 2,
     title: "South Indian Meal",
+    price: "10.99$",
     image:
       "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "Indian",
@@ -18,6 +21,7 @@ const MENU_ITEMS = [
   {
     id: 3,
     title: "Spiced ButterMilk",
+    price: "10.99$",
     image:
       "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "Indian",
@@ -25,6 +29,7 @@ const MENU_ITEMS = [
   {
     id: 4,
     title: "Shahi Korma Paratha",
+    price: "10.99$",
     image:
       "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "Indian",
@@ -108,6 +113,17 @@ const HomeMenu = () => {
               <p className="mt-4 lg:mt-6 font-medium text-base sm:text-lg lg:text-xl text-gray-200 group-hover:text-white transition-colors duration-300">
                 {item.title}
               </p>
+              <p className=" font-medium text-primary sm:text-md lg:text-lg  group-hover:text-white transition-colors duration-300">
+                {item.price}
+              </p>
+              <div className="flex justify-center items-center gap-3.5 pt-3">
+                <button className="px-5 py-2 bg-transparent border-2 border-primary text-primary rounded-full font-medium text-sm hover:bg-primary hover:text-bg-secondary transition-all duration-300">
+                  View Details
+                </button>
+                <button className="px-5 py-2 bg-primary text-bg-secondary rounded-full font-medium text-sm hover:opacity-90 hover:shadow-md transition-all duration-300">
+                  Add To Cart
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -118,6 +134,7 @@ const HomeMenu = () => {
             Delicious Food, Fresh Ingredients, Crafted with Love, Satisfy Your
             Cravings!
           </p>
+
           <button className="px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 bg-primary text-bg-primary rounded-full font-medium text-sm sm:text-base lg:text-lg transition-all duration-300 hover:opacity-90 hover:transform hover:scale-105 hover:shadow-xl">
             View Full Menu →
           </button>

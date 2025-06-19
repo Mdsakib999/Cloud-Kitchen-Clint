@@ -30,15 +30,15 @@ const InfoBar = () => {
         </div>
 
         <div className="flex space-x-4 text-sm">
-          <Link to="/track-order" className="hover:underline">
+          <Link to="/order-track" className="hover:underline">
             Track Order
           </Link>
           <Link to="/faq" className="hover:underline">
             FAQ
           </Link>
-          <Link to="/contact" className="hover:underline">
+          {/* <Link to="/contact" className="hover:underline">
             Contact Us
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>
