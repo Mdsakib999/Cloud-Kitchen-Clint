@@ -3,7 +3,7 @@ import { EatSocially } from "../../Components/AboutPageComponents/EatSocially";
 
 const About = () => {
   return (
-    <div>
+    <div className="pt-10">
       <AboutHero />
       <EatSocially />
     </div>

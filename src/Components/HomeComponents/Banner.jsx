@@ -5,7 +5,7 @@ const Banner = () => {
   return (
     <div className="relative w-full">
       <div
-        className="relative w-full h-96 md:h-screen bg-cover bg-center"
+        className="relative w-full  h-screen bg-cover bg-center"
         style={{ backgroundImage: `url(${FoodBanner})` }}
       >
         <div className="absolute inset-0 bg-black/60"></div>
@@ -16,7 +16,7 @@ const Banner = () => {
             Satisfy Your Cravings With Our Signature Flavors
           </h1>
           <p className="mb-6 text-lg md:text-2xl max-w-4xl text-white">
-            Fresh, hot, and delivered fast — experience chef-crafted meals from
+            Fresh, hot, and delivered fast. Experience chef-crafted meals from
             our cloud kitchen, made just for you. Order now and enjoy
             restaurant-quality food at home.
           </p>
@@ -25,11 +25,11 @@ const Banner = () => {
           </button>
         </div>
 
-        <div className="absolute  bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-4 max-w-7xl w-full mx-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 px-4 sm:px-6 py-4 max-w-7xl w-full mx-auto flex flex-col lg:flex-row justify-between items-center space-y-6 lg:space-y-0 lg:space-x-8">
           {/* Hours */}
-          <div className="flex items-start space-x-3">
+          <div className="flex items-start space-x-3 text-center lg:text-left">
             <svg
-              className="w-6 h-6 text-primary flex-shrink-0"
+              className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0 mt-1"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -40,19 +40,22 @@ const Banner = () => {
               />
             </svg>
             <div>
-              <h3 className="font-semibold text-gray-200">Operating Hours</h3>
-              <p className="text-gray-400 text-sm">
+              <h3 className="font-semibold text-gray-200 text-sm sm:text-base">
+                Operating Hours
+              </h3>
+              <p className="text-gray-400 text-xs sm:text-sm">
                 Mon-Fri: 11:00 AM - 10:00 PM
               </p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-400 text-xs sm:text-sm">
                 Sat-Sun: 10:00 AM - 11:00 PM
               </p>
             </div>
           </div>
+
           {/* Address */}
-          <div className="flex items-start space-x-3">
+          <div className="flex items-start space-x-3 text-center lg:text-left">
             <svg
-              className="w-6 h-6 text-primary flex-shrink-0"
+              className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0 mt-1"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -63,8 +66,10 @@ const Banner = () => {
               />
             </svg>
             <div>
-              <h3 className="font-semibold text-gray-200">Our Location</h3>
-              <p className="text-gray-400 text-sm">
+              <h3 className="font-semibold text-gray-200 text-sm sm:text-base">
+                Our Location
+              </h3>
+              <p className="text-gray-400 text-xs sm:text-sm max-w-xs lg:max-w-none">
                 123 Food Street, Downtown District, Cityville, State 12345
               </p>
             </div>

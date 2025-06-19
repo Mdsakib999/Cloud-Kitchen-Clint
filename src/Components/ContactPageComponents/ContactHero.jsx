@@ -12,7 +12,7 @@ import Chiken from "/assets/Food/Chicken Fry.jpg";
 
 export const ContactHero = () => {
   return (
-    <div className="text-white font-inter px-6 py-16 md:px-12 lg:px-20">
+    <div className="text-white font-inter px-6 py-16 md:px-12 lg:px-20 my-20">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
         <div>
