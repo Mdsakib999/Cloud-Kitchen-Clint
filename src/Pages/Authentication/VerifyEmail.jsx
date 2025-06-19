@@ -9,7 +9,6 @@ import { toast } from "react-hot-toast";
 import { auth, useAuth } from "../../providers/AuthProvider";
 import { applyActionCode } from "firebase/auth";
 import axiosInstance from "../../Utils/axios";
-import { Mail, RefreshCw } from "lucide-react";
 
 const VerifyEmail = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +45,7 @@ const VerifyEmail = () => {
         const verified = await checkEmailVerification();
         if (verified && !hasVerifiedRef.current) {
           hasVerifiedRef.current = true;
-          toast.success(<h1 className="font-serif">Email already verified</h1>);
+          toast.success(<h1 className="font-serif">Email verified</h1>);
           navigate(from, { replace: true });
         } else if (!verified) {
           toast.error(<h1 className="font-serif">Invalid or expired link</h1>);
@@ -112,19 +111,6 @@ const VerifyEmail = () => {
       return () => clearTimeout(timer);
     }
   }, [cooldown]);
-
-  if (!email || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#102B2A] font-serif">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">No email found</h1>
-          <Link to="/signin" className="text-green-600 hover:underline">
-            Go back to sign in
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#102B2A] font-serif">
