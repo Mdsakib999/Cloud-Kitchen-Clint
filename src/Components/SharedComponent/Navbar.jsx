@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IoCartOutline, IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import CartSlider from "./CartSlider";
 import { useSelector } from "react-redux";
+
 const Navbar = () => {
   const cartItems = useSelector((state) => state.cart);
   const totalQty = cartItems.ids.length;
@@ -12,28 +13,23 @@ const Navbar = () => {
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsTransparent(window.scrollY < 80);
-    };
-
+    const handleScroll = () => setIsTransparent(window.scrollY < 80);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-  const openCart = () => {
-    setShowCart(true);
-    setIsMobileMenuOpen(false);
-  };
-  const closeCart = () => {
+    setIsMobileMenuOpen((prev) => !prev);
     setShowCart(false);
   };
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
+  const openCart = () => {
+    setShowCart(true);
+    closeMobileMenu();
+  };
+  const closeCart = () => setShowCart(false);
+
   return (
     <>
       <nav
@@ -65,17 +61,12 @@ const Navbar = () => {
             </li>
             <li>
               <Link to="/order" className="hover:underline">
-                Order Now
+                Price List
               </Link>
             </li>
             <li>
               <Link to="/about" className="hover:underline">
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" className="hover:underline">
-                Contact Us
+                About
               </Link>
             </li>
           </ul>
@@ -83,14 +74,13 @@ const Navbar = () => {
           {/* Desktop Right Side */}
           <div className="hidden md:flex space-x-4 items-center gap-3">
             <button onClick={openCart} className="relative">
-              <IoCartOutline className="text-2xl cursor-pointer hover:text-primary transition-colors" />
+              <IoCartOutline className="text-2xl hover:text-primary transition-colors" />
               {totalQty > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                   {totalQty}
                 </span>
               )}
             </button>
-
             <Link to="/signin" className="hover:underline">
               Log in
             </Link>
@@ -102,12 +92,14 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Right Side (Cart + Hamburger) */}
+          {/* Mobile Right Side */}
           <div className="flex md:hidden items-center space-x-3">
             <button onClick={openCart} className="relative">
-              <IoCartOutline className="text-2xl cursor-pointer hover:text-primary transition-colors" />
+              <IoCartOutline className="text-2xl hover:text-primary transition-colors" />
               {totalQty > 0 && (
-                <span className="absolute -top-1 -right-1 …">{totalQty}</span>
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {totalQty}
+                </span>
               )}
             </button>
             <button
@@ -124,56 +116,24 @@ const Navbar = () => {
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute top-full left-0 w-full bg-bg-primary/95 backdrop-blur-sm shadow-lg">
             <div className="px-4 py-6 space-y-4">
-              {/* Mobile Navigation Links */}
               <ul className="space-y-4 text-lg">
-                <li>
-                  <Link
-                    to="/"
-                    className="block hover:text-primary transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/menu"
-                    className="block hover:text-primary transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    Menu
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/order"
-                    className="block hover:text-primary transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    Order Now
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/about"
-                    className="block hover:text-primary transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/contact"
-                    className="block hover:text-primary transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    Contact Us
-                  </Link>
-                </li>
+                {[
+                  { to: "/", label: "Home" },
+                  { to: "/menu", label: "Menu" },
+                  { to: "/order", label: "Price List" },
+                  { to: "/about", label: "About" },
+                ].map(({ to, label }) => (
+                  <li key={label}>
+                    <Link
+                      to={to}
+                      className="block hover:text-primary transition-colors"
+                      onClick={closeMobileMenu}
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
-
-              {/* Mobile Auth Buttons */}
               <div className="pt-4 border-t border-white/20 space-y-3">
                 <Link
                   to="/signin"
@@ -194,14 +154,14 @@ const Navbar = () => {
           </div>
         )}
       </nav>
+
+      {/* Backdrop */}
       {showCart && (
-        <div className="fixed inset-0 bg-black/20 z-40" onClick={closeCart} />
+        <div className="fixed inset-0 bg-black/20 z-50" onClick={closeCart} />
       )}
-      <CartSlider
-        isOpen={showCart}
-        onClose={closeCart}
-        className="fixed top-0 right-0 h-full z-60"
-      />
+
+      {/* Slider */}
+      <CartSlider isOpen={showCart} onClose={closeCart} />
     </>
   );
 };
