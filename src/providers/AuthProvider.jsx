@@ -107,7 +107,6 @@ const AuthProvider = ({ children }) => {
       try {
         await auth.currentUser.reload();
         const isVerified = auth.currentUser.emailVerified;
-        console.log("INSIDE CHECK EMAIL VERIFICATION : =>", isVerified);
         setIsEmailVerified(isVerified);
 
         // Update backend if verification status changed
@@ -118,7 +117,6 @@ const AuthProvider = ({ children }) => {
             {},
             { headers: { Authorization: `Bearer ${idToken}` } }
           );
-          console.log("RESULT FROM CHECK EMAIL VERIFICATION", result);
           setUser(result.data);
         }
 
@@ -169,6 +167,7 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     loading,
     setLoading,
+    setUser,
     user,
     role,
     isAdmin,
