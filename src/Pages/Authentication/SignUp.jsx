@@ -1,75 +1,81 @@
 import { toast } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User, Mail, Lock, Phone, MapPin, Eye, EyeOff } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../providers/AuthProvider";
 import { useForm } from "react-hook-form";
 import { updateProfile } from "firebase/auth";
 import { LoaderCircle } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-import axiosInstance from "../../utils/axios";
+import { useAuth } from "../../providers/AuthProvider";
+import axiosInstance from "../../Utils/axios";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const { createUser, user, googleSignIn } = useAuth();
+  const { createUser, googleSignIn } = useAuth();
+
   const navigate = useNavigate();
   const location = useLocation();
+
   const from = location.state?.from?.pathname || "/";
 
-  useEffect(() => {
-    if (user) {
-      navigate(from, { replace: true });
-    }
-  }, [user, navigate, from]);
-
-  const saveUserToDB = async (userData) => {
+  const saveUserToDB = async (userData, idToken) => {
     try {
-      const { data } = await axiosInstance.post("/auth/register", userData);
-      localStorage.setItem("user", JSON.stringify(data));
+      const { data } = await axiosInstance.post("/auth/register", userData, {
+        headers: { Authorization: `Bearer ${idToken}` },
+      });
       return data;
     } catch (error) {
       console.error("Error saving user to DB: ", error);
-      const errorMsg =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Failed to save user to DB";
-      toast.error(<h1 className="font-serif">{errorMsg}</h1>);
+      toast.error(
+        error?.response?.data?.message || "Failed to save user to DB"
+      );
       throw error;
     }
   };
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       const result = await createUser(data.email, data.password);
+      await updateProfile(result.user, { displayName: data.name });
 
-      await updateProfile(result.user, {
-        displayName: data.name,
-      });
-
+      const idToken = await result.user.getIdToken();
       const userData = {
         name: data.name,
         email: data.email,
         phone: data.phone,
         address: data.address,
-        password: data.password,
         provider: result.user.providerData[0]?.providerId,
         uid: result.user.uid,
         role: "user",
       };
 
-      await saveUserToDB(userData);
+      const dbData = await saveUserToDB(userData, idToken);
+      console.log("userdata from database", dbData);
 
-      toast.success(
-        <h1 className="font-serif">Account created successfully</h1>
-      );
+      if (userData) {
+        toast.success(
+          <h1 className="font-serif text-center">
+            Account created successfully! Please check your email for
+            verification.
+          </h1>
+        );
+
+        // Navigate to verify email page
+        navigate("/verification-email", {
+          state: {
+            email: userData?.email || data?.email || dbData.email,
+            from: from,
+          },
+        });
+      }
     } catch (error) {
       console.error("Error creating user: ", error?.message);
       if (error.code === "auth/email-already-in-use") {
@@ -84,42 +90,42 @@ const SignUp = () => {
             Password should be at least 6 characters
           </h1>
         );
-      } else if (error.code === "auth/popup-closed-by-user") {
-        toast.error(<h1 className="font-serif">Auth popup closed by user</h1>);
       } else {
         toast.error("Something went wrong. Please try again.");
       }
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   const handleGoogleSignUp = async () => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       const result = await googleSignIn();
-
+      const idToken = await result.user.getIdToken();
       const userData = {
         name: result.user.displayName,
         email: result.user.email,
-        phone: "", // Google sign-in doesn't provide phone or address
+        phone: "",
         address: "",
         provider: result.user.providerData[0]?.providerId,
         uid: result.user.uid,
         role: "user",
       };
 
-      await saveUserToDB(userData);
+      await saveUserToDB(userData, idToken);
 
       toast.success(
-        <h1 className="font-serif">Signed in with Google successfully</h1>
+        <h1 className="font-serif">Signed in with Google successfully!</h1>
       );
+
+      // Google accounts are already verified, so navigate directly
       navigate(from, { replace: true });
     } catch (error) {
       console.error("Error signing in with Google: ", error?.message);
       toast.error(error.message || "Failed to sign in with Google");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -136,7 +142,6 @@ const SignUp = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-          {/* Name Field */}
           <div className="relative">
             <label htmlFor="name" className="sr-only">
               Full Name
@@ -157,7 +162,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Email Field */}
           <div className="relative">
             <label htmlFor="email" className="sr-only">
               Email address
@@ -186,7 +190,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Phone Field */}
           <div className="relative">
             <label htmlFor="phone" className="sr-only">
               Phone Number
@@ -215,7 +218,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Address Field */}
           <div className="relative">
             <label htmlFor="address" className="sr-only">
               Address
@@ -238,7 +240,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Password Field */}
           <div className="relative">
             <label htmlFor="password" className="sr-only">
               Password
@@ -285,14 +286,13 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Submit Button */}
           <div>
             <button
               type="submit"
               className="w-full flex justify-center py-3 px-4 rounded-full shadow-md text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              disabled={isLoading}
+              disabled={loading}
             >
-              {isLoading ? (
+              {loading ? (
                 <div className="flex items-center justify-center">
                   <LoaderCircle className="animate-spin h-5 w-5 mr-3" />
                   <span>Creating Account...</span>
@@ -321,7 +321,7 @@ const SignUp = () => {
               type="button"
               onClick={handleGoogleSignUp}
               className="w-full flex justify-center items-center py-3 px-4 rounded-full shadow-md bg-black text-white text-sm font-medium hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              disabled={isLoading}
+              disabled={loading}
             >
               <FcGoogle className="h-5 w-5" />
               <span className="ml-2">Sign up with Google</span>
