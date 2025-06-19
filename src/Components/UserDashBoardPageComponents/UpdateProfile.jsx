@@ -13,6 +13,7 @@ import {
 import showToast from "../../utils/ShowToast";
 import { useAuth } from "../../providers/AuthProvider";
 import Swal from "sweetalert2";
+import axiosInstance from "../../Utils/axios";
 
 export const UpdateProfile = () => {
   const { user, setUser } = useAuth();
@@ -22,6 +23,9 @@ export const UpdateProfile = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+
+  console.log("user", user);
+
   const {
     register,
     handleSubmit,
@@ -95,24 +99,16 @@ export const UpdateProfile = () => {
       if (hasProfilePictureChanged)
         updateData.append("profilePicture", selectedImage);
 
-      await axiosInstance.put("/user/profile", updateData);
-
+      const updatedResult = await axiosInstance.put(
+        `/auth/${user?._id}`,
+        updateData
+      );
+      console.log("updatedResult", updatedResult);
+      setUser(updatedResult.data);
       showToast({
         title: "Profile updated successfully!",
         icon: "success",
       });
-
-      // Update user state
-      const updatedUser = {
-        ...user,
-        name: formData.name,
-        phone: formData.phone,
-        adress: formData.adress,
-        profilePicture: selectedImage
-          ? URL.createObjectURL(selectedImage)
-          : user.profilePicture,
-      };
-      setUser(updatedUser);
 
       // Close modal and reset form
       setShowUpdateModal(false);
@@ -130,6 +126,7 @@ export const UpdateProfile = () => {
     }
   };
 
+  //  TODO AFTER FRIDAY
   const handleDeleteProfile = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -207,7 +204,7 @@ export const UpdateProfile = () => {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => setShowUpdateModal(true)}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-tertiary text-white rounded-lg hover:bg-opacity-90 transition"
+                  className="cursor-pointer flex items-center gap-2 px-5 py-2.5 bg-tertiary text-white rounded-lg hover:bg-opacity-90 transition"
                 >
                   <Edit3 size={18} />
                   Update Profile
@@ -435,14 +432,14 @@ export const UpdateProfile = () => {
                     <button
                       type="button"
                       onClick={() => setShowUpdateModal(false)}
-                      className="flex-1 px-6 py-3 border border-bg-secondary text-secondary rounded-lg hover:bg-bg-secondary/70 transition-colors"
+                      className="cursor-pointer flex-1 px-6 py-3 border border-bg-secondary text-secondary rounded-lg hover:bg-bg-secondary/70 transition-colors"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-bg-tertiary font-medium transition-colors ${
+                      className={`cursor-pointer flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-bg-tertiary font-medium transition-colors ${
                         isSubmitting
                           ? "bg-primary/50 cursor-not-allowed"
                           : "bg-primary hover:bg-primary/90"

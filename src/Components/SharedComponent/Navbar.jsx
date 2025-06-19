@@ -155,9 +155,9 @@ const Navbar = () => {
 
                 {/* Desktop User Dropdown */}
                 {showUserDropdown && (
-                  <div className="absolute right-0 mt-2 w-64 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden">
+                  <div className="absolute right-0 mt-2 w-64 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden font-serif">
                     <div className="flex justify-between items-center p-3 border-b border-white/20">
-                      <span className="text-sm font-medium">Account</span>
+                      <span className="text-sm font-medium">Profile</span>
                       <button
                         onClick={closeUserDropdown}
                         className="text-xl hover:text-primary transition-colors cursor-pointer"
@@ -165,7 +165,15 @@ const Navbar = () => {
                         <IoCloseOutline />
                       </button>
                     </div>
-                    <div className="p-4 space-y-3">
+                    <div className="p-4 space-y-5">
+                      <div className="w-full">
+                        <Link
+                          className="text-sm text-emerald-100 bg-emerald-900 py-2 w-full px-5 my-3 rounded"
+                          to="/dashboard"
+                        >
+                          Dashboard
+                        </Link>
+                      </div>
                       <div>
                         <p className="text-sm text-gray-300">Name</p>
                         <p className="font-medium">{user.name}</p>
@@ -230,6 +238,7 @@ const Navbar = () => {
                   { to: "/menu", label: "Menu" },
                   { to: "/order", label: "Price List" },
                   { to: "/about", label: "About" },
+                  { to: "/dashboard", label: "Dashboard" },
                 ].map(({ to, label }) => (
                   <li key={label}>
                     <Link
