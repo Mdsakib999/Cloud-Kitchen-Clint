@@ -1,66 +1,72 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import {
+  User,
+  Edit3,
+  Trash2,
+  Camera,
+  X,
+  Save,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import showToast from "../../utils/ShowToast";
-
-// 🔧 Mock Auth hook with in-memory storage
-const useAuth = () => {
-  const [user, setUserState] = useState({
-    _id: "dummy123",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    mobile: "0123456789",
-    profilePicture:
-      "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg",
-  });
-
-  const setUser = (newUser) => setUserState(newUser);
-  return { user, setUser };
-};
+import { useAuth } from "../../providers/AuthProvider";
+import Swal from "sweetalert2";
 
 export const UpdateProfile = () => {
   const { user, setUser } = useAuth();
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [showMenu, setShowMenu] = useState(false);
-  const [hover, setHover] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
-
   const currentPassword = watch("currentPassword", "");
   const newPassword = watch("newPassword", "");
-  const name = watch("name", "");
 
-  // Set initial form values from user data
+  // Set initial form values when modal opens
   useEffect(() => {
-    if (user) {
+    if (user && showUpdateModal) {
       setValue("name", user.name);
       setValue("email", user.email);
-      setValue("mobile", user.mobile);
+      setValue("phone", user.phone);
+      setValue("adress", user.address);
       setImagePreview(user.profilePicture);
     }
-  }, [user, setValue]);
+  }, [user, setValue, showUpdateModal]);
 
-  const handleOutsideClick = (e) => {
-    if (e.target.id === "modalOverlay") {
-      setShowModal(false);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
   const onSubmit = async (formData) => {
     const hasNameChanged = formData.name !== user.name;
+    const hasPhoneChanged = formData.phone !== user.phone;
+    const hasadressChanged = formData.adress !== user.adress;
     const hasNewPassword =
       formData.newPassword && formData.newPassword.length > 0;
     const hasProfilePictureChanged = selectedImage !== null;
 
-    if (!hasNameChanged && !hasNewPassword && !hasProfilePictureChanged) {
+    if (
+      !hasNameChanged &&
+      !hasPhoneChanged &&
+      !hasadressChanged &&
+      !hasNewPassword &&
+      !hasProfilePictureChanged
+    ) {
       showToast({
         title: "No changes detected.",
         icon: "error",
@@ -68,26 +74,28 @@ export const UpdateProfile = () => {
       return;
     }
 
+    if (!formData.currentPassword) {
+      showToast({
+        title: "Current password is required to update profile.",
+        icon: "error",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const updatedForm = new FormData();
-      updatedForm.append("currentPassword", formData.currentPassword);
+      const updateData = new FormData();
+      updateData.append("currentPassword", formData.currentPassword);
 
-      if (hasNameChanged) {
-        updatedForm.append("name", formData.name);
-      }
-      if (hasNewPassword) {
-        updatedForm.append("newPassword", formData.newPassword);
-      }
-      if (hasProfilePictureChanged) {
-        updatedForm.append("profilePicture", selectedImage);
-      }
+      if (hasNameChanged) updateData.append("name", formData.name);
+      if (hasPhoneChanged) updateData.append("phone", formData.phone);
+      if (hasadressChanged) updateData.append("adress", formData.adress);
+      if (hasNewPassword)
+        updateData.append("newPassword", formData.newPassword);
+      if (hasProfilePictureChanged)
+        updateData.append("profilePicture", selectedImage);
 
-      // Mock API call - replace with actual updateUser function
-      // await updateUser(user._id, updatedForm);
-
-      // Simulate API success
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await axiosInstance.put("/user/profile", updateData);
 
       showToast({
         title: "Profile updated successfully!",
@@ -98,16 +106,19 @@ export const UpdateProfile = () => {
       const updatedUser = {
         ...user,
         name: formData.name,
+        phone: formData.phone,
+        adress: formData.adress,
         profilePicture: selectedImage
           ? URL.createObjectURL(selectedImage)
           : user.profilePicture,
       };
       setUser(updatedUser);
 
-      // Reset form fields
-      setValue("currentPassword", "");
-      setValue("newPassword", "");
+      // Close modal and reset form
+      setShowUpdateModal(false);
+      reset();
       setSelectedImage(null);
+      setImagePreview(null);
     } catch (error) {
       console.error(error);
       showToast({
@@ -119,233 +130,334 @@ export const UpdateProfile = () => {
     }
   };
 
-  const handleRemoveImage = async () => {
-    try {
-      // Mock API call - replace with actual removeImage function
-      // await removeUserImage(user._id);
+  const handleDeleteProfile = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
 
-      setSelectedImage(null);
-      setImagePreview(
-        "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
-      );
-      setUser({
-        ...user,
-        profilePicture:
-          "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg",
-      });
+    if (result.isConfirmed) {
+      setIsSubmitting(true);
+      try {
+        await axiosInstance.delete("/user/profile");
 
-      showToast({
-        title: "Profile picture removed successfully!",
-        icon: "success",
-      });
-      setShowMenu(false);
-    } catch (error) {
-      showToast({
-        title: "Error removing image.",
-        icon: "error",
-      });
-    }
-  };
+        showToast({
+          title: "Profile deleted successfully!",
+          icon: "success",
+        });
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-      setImagePreview(URL.createObjectURL(file));
-      setShowMenu(false);
-    }
-  };
-
-  const handleViewImage = () => {
-    setShowModal(true);
-    setShowMenu(false);
-  };
-
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (showMenu && !e.target.closest(".profile-menu-container")) {
-        setShowMenu(false);
+        // Redirect if needed
+        // window.location.href = "/login";
+      } catch (error) {
+        console.error(error);
+        showToast({
+          title: "Failed to delete profile.",
+          icon: "error",
+        });
+      } finally {
+        setIsSubmitting(false);
       }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, [showMenu]);
+    }
+  };
 
   return (
-    <div className="flex justify-center items-center min-h-screen w-full mt-24 md:mt-10">
-      <div className="rounded-xl shadow-lg w-full max-w-2xl p-6 bg-[#0E716C]">
-        <h2 className="text-3xl font-bold mb-6 text-center text-white">
-          Update Profile
-        </h2>
+    <div className="min-h-screen py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-white mb-2">User Profile</h1>
+          <p className="text-white">
+            Manage your account information and settings
+          </p>
+        </div>
+        {/* Profile Card */}
+        <div className="bg-bg-tertiary rounded-2xl shadow-xl overflow-hidden]">
+          {/* Cover Section */}
+          <div className="h-32 bg-gradient-to-r from-bg-secondary to-bg-tertiary" />
 
-        <div className="space-y-6">
-          {/* Profile Picture */}
-          <div className="flex flex-col items-center relative profile-menu-container">
-            <div
-              className="relative"
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-            >
-              <img
-                src={imagePreview || user.profilePicture}
-                alt="Profile"
-                className="rounded-full w-32 h-32 object-cover border-4 border-primary"
-              />
-              {hover && (
-                <div
-                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-full cursor-pointer"
-                  onClick={() => setShowMenu(!showMenu)}
-                >
-                  <span className="text-white text-xl">✏️</span>
-                </div>
-              )}
-            </div>
-            {showMenu && (
-              <div className="absolute top-36 z-10 bg-white rounded-lg shadow-md w-48 border">
-                <ul className="divide-y divide-gray-200">
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={handleViewImage}
-                  >
-                    View Image
-                  </li>
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => document.getElementById("fileInput").click()}
-                  >
-                    Change Image
-                  </li>
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={handleRemoveImage}
-                  >
-                    Remove Image
-                  </li>
-                </ul>
+          {/* Profile Info Section */}
+          <div className="px-8 pb-8">
+            <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 -mt-16">
+              {/* Profile Picture */}
+              <div className="relative">
+                <img
+                  src={user?.profilePicture}
+                  alt="Profile"
+                  className="w-32 h-32 rounded-full border-4 border-bg-primary shadow-lg object-cover"
+                />
+                <div className="absolute bottom-2 right-0 w-5 h-5 bg-tertiary rounded-full border-2 border-bg-primary" />
               </div>
-            )}
-            <input
-              id="fileInput"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-            />
-          </div>
 
-          {/* Name */}
-          <div>
-            <label className="block text-lg font-medium text-white mb-1">
-              Username
-            </label>
-            <input
-              type="text"
-              {...register("name", { required: "Username is required" })}
-              className="w-full px-3 py-2 bg-[#0E4F61] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-            />
-            {errors.name && (
-              <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
-            )}
-          </div>
+              {/* User Info */}
+              <div className="text-center sm:text-left flex-1">
+                <h2 className="text-3xl font-bold text-primary mb-1">
+                  {user?.name}
+                </h2>
+                <p className="text-secondary mb-1">{user?.email}</p>
+                <p className="text-sm text-secondary">
+                  Member since {user?.joinDate}
+                </p>
+              </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-lg font-medium text-white mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              {...register("email")}
-              className="w-full px-3 py-2 bg-[#0E4F61] rounded-md cursor-not-allowed text-white"
-              readOnly
-            />
-          </div>
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => setShowUpdateModal(true)}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-tertiary text-white rounded-lg hover:bg-opacity-90 transition"
+                >
+                  <Edit3 size={18} />
+                  Update Profile
+                </button>
+                <button
+                  onClick={handleDeleteProfile}
+                  disabled={isSubmitting}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-lg transition ${
+                    isSubmitting
+                      ? "bg-red-400 cursor-not-allowed"
+                      : "bg-red-600 hover:bg-red-700 text-white"
+                  }`}
+                >
+                  <Trash2 size={18} />
+                  {isSubmitting ? "Deleting..." : "Delete Profile"}
+                </button>
+              </div>
+            </div>
 
-          {/* Phone */}
-          <div>
-            <label className="block text-lg font-medium text-white mb-1">
-              Phone
-            </label>
-            <input
-              type="tel"
-              {...register("mobile")}
-              className="w-full px-3 py-2 bg-[#0E4F61] rounded-md cursor-not-allowed text-white"
-              readOnly
-            />
-          </div>
+            {/* Details Grid */}
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Contact Info */}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-primary mb-4">
+                    Contact Information
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-4 bg-bg-input] rounded-lg">
+                      <User size={20} className="text-primary" />
+                      <div>
+                        <p className="text-sm text-secondary">Full Name</p>
+                        <p className="font-medium text-white">{user?.name}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 bg-bg-input] rounded-lg">
+                      <div className="text-primary">📧</div>
+                      <div>
+                        <p className="text-sm text-secondary">Email Address</p>
+                        <p className="font-medium text-white">{user?.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 bg-bg-input] rounded-lg">
+                      <div className="text-primary">📱</div>
+                      <div>
+                        <p className="text-sm text-secondary">Phone Number</p>
+                        <p className="font-medium text-white">{user?.phone}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-          {/* Current Password */}
-          <div>
-            <label className="block text-lg font-medium text-white mb-1">
-              Current Password
-            </label>
-            <input
-              type="password"
-              {...register("currentPassword", {
-                required: "Current password is required",
-              })}
-              className="w-full px-3 py-2 bg-[#0E4F61] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-            />
-            {errors.currentPassword && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.currentPassword.message}
-              </p>
-            )}
-          </div>
-
-          {/* New Password */}
-          <div>
-            <label className="block text-lg font-medium text-white mb-1">
-              New Password
-            </label>
-            <input
-              type="password"
-              {...register("newPassword")}
-              className="w-full px-3 py-2 bg-[#0E4F61] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-              placeholder="Leave blank to keep current password"
-            />
-          </div>
-
-          <div className="pt-4">
-            <button
-              type="button"
-              onClick={handleSubmit(onSubmit)}
-              className={`w-full py-2 px-4 rounded-md text-white font-medium transition-colors ${
-                isSubmitting
-                  ? "bg-blue-400 cursor-not-allowed"
-                  : "bg-primary hover:bg-primary/80"
-              }`}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Updating..." : "Update Profile"}
-            </button>
+              {/* About Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-4">
+                  Adress
+                </h3>
+                <div className="p-4 bg-bg-input] rounded-lg">
+                  <p className="text-secondary leading-relaxed">
+                    {user?.address}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Update Profile Modal */}
+        {showUpdateModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/20 backdrop-blur-2xl p-4">
+            <div className="bg-bg-tertiary rounded-4xl scrollbar-hide shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                {/* Modal Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-primary">
+                    Update Profile
+                  </h3>
+                  <button
+                    onClick={() => setShowUpdateModal(false)}
+                    className="p-2 hover:bg-bg-secondary rounded-full transition-colors"
+                  >
+                    <X size={24} className="text-secondary" />
+                  </button>
+                </div>
+
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  {/* Profile Picture */}
+                  <div className="text-center">
+                    <div className="relative inline-block">
+                      <img
+                        src={imagePreview || user?.profilePicture}
+                        alt="Profile Preview"
+                        className="w-24 h-24 rounded-full object-cover border-4 border-bg-primary shadow-md"
+                      />
+                      <label className="absolute bottom-0 right-0 bg-primary text-bg-tertiary p-2 rounded-full cursor-pointer hover:bg-primary/90 transition-colors">
+                        <Camera size={16} />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                    <p className="text-sm text-secondary mt-2">
+                      Click the camera icon to change photo
+                    </p>
+                  </div>
+
+                  {/* Form Fields */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-secondary mb-2">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        {...register("name", { required: "Name is required" })}
+                        className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      />
+                      {errors.name && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.name.message}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-secondary mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        {...register("email")}
+                        className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-secondary cursor-not-allowed"
+                        readOnly
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-secondary mb-2">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        {...register("phone")}
+                        className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-secondary mb-2">
+                        Current Password *
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showCurrentPassword ? "text" : "password"}
+                          {...register("currentPassword", {
+                            required: "Current password is required",
+                          })}
+                          className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-12"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setShowCurrentPassword(!showCurrentPassword)
+                          }
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary hover:text-primary"
+                        >
+                          {showCurrentPassword ? (
+                            <EyeOff size={18} />
+                          ) : (
+                            <Eye size={18} />
+                          )}
+                        </button>
+                      </div>
+                      {errors.currentPassword && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.currentPassword.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-secondary mb-2">
+                      New Password (optional)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showNewPassword ? "text" : "password"}
+                        {...register("newPassword")}
+                        className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-12"
+                        placeholder="Leave blank to keep current password"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary hover:text-primary"
+                      >
+                        {showNewPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-secondary mb-2">
+                      Adress
+                    </label>
+                    <textarea
+                      {...register("adress")}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                      placeholder="Tell us about yourself..."
+                    />
+                  </div>
+
+                  {/* Modal Footer */}
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={() => setShowUpdateModal(false)}
+                      className="flex-1 px-6 py-3 border border-bg-secondary text-secondary rounded-lg hover:bg-bg-secondary/70 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-bg-tertiary font-medium transition-colors ${
+                        isSubmitting
+                          ? "bg-primary/50 cursor-not-allowed"
+                          : "bg-primary hover:bg-primary/90"
+                      }`}
+                    >
+                      <Save size={18} />
+                      {isSubmitting ? "Updating..." : "Update Profile"}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* Image Modal */}
-      {showModal && (
-        <div
-          id="modalOverlay"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-        >
-          <div className="relative">
-            <img
-              src={imagePreview || user.profilePicture}
-              alt="Full Profile"
-              className="max-w-md w-full rounded-xl shadow-lg"
-            />
-            <button
-              className="absolute top-2 right-2 bg-white text-black rounded-full px-3 py-1 shadow hover:bg-gray-100 transition-colors"
-              onClick={() => setShowModal(false)}
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

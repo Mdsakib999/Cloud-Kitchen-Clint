@@ -1,11 +1,62 @@
-import { FaUser, FaTimes, FaHistory } from "react-icons/fa";
+import {
+  FaUser,
+  FaUsers,
+  FaTimes,
+  FaHistory,
+  FaUtensils,
+  FaClipboardList,
+  FaStar,
+  FaPlusCircle,
+  FaThList,
+  FaFolderPlus,
+} from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 
 export const DashBoardLeftNav = ({ closeSidebar }) => {
   const { pathname } = useLocation();
-  const isAdmin = pathname.includes("admin");
+  const isAdmin = pathname.startsWith("/admin");
   const adminRoutes = [
-    { label: "Profile", icon: <FaUser size={20} />, path: "/dashboard" },
+    {
+      label: "Statistics",
+      icon: <MdDashboard size={20} />,
+      path: "/admin/dashboard",
+    },
+    {
+      label: "Customers",
+      icon: <FaUsers size={20} />,
+      path: "/admin/customers",
+    },
+    {
+      label: "Order List",
+      icon: <FaClipboardList size={20} />,
+      path: "/admin/orders",
+    },
+    {
+      label: "Customer Reviews",
+      icon: <FaStar size={20} />,
+      path: "/admin/reviews",
+    },
+    {
+      label: "Add Food",
+      icon: <FaPlusCircle size={20} />,
+      path: "/admin/add-foodd",
+    },
+    {
+      label: "Manage Food",
+      icon: <FaUtensils size={20} />,
+      path: "/admin/manage-food",
+    },
+    {
+      label: "Add Category",
+      icon: <FaFolderPlus size={20} />,
+      path: "/admin/add-category",
+    },
+    {
+      label: "Profile",
+      icon: <FaUser size={20} />,
+      path: "/admin/profile",
+    },
   ];
 
   const customerRoutes = [
@@ -20,7 +71,11 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
   const routesToRender = isAdmin === true ? adminRoutes : customerRoutes;
 
   return (
-    <aside className="h-full w-full p-4 relative md:w-64 lg:w-72 bg-bg-secondary">
+    <aside
+      className={`h-full w-full p-4 relative md:w-64 lg:w-72 ${
+        isAdmin ? "bg-white" : "bg-bg-secondary"
+      }`}
+    >
       {/* Close button for mobile */}
       <button
         onClick={closeSidebar}
@@ -29,8 +84,12 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
         <FaTimes size={22} />
       </button>
 
-      <div className="flex flex-col gap-6 mt-16 lg:mt-0 justify-center items-center">
-        <h2 className="text-2xl font-bold text-center text-white">
+      <div className="flex flex-col gap-6 mt-16 lg:mt-10 justify-center items-center">
+        <h2
+          className={`text-2xl font-bold text-center ${
+            isAdmin ? "text-black" : "text-white"
+          }`}
+        >
           {isAdmin ? "Admin" : "User"} Dashboard
         </h2>
 
