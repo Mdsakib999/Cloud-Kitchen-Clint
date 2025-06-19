@@ -9,6 +9,9 @@ import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
 import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
 import { OrderNow } from "./Pages/OrderNow/OrderNow";
 import { CheckoutForm } from "./Pages/Checkout/CheckoutForm";
+import { UpdateProfile } from "./Components/UserDashBoardPageComponents/UpdateProfile";
+import { Dashboard } from "./Pages/Dashboard/Dashboard";
+import { OrderHistory } from "./Components/UserDashBoardPageComponents/OrderHistory";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +45,21 @@ export const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <CheckoutForm />,
+      },
+    ],
+  },
+  // User Dashboard
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "",
+        element: <UpdateProfile />,
+      },
+      {
+        path: "order",
+        element: <OrderHistory />,
       },
     ],
   },
