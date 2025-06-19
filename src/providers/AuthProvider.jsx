@@ -7,12 +7,13 @@ import {
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
+  sendEmailVerification,
   sendPasswordResetEmail,
 } from "firebase/auth";
 import axiosInstance from "../Utils/axios";
 import app from "../firebase/firebase.config";
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const AuthContext = createContext();
 const googleProvider = new GoogleAuthProvider();
 
@@ -22,13 +23,26 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState(null);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const isAdmin = role === "admin";
+
+  const actionCodeSettings = {
+    url: "http://localhost:5173/verify-email",
+    handleCodeInApp: true,
+  };
 
   const createUser = async (email, password) => {
     setLoading(true);
     try {
-      return await createUserWithEmailAndPassword(auth, email, password);
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // Send verification email only for email/password signup
+      await sendEmailVerification(result.user, actionCodeSettings);
+      return result;
     } finally {
       setLoading(false);
     }
@@ -46,7 +60,9 @@ const AuthProvider = ({ children }) => {
   const googleSignIn = async () => {
     setLoading(true);
     try {
-      return await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      // No need to send verification email for Google sign-in as Google accounts are already verified
+      return result;
     } finally {
       setLoading(false);
     }
@@ -55,12 +71,14 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     setLoading(true);
     try {
-      return await signOut(auth);
+      await axiosInstance.post("/auth/logout");
+      await signOut(auth);
     } finally {
       setLoading(false);
     }
   };
 
+  // forgot password - Fixed the missing import
   const forgotPassword = async (email) => {
     setLoading(true);
     try {
@@ -70,39 +88,98 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // email verification
+  const resendVerificationEmail = async () => {
+    if (auth.currentUser && !auth.currentUser.emailVerified) {
+      try {
+        await sendEmailVerification(auth.currentUser, actionCodeSettings);
+        return true;
+      } catch (error) {
+        throw error;
+      }
+    }
+    return false;
+  };
+
+  // Check email verification status
+  const checkEmailVerification = async () => {
+    if (auth.currentUser) {
+      try {
+        await auth.currentUser.reload();
+        const isVerified = auth.currentUser.emailVerified;
+        console.log("INSIDE CHECK EMAIL VERIFICATION : =>", isVerified);
+        setIsEmailVerified(isVerified);
+
+        // Update backend if verification status changed
+        if (isVerified && user && !user.isEmailVerified) {
+          const idToken = await auth.currentUser.getIdToken(true);
+          const result = await axiosInstance.post(
+            "/auth/verify-token",
+            {},
+            { headers: { Authorization: `Bearer ${idToken}` } }
+          );
+          console.log("RESULT FROM CHECK EMAIL VERIFICATION", result);
+          setUser(result.data);
+        }
+
+        return isVerified;
+      } catch (error) {
+        console.error("Error checking email verification:", error);
+        return false;
+      }
+    }
+    return false;
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      console.log("currentUser=>", currentUser);
       setUser(currentUser);
-			if (currentUser) {
-				try {
-					const result = await axiosInstance.get(`auth/${currentUser?.uid}`);
-					const userData = result.data;
-					setUser(userData);
-					setRole(userData.role);
-				} catch (err) {
-					console.error("Failed to fetch user data:", err);
-				}
-			} else {
-				localStorage.removeItem("user");
-			}
-			setLoading(false);
-		});
+      if (currentUser) {
+        try {
+          await currentUser.reload();
+          const idToken = await currentUser.getIdToken(true);
+          console.log("idToken==>", idToken);
+          const result = await axiosInstance.post(
+            "/auth/verify-token",
+            {},
+            { headers: { Authorization: `Bearer ${idToken}` } }
+          );
+          const userData = result.data;
+          setUser(userData);
+          setRole(userData.role);
+          setIsEmailVerified(currentUser.emailVerified);
+        } catch (err) {
+          console.error("Failed to fetch user data:", err);
+          setUser(null);
+          setRole(null);
+          setIsEmailVerified(false);
+          setLoading(false);
+        }
+      } else {
+        setRole(null);
+        setIsEmailVerified(false);
+      }
+      setLoading(false);
+    });
 
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   const authInfo = {
     loading,
+    setLoading,
     user,
     role,
     isAdmin,
+    isEmailVerified,
     createUser,
     signIn,
     googleSignIn,
     logout,
     forgotPassword,
+    resendVerificationEmail,
+    checkEmailVerification,
   };
 
   return (
