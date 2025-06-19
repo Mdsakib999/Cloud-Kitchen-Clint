@@ -53,7 +53,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link to="/order" className="hover:underline">
-              Order Now
+              Price List
             </Link>
           </li>
           <li>
@@ -125,7 +125,7 @@ const Navbar = () => {
                   className="block hover:text-primary transition-colors"
                   onClick={closeMobileMenu}
                 >
-                  Order Now
+                  Price List
                 </Link>
               </li>
               <li>
