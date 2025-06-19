@@ -15,6 +15,7 @@ import { UpdateProfile } from "./Components/UserDashBoardPageComponents/UpdatePr
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { OrderHistory } from "./Components/UserDashBoardPageComponents/OrderHistory";
 import TrackOrder from "./Components/SharedComponent/TrackOrder/TrackOrder";
+import { DashStatics } from "./Components/AdminDashBoardPageComponent/DashStatics";
 
 export const router = createBrowserRouter([
   {
@@ -83,6 +84,21 @@ export const router = createBrowserRouter([
       {
         path: "order",
         element: <OrderHistory />,
+      },
+    ],
+  },
+  // Admin Dashboard
+  {
+    path: "admin/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "",
+        element: <DashStatics />,
+      },
+      {
+        path: "profile",
+        element: <UpdateProfile />,
       },
     ],
   },
