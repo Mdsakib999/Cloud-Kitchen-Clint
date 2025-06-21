@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LuChefHat, LuStar, LuUser, LuAward } from "react-icons/lu";
+import { Star, User, Award } from "lucide-react";
 
 const HomeChefs = () => {
   const [activeChef, setActiveChef] = useState(0);
@@ -60,8 +60,8 @@ const HomeChefs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-primary text-white relative overflow-hidden ">
-      <div className=" mx-auto px-6 py-16 relative z-10 max-w-6xl">
+    <div className="min-h-screen bg-bg-primary text-white relative overflow-hidden">
+      <div className="mx-auto px-6 py-16 relative z-10 max-w-6xl">
         {/* Header Section */}
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-4">
@@ -97,8 +97,8 @@ const HomeChefs = () => {
               onClick={() => setActiveChef(index)}
               onMouseEnter={() => setActiveChef(index)}
             >
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-bg-primary to-bg-secondary border border-slate-700 hover:border-primary transition-all duration-300">
-                <div className="relative h-80 overflow-hidden">
+              <div className="relative overflow-hidden rounded-2xl bg-bg-secondary hover:border-primary transition-all duration-300">
+                <div className="relative h-60 overflow-hidden">
                   <img
                     src={chef.image}
                     alt={chef.name}
@@ -106,8 +106,21 @@ const HomeChefs = () => {
                   />
 
                   {/* Experience Badge */}
-                  <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium z-20">
                     {chef.experience}
+                  </div>
+
+                  {/* Social Icons - Overlay on image, shown on hover */}
+                  <div className="absolute inset-0 bg-black/50 bg-opacity-40 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="w-10 h-10 bg-primary bg-opacity-20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary hover:bg-opacity-100 transition-all duration-300 cursor-pointer transform hover:scale-110">
+                      <User className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="w-10 h-10 bg-primary bg-opacity-20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary hover:bg-opacity-100 transition-all duration-300 cursor-pointer transform hover:scale-110">
+                      <Award className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="w-10 h-10 bg-primary bg-opacity-20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary hover:bg-opacity-100 transition-all duration-300 cursor-pointer transform hover:scale-110">
+                      <Star className="w-5 h-5 text-white" />
+                    </div>
                   </div>
                 </div>
 
@@ -119,29 +132,13 @@ const HomeChefs = () => {
                   <p className="text-primary font-medium mb-3 uppercase tracking-wide text-sm">
                     {chef.title}
                   </p>
-                  <p className="text-slate-300 text-sm mb-4 leading-relaxed">
-                    {chef.description}
-                  </p>
 
                   {/* Specialty */}
                   <div className="flex items-center gap-2 mb-4">
-                    <LuStar className="w-4 h-4 text-primary" />
+                    <Star className="w-4 h-4 text-primary" />
                     <span className="text-slate-300 text-sm">
                       {chef.specialty}
                     </span>
-                  </div>
-
-                  {/* Social Icons Placeholder */}
-                  <div className="flex gap-3">
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors cursor-pointer">
-                      <LuUser className="w-4 h-4" />
-                    </div>
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors cursor-pointer">
-                      <LuAward className="w-4 h-4" />
-                    </div>
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors cursor-pointer">
-                      <LuStar className="w-4 h-4" />
-                    </div>
                   </div>
                 </div>
               </div>

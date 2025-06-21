@@ -143,7 +143,7 @@ const AuthProvider = ({ children }) => {
           );
           const userData = result.data;
           setUser(userData);
-          setRole(userData.role);
+          setRole(userData?.role);
           setIsEmailVerified(currentUser.emailVerified);
         } catch (err) {
           console.error("Failed to fetch user data:", err);
@@ -165,6 +165,7 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     loading,
     setLoading,
+    setUser,
     user,
     role,
     isAdmin,
