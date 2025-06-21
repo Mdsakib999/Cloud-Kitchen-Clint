@@ -18,11 +18,15 @@ import TrackOrder from "./Components/SharedComponent/TrackOrder/TrackOrder";
 import { DashStatics } from "./Components/AdminDashBoardPageComponent/StaticsPage/DashStatics";
 import { AllCustomer } from "./Components/AdminDashBoardPageComponent/CustomerPage.jsx/AllCustomer";
 import { CustomerDetails } from "./Components/AdminDashBoardPageComponent/CustomerPage.jsx/CustomerDetails";
+import PrivateRoute from "./router/PrivateRoute";
+import AdminRoute from "./router/AdminRoute";
+import ErrorPage from "./Pages/Error/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -77,7 +81,11 @@ export const router = createBrowserRouter([
   // User Dashboard
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "",
@@ -92,7 +100,11 @@ export const router = createBrowserRouter([
   // Admin Dashboard
   {
     path: "admin/dashboard",
-    element: <Dashboard />,
+    element: (
+      <AdminRoute>
+        <Dashboard />
+      </AdminRoute>
+    ),
     children: [
       {
         path: "",
