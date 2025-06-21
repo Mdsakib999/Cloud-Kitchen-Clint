@@ -14,9 +14,10 @@ import showToast from "../../utils/ShowToast";
 import { useAuth } from "../../providers/AuthProvider";
 import Swal from "sweetalert2";
 import axiosInstance from "../../Utils/axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const UpdateProfile = () => {
-  const { user, setUser } = useAuth();
+  const { user, setUser, logout } = useAuth();
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -24,7 +25,9 @@ export const UpdateProfile = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
-  console.log("user", user);
+  const navigate = useNavigate();
+  const location = useLocation();
+  // const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -43,7 +46,7 @@ export const UpdateProfile = () => {
       setValue("name", user.name);
       setValue("email", user.email);
       setValue("phone", user.phone);
-      setValue("adress", user.address);
+      setValue("address", user.address);
       setImagePreview(user.profilePicture);
     }
   }, [user, setValue, showUpdateModal]);
@@ -59,7 +62,7 @@ export const UpdateProfile = () => {
   const onSubmit = async (formData) => {
     const hasNameChanged = formData.name !== user.name;
     const hasPhoneChanged = formData.phone !== user.phone;
-    const hasadressChanged = formData.adress !== user.adress;
+    const hasAddressChanged = formData.address !== user.address;
     const hasNewPassword =
       formData.newPassword && formData.newPassword.length > 0;
     const hasProfilePictureChanged = selectedImage !== null;
@@ -67,7 +70,7 @@ export const UpdateProfile = () => {
     if (
       !hasNameChanged &&
       !hasPhoneChanged &&
-      !hasadressChanged &&
+      !hasAddressChanged &&
       !hasNewPassword &&
       !hasProfilePictureChanged
     ) {
@@ -93,7 +96,7 @@ export const UpdateProfile = () => {
 
       if (hasNameChanged) updateData.append("name", formData.name);
       if (hasPhoneChanged) updateData.append("phone", formData.phone);
-      if (hasadressChanged) updateData.append("adress", formData.adress);
+      if (hasAddressChanged) updateData.append("address", formData.address);
       if (hasNewPassword)
         updateData.append("newPassword", formData.newPassword);
       if (hasProfilePictureChanged)
@@ -126,7 +129,6 @@ export const UpdateProfile = () => {
     }
   };
 
-  //  TODO AFTER FRIDAY
   const handleDeleteProfile = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -140,15 +142,15 @@ export const UpdateProfile = () => {
     if (result.isConfirmed) {
       setIsSubmitting(true);
       try {
-        await axiosInstance.delete("/user/profile");
-
-        showToast({
-          title: "Profile deleted successfully!",
-          icon: "success",
-        });
-
-        // Redirect if needed
-        // window.location.href = "/login";
+        const result = await axiosInstance.delete(`/auth/${user?._id}`);
+        if (result?.data?.success) {
+          setUser(null);
+          showToast({
+            title: "Account deleted successfully!",
+            icon: "success",
+          });
+          navigate("/");
+        }
       } catch (error) {
         console.error(error);
         showToast({
@@ -196,7 +198,12 @@ export const UpdateProfile = () => {
                 </h2>
                 <p className="text-secondary mb-1">{user?.email}</p>
                 <p className="text-sm text-secondary">
-                  Member since {user?.joinDate}
+                  Member since{" "}
+                  {new Date(user?.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
                 </p>
               </div>
 
@@ -212,7 +219,7 @@ export const UpdateProfile = () => {
                 <button
                   onClick={handleDeleteProfile}
                   disabled={isSubmitting}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-lg transition ${
+                  className={`cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg transition ${
                     isSubmitting
                       ? "bg-red-400 cursor-not-allowed"
                       : "bg-red-600 hover:bg-red-700 text-white"
@@ -261,7 +268,7 @@ export const UpdateProfile = () => {
               {/* About Section */}
               <div>
                 <h3 className="text-lg font-semibold text-primary mb-4">
-                  Adress
+                  Address
                 </h3>
                 <div className="p-4 bg-bg-input] rounded-lg">
                   <p className="text-secondary leading-relaxed">
@@ -417,10 +424,10 @@ export const UpdateProfile = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-secondary mb-2">
-                      Adress
+                      Address
                     </label>
                     <textarea
-                      {...register("adress")}
+                      {...register("address")}
                       rows={3}
                       className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                       placeholder="Tell us about yourself..."
