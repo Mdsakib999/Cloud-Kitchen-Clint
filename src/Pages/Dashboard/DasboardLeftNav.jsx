@@ -30,7 +30,7 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     {
       label: "Order List",
       icon: <FaClipboardList size={20} />,
-      path: "/admin/orders",
+      path: "/admin/dashboard/orders",
     },
     {
       label: "Customer Reviews",
@@ -72,19 +72,21 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
 
   return (
     <aside
-      className={`h-full w-full p-4 relative md:w-64 lg:w-72 ${
+      className={`h-full w-full p-4 relative md:w-80 lg:w-72 ${
         isAdmin ? "bg-white" : "bg-bg-secondary"
       }`}
     >
       {/* Close button for mobile */}
       <button
         onClick={closeSidebar}
-        className="absolute top-20 md:top-16 right-4 sm:hidden text-white hover:text-red-300"
+        className={`absolute top-20 md:top-24 right-4 lg:hidden ${
+          isAdmin ? "text-black" : "text-white"
+        } hover:text-red-300`}
       >
         <FaTimes size={22} />
       </button>
 
-      <div className="flex flex-col gap-6 mt-16 lg:mt-10 justify-center items-center">
+      <div className="flex flex-col gap-6 mt-16 lg:mt-14 justify-center items-center">
         <h2
           className={`text-2xl font-bold text-center ${
             isAdmin ? "text-black" : "text-white"
@@ -93,7 +95,7 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
           {isAdmin ? "Admin" : "User"} Dashboard
         </h2>
 
-        <nav className="flex flex-col gap-4 mt-4">
+        <nav className="flex flex-col gap-2">
           {routesToRender.map(({ label, icon, path }) => {
             const isActive = pathname === path;
 

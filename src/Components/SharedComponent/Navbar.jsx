@@ -25,6 +25,8 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
+  const isDashboard = location.pathname.includes("dashboard");
+
   useEffect(() => {
     const handleScroll = () => setIsTransparent(window.scrollY < 80);
     window.addEventListener("scroll", handleScroll);
@@ -95,7 +97,9 @@ const Navbar = () => {
     <>
       <nav
         className={`fixed top-0 mt-14 w-full z-50 transition-colors duration-300 px-4 md:px-6 py-4 ${
-          isTransparent
+          isDashboard
+            ? "bg-bg-primary text-white shadow-lg"
+            : isTransparent
             ? "bg-transparent text-white"
             : "bg-bg-primary text-white shadow-lg"
         }`}
