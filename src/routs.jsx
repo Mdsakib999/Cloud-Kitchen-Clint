@@ -19,11 +19,15 @@ import { DashStatics } from "./Components/AdminDashBoardPageComponent/StaticsPag
 import { AllCustomer } from "./Components/AdminDashBoardPageComponent/CustomerPage.jsx/AllCustomer";
 import { OrderDetails } from "./Components/AdminDashBoardPageComponent/OrderPage/OrderDetails";
 import { OrderList } from "./Components/AdminDashBoardPageComponent/OrderPage/OrderList";
+import PrivateRoute from "./router/PrivateRoute";
+import AdminRoute from "./router/AdminRoute";
+import ErrorPage from "./Pages/Error/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -78,7 +82,11 @@ export const router = createBrowserRouter([
   // User Dashboard
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "",
@@ -93,7 +101,11 @@ export const router = createBrowserRouter([
   // Admin Dashboard
   {
     path: "admin/dashboard",
-    element: <Dashboard />,
+    element: (
+      <AdminRoute>
+        <Dashboard />
+      </AdminRoute>
+    ),
     children: [
       {
         path: "",
