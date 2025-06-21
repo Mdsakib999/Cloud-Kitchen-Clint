@@ -107,7 +107,6 @@ const AuthProvider = ({ children }) => {
       try {
         await auth.currentUser.reload();
         const isVerified = auth.currentUser.emailVerified;
-        console.log("INSIDE CHECK EMAIL VERIFICATION : =>", isVerified);
         setIsEmailVerified(isVerified);
 
         // Update backend if verification status changed
@@ -118,7 +117,6 @@ const AuthProvider = ({ children }) => {
             {},
             { headers: { Authorization: `Bearer ${idToken}` } }
           );
-          console.log("RESULT FROM CHECK EMAIL VERIFICATION", result);
           setUser(result.data);
         }
 
@@ -133,13 +131,11 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log("currentUser=>", currentUser);
       setUser(currentUser);
       if (currentUser) {
         try {
           await currentUser.reload();
           const idToken = await currentUser.getIdToken(true);
-          console.log("idToken==>", idToken);
           const result = await axiosInstance.post(
             "/auth/verify-token",
             {},

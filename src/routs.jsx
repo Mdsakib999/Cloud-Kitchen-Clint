@@ -17,7 +17,8 @@ import { OrderHistory } from "./Components/UserDashBoardPageComponents/OrderHist
 import TrackOrder from "./Components/SharedComponent/TrackOrder/TrackOrder";
 import { DashStatics } from "./Components/AdminDashBoardPageComponent/StaticsPage/DashStatics";
 import { AllCustomer } from "./Components/AdminDashBoardPageComponent/CustomerPage.jsx/AllCustomer";
-import { CustomerDetails } from "./Components/AdminDashBoardPageComponent/CustomerPage.jsx/CustomerDetails";
+import { OrderDetails } from "./Components/AdminDashBoardPageComponent/OrderPage/OrderDetails";
+import { OrderList } from "./Components/AdminDashBoardPageComponent/OrderPage/OrderList";
 
 export const router = createBrowserRouter([
   {
@@ -107,8 +108,12 @@ export const router = createBrowserRouter([
         element: <AllCustomer />,
       },
       {
-        path: "customer-deatils/:id",
-        element: <CustomerDetails />,
+        path: "orders",
+        element: <OrderList />,
+      },
+      {
+        path: "order-deatils/:id",
+        element: <OrderDetails />,
       },
     ],
   },
