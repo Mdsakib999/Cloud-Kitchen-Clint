@@ -131,13 +131,11 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log("currentUser=>", currentUser);
       setUser(currentUser);
       if (currentUser) {
         try {
           await currentUser.reload();
           const idToken = await currentUser.getIdToken(true);
-          console.log("idToken==>", idToken);
           const result = await axiosInstance.post(
             "/auth/verify-token",
             {},
@@ -145,7 +143,7 @@ const AuthProvider = ({ children }) => {
           );
           const userData = result.data;
           setUser(userData);
-          setRole(userData.role);
+          setRole(userData?.role);
           setIsEmailVerified(currentUser.emailVerified);
         } catch (err) {
           console.error("Failed to fetch user data:", err);
