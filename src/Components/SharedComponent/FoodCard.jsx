@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useRef } from "react";
 
 import { FiStar } from "react-icons/fi";

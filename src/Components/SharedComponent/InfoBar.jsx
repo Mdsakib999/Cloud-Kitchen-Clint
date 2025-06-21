@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const InfoBar = () => {
   const [isTransparent, setIsTransparent] = useState(true);
+  const location = useLocation();
+  const isDashboard = location.pathname.includes("dashboard");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,7 +18,9 @@ const InfoBar = () => {
   return (
     <div
       className={`w-full fixed top-0 left-0 z-50 ${
-        isTransparent
+        isDashboard
+          ? "bg-bg-primary text-white shadow-lg"
+          : isTransparent
           ? "bg-transparent text-white"
           : "bg-bg-primary text-white shadow-lg"
       }`}

@@ -3,37 +3,28 @@ import { GrowthStatPie } from "./GrowthStatPie";
 import { MonthlySellStat } from "./MonthlySellStat";
 import { OrderMap } from "./OrderMap";
 import { RevenueChart } from "./RevenueChart";
-import { StatHeader } from "./StatHeader";
 import { TrendingItems } from "./TrendingItems";
 
 export const DashStatics = () => {
   return (
     <div className="w-full bg-white">
-      {/* Header with Search Bar */}
-      <StatHeader />
+      <MonthlySellStat />
+      <DailySellStat />
 
-      {/* Main Content Area */}
-      <div className="p-6">
-        <div className="text-gray-600">
-          <MonthlySellStat />
-          <DailySellStat />
-
-          <div className="flex gap-4 my-5">
-            <div className="w-1/2">
-              <RevenueChart />
-            </div>
-            <div className="w-1/2">
-              <OrderMap />
-            </div>
-          </div>
-          <div className="flex gap-4 my-5">
-            <div className="w-1/2">
-              <TrendingItems />
-            </div>
-            <div className="w-1/2">
-              <GrowthStatPie />
-            </div>
-          </div>
+      <div className="flex gap-4 my-5">
+        <div className="w-1/2">
+          <RevenueChart />
+        </div>
+        <div className="w-1/2">
+          <OrderMap />
+        </div>
+      </div>
+      <div className="flex gap-4 my-5">
+        <div className="w-1/2">
+          <TrendingItems />
+        </div>
+        <div className="w-1/2">
+          <GrowthStatPie />
         </div>
       </div>
     </div>
