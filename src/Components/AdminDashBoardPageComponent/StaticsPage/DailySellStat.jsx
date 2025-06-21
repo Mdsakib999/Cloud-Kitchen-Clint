@@ -53,14 +53,14 @@ export const DailySellStat = () => {
       <h1 className="text-2xl font-bold text-secondary mb-3">
         Today's Statistics
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 p-2">
         {statsData.map((stat) => (
           <div
             key={stat.id}
             className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
           >
             {/* Icon and Value Section */}
-            <div className="flex items-start gap-4 justify-between mb-4">
+            <div className="flex items-center gap-4 justify-between mb-4">
               <div
                 className={`w-16 h-16 ${stat.bgColor} rounded-full p-2 flex items-center justify-center`}
               >
@@ -70,7 +70,7 @@ export const DailySellStat = () => {
                   className="w-12 h-12 object-contain"
                 />
               </div>
-              <div className="text-left">
+              <div className="text-left whitespace-nowrap">
                 <div className="flex flex-col">
                   <div className="text-2xl font-bold text-gray-800 mb-1">
                     {stat.value}

@@ -4,6 +4,8 @@ import { DashBoardLeftNav } from "./DasboardLeftNav";
 import { ScrollToTop } from "../../utils/ScrollToTop";
 import Navbar from "../../Components/SharedComponent/Navbar";
 import InfoBar from "../../Components/SharedComponent/InfoBar";
+import HomeStats from "../../Components/HomeComponents/HomeStats";
+import { StatHeader } from "../../Components/SharedComponent/StatHeader";
 
 export const Dashboard = () => {
   const { pathname } = useLocation();
@@ -25,7 +27,7 @@ export const Dashboard = () => {
           {/* Mobile Sidebar Toggle Button */}
           <button
             className={`
-            fixed top-32 left-4 z-40 lg:hidden
+            fixed top-32 md:top-36 left-4 md:left-10 z-40 lg:hidden
             bg-primary text-white px-4 py-2 rounded
             text-sm font-medium shadow-lg
             transition-opacity duration-300
@@ -39,7 +41,7 @@ export const Dashboard = () => {
           {/* Mobile Sidebar Overlay */}
           {sidebarOpen && (
             <div
-              className="fixed top-0 left-0 w-full h-full  lg:hidden"
+              className="fixed top-0 left-0 w-full h-full lg:hidden"
               onClick={() => setSidebarOpen(false)}
             />
           )}
@@ -47,7 +49,7 @@ export const Dashboard = () => {
           {/* Mobile Sidebar */}
           <div
             className={`
-            fixed top-0 left-0 h-full w-full bg-white shadow-lg z-40 lg:hidden
+            fixed top-0 left-0 h-full w-full md:w-80 shadow-lg z-40 lg:hidden
             transform transition-transform duration-300 ease-in-out
             ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
           `}
@@ -58,17 +60,28 @@ export const Dashboard = () => {
           </div>
 
           {/* Desktop Sidebar */}
-          <div className="hidden lg:block lg:w-72 lg:flex-shrink-0">
-            <div className="sticky top-32 h-[calc(100vh-4rem)] bg-white shadow-md overflow-y-auto">
+          <div className="hidden lg:block lg:w-72 lg:flex-shrink-0 scrollbar-hide">
+            <div className="sticky top-24 h-screen bg-white shadow-md scrollbar-hide">
               <DashBoardLeftNav />
             </div>
           </div>
 
           {/* Main Content Area */}
           <div className="flex-1 min-w-0 overflow-hidden">
-            <div className="h-full overflow-y-auto mt-20">
+            <div className="h-full overflow-y-auto lg:mt-30 md:mt-40">
               <div className="p-4 lg:p-6">
-                <Outlet />
+                {isAdmin ? (
+                  <div className="flex flex-col min-h-screen gap-2">
+                    <>
+                      <StatHeader />
+                    </>
+                    <>
+                      <Outlet />
+                    </>
+                  </div>
+                ) : (
+                  <Outlet />
+                )}
               </div>
             </div>
           </div>
