@@ -1,0 +1,88 @@
+import React from "react";
+import { useState, useRef } from "react";
+
+import { FiStar } from "react-icons/fi";
+import { Link } from "react-router-dom";
+
+const FoodCard = ({ item }) => {
+  const [selectedSize, setSelectedSize] = useState(item.sizes[0]);
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  console.log(item);
+  return (
+    <div className="text-center group">
+      <div
+        key={item.id}
+        className="bg-bg-secondary rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-700 hover:border-primary overflow-hidden group"
+      >
+        <div className="relative">
+          <img
+            src={item.images?.[0] || ""}
+            alt={item.name}
+            className="w-full h-58 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <span className="absolute top-3 right-3 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
+            <FiStar className="text-sm text-white" />
+            <span>{item.rating}</span>
+          </span>
+        </div>
+      </div>
+
+      <p className="mt-4 font-medium text-lg text-gray-200 group-hover:text-white">
+        {item.title}
+      </p>
+
+      {/* Dynamic Price */}
+      <p className="font-semibold text-primary text-lg group-hover:text-white">
+        ${selectedSize.price.toFixed(2)}
+      </p>
+
+      <div className="flex justify-center items-center gap-3 pt-3">
+        <div className="relative inline-block mt-4" ref={dropdownRef}>
+          <button
+            onClick={() => setOpen((prev) => !prev)}
+            className="w-full bg-primary text-bg-primary py-2 px-4 rounded-full border border-primary flex justify-between items-center min-w-[140px]"
+          >
+            <span>{selectedSize.label}</span>
+            <svg
+              className={`w-5 h-5 text-bg-primary transition-transform duration-200 ${
+                open ? "rotate-180" : ""
+              }`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.06z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+          {open && (
+            <ul className="absolute z-10 mt-2 w-full bg-primary border border-primary rounded-lg shadow-lg">
+              {item.sizes.map((s) => (
+                <li
+                  key={s.label}
+                  onClick={() => {
+                    setSelectedSize(s);
+                    setOpen(false);
+                  }}
+                  className="px-4 py-2 hover:bg-bg-cart cursor-pointer text-bg-primary hover:text-gray-300 first:rounded-t-lg last:rounded-b-lg"
+                >
+                  {s.label} (${s.price.toFixed(2)})
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <Link to={`/food-details/${item.id}`} state={{ item }}>
+          <button className="px-5 py-2 border-2 border-primary text-primary rounded-full text-sm hover:bg-primary hover:text-white transition mt-4">
+            View Details
+          </button>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default FoodCard;

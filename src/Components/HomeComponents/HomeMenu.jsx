@@ -1,38 +1,174 @@
-import { Link } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import FoodCard from "../SharedComponent/FoodCard";
 
 const MENU_ITEMS = [
   {
     id: 1,
     title: "Chickpea Pancakes",
-    price: "10.99$",
-    image:
-      "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "Indian",
+    images: [
+      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
+      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
+      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
+    ],
+    sizes: [
+      { label: 'Small (6")', price: 8.99 },
+      { label: 'Medium (9")', price: 10.99 },
+      { label: 'Large (12")', price: 13.99 },
+    ],
+    ingredients: [
+      "Basmati rice",
+      "Chicken",
+      "Yogurt",
+      "Onion",
+      "Spices",
+      "Mint",
+      "Coriander",
+    ],
+    rating: 4.6,
+    reviews: 89,
+    cookTime: "45 mins",
+    servings: 2,
+    nutritionFacts: {
+      calories: 620,
+      protein: "28g",
+      fat: "20g",
+      carbohydrates: "75g",
+    },
   },
   {
     id: 2,
     title: "South Indian Meal",
-    price: "10.99$",
-    image:
-      "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "Indian",
+    images: [
+      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
+      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
+      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
+    ],
+    sizes: [
+      { label: "Single Serving", price: 7.99 },
+      { label: "Family Pack", price: 19.99 },
+    ],
+    ingredients: [
+      "Basmati rice",
+      "Chicken",
+      "Yogurt",
+      "Onion",
+      "Spices",
+      "Mint",
+      "Coriander",
+    ],
+    rating: 4.6,
+    reviews: 89,
+    cookTime: "45 mins",
+    servings: 2,
+    nutritionFacts: {
+      calories: 620,
+      protein: "28g",
+      fat: "20g",
+      carbohydrates: "75g",
+    },
   },
   {
     id: 3,
-    title: "Spiced ButterMilk",
-    price: "10.99$",
-    image:
-      "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Indian",
+    title: "Margherita Pizza",
+    category: "Italian",
+    images: [
+      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
+      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
+      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
+    ],
+    sizes: [
+      { label: '10"', price: 9.99 },
+      { label: '12"', price: 12.99 },
+      { label: '14"', price: 15.99 },
+      { label: '16"', price: 18.99 },
+    ],
+    ingredients: [
+      "Basmati rice",
+      "Chicken",
+      "Yogurt",
+      "Onion",
+      "Spices",
+      "Mint",
+      "Coriander",
+    ],
+    rating: 4.6,
+    reviews: 89,
+    cookTime: "45 mins",
+    servings: 2,
+    nutritionFacts: {
+      calories: 620,
+      protein: "28g",
+      fat: "20g",
+      carbohydrates: "75g",
+    },
   },
   {
     id: 4,
-    title: "Shahi Korma Paratha",
-    price: "10.99$",
-    image:
-      "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Indian",
+    title: "French Baguette Sandwich",
+    category: "French",
+    images: [
+      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
+      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
+      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
+    ],
+    sizes: [
+      { label: "Half", price: 5.99 },
+      { label: "Full", price: 10.99 },
+    ],
+    ingredients: [
+      "Basmati rice",
+      "Chicken",
+      "Yogurt",
+      "Onion",
+      "Spices",
+      "Mint",
+      "Coriander",
+    ],
+    rating: 4.6,
+    reviews: 89,
+    cookTime: "45 mins",
+    servings: 2,
+    nutritionFacts: {
+      calories: 620,
+      protein: "28g",
+      fat: "20g",
+      carbohydrates: "75g",
+    },
+  },
+  {
+    id: 5,
+    title: "Kung Pao Chicken",
+    category: "Chinese",
+    images: [
+      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
+      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
+      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
+    ],
+    sizes: [
+      { label: "Small", price: 8.49 },
+      { label: "Large", price: 14.99 },
+    ],
+    ingredients: [
+      "Basmati rice",
+      "Chicken",
+      "Yogurt",
+      "Onion",
+      "Spices",
+      "Mint",
+      "Coriander",
+    ],
+    rating: 4.6,
+    reviews: 89,
+    cookTime: "45 mins",
+    servings: 2,
+    nutritionFacts: {
+      calories: 620,
+      protein: "28g",
+      fat: "20g",
+      carbohydrates: "75g",
+    },
   },
 ];
 
@@ -41,103 +177,44 @@ const CATEGORIES = ["All", "Indian", "Italian", "French", "Chinese"];
 const HomeMenu = () => {
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const filteredItems =
+  const filtered =
     activeCategory === "All"
       ? MENU_ITEMS
-      : MENU_ITEMS.filter((item) => item.category === activeCategory);
+      : MENU_ITEMS.filter((i) => i.category === activeCategory);
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-bg-secondary text-white">
+    <section className="py-12 px-4 bg-bg-secondary text-white min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center lg:text-left mb-8 lg:mb-12">
-          <p className="text-xs sm:text-sm text-primary uppercase mb-2 tracking-wide">
+        <div className="text-center mb-8">
+          <p className="text-xs text-primary uppercase mb-2 tracking-wide">
             Taste the Best, Enjoy the Rest
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold mb-6 lg:mb-8">
-            Explore Our Menu
-          </h2>
+          <h2 className="text-3xl font-semibold mb-6">Explore Our Menu</h2>
         </div>
 
-        {/* Category Tabs - Responsive */}
-        <div className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-4 mb-8 lg:mb-12">
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-2 sm:px-4 sm:py-2 lg:px-6 lg:py-3 rounded-full border border-accent transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent text-sm sm:text-base
-                  ${
-                    activeCategory === cat
-                      ? "bg-accent text-primary shadow-lg transform scale-105"
-                      : "text-accent hover:bg-accent hover:text-secondary hover:shadow-md hover:transform hover:scale-102"
-                  }`}
+              className={`px-4 py-2 rounded-full border border-primary transition ${
+                activeCategory === cat
+                  ? "bg-primary text-gray-900"
+                  : "text-primary hover:bg-primary hover:text-gray-900"
+              }`}
             >
               {cat}
             </button>
           ))}
         </div>
 
-        {/* Menu Grid - Fully Responsive */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mb-12 lg:mb-16">
-          {filteredItems.map((item) => (
-            <div key={item.id} className="text-center group">
-              <div className="bg-gray-800 rounded-2xl lg:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl relative group transition-all duration-300 hover:transform hover:scale-105">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-48 sm:h-56 lg:h-60 xl:h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <span className="p-3 lg:p-4 bg-primary rounded-full transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 lg:h-6 lg:w-6 text-bg-secondary"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-
-              {/* Title outside card */}
-              <p className="mt-4 lg:mt-6 font-medium text-base sm:text-lg lg:text-xl text-gray-200 group-hover:text-white transition-colors duration-300">
-                {item.title}
-              </p>
-              <p className=" font-medium text-primary sm:text-md lg:text-lg  group-hover:text-white transition-colors duration-300">
-                {item.price}
-              </p>
-              <div className="flex justify-center items-center gap-3.5 pt-3">
-                <button className="px-5 py-2 bg-transparent border-2 border-primary text-primary rounded-full font-medium text-sm hover:bg-primary hover:text-bg-secondary transition-all duration-300">
-                  View Details
-                </button>
-                <button className="px-5 py-2 bg-primary text-bg-secondary rounded-full font-medium text-sm hover:opacity-90 hover:shadow-md transition-all duration-300">
-                  Add To Cart
-                </button>
-              </div>
-            </div>
+        {/* Item Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filtered.map((item) => (
+            <FoodCard key={item.id} item={item} />
           ))}
-        </div>
-
-        {/* Footer Text and Button */}
-        <div className="text-center max-w-4xl mx-auto">
-          <p className="text-primary italic mb-6 lg:mb-8 text-lg sm:text-xl lg:text-2xl xl:text-3xl leading-relaxed px-4">
-            Delicious Food, Fresh Ingredients, Crafted with Love, Satisfy Your
-            Cravings!
-          </p>
-
-          <button className="px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-4 bg-primary text-bg-primary rounded-full font-medium text-sm sm:text-base lg:text-lg transition-all duration-300 hover:opacity-90 hover:transform hover:scale-105 hover:shadow-xl">
-            View Full Menu →
-          </button>
         </div>
       </div>
     </section>
