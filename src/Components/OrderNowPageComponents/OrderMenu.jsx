@@ -1,114 +1,105 @@
-import { useState } from "react";
-import { Plus, Search } from "lucide-react";
-import {
-  categories as mealTabs,
-  sidebarCategories,
-  menuData as menuItems,
-} from "../../FakeDB/menuData";
-
+import React, { useState } from "react";
+import { Search } from "lucide-react";
+import { MENU } from "../../FakeDB/menu";
+import { Link } from "react-router-dom";
 export const OrderMenu = () => {
-  const [activeTab, setActiveTab] = useState("Breakfast");
-  const [activeCategory, setActiveCategory] = useState("Starters");
+  const categoryMap = MENU.reduce((acc, item) => {
+    acc[item.category] = (acc[item.category] || 0) + 1;
+    return acc;
+  }, {});
+  const categories = ["All", ...Object.keys(categoryMap)];
+
+  const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
-  return (
-    <div className="min-h-screen font-sans">
-      {/* Tabs */}
-      <div className="flex gap-8 mb-4 border-b border-gray-700 pb-2  max-w-7xl mx-auto">
-        {mealTabs.map((tab) => (
-          <button
-            key={tab.key}
-            className={`px-8 py-3 rounded-md transition-all font-semibold ${
-              activeTab === tab.label
-                ? "bg-bg-secondary  text-white text-xl"
-                : "bg-gradient-to-r from-[#4a4a4a] to-[#2a2a2a] text-gray-300 hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveTab(tab.label)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+  // Filter items
+  const filtered = MENU.filter((item) => {
+    const inCat = activeCategory === "All" || item.category === activeCategory;
+    const matches = item.title.toLowerCase().includes(searchTerm.toLowerCase());
+    return inCat && matches;
+  });
 
-      <div className="flex max-w-7xl mx-auto">
-        {/* Sidebar */}
-        <aside className="w-1/3 pr-6 border-r border-gray-700 space-y-2">
-          {sidebarCategories.map((cat) => (
+  return (
+    <div className="min-h-screen bg-bg-secondary p-6">
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Search Bar */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300" />
+          <input
+            type="text"
+            placeholder="Search menu items..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full border border-gray-700 bg-bg-primary rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-primary"
+          />
+        </div>
+
+        {/* Category Tabs */}
+        <nav className="flex flex-wrap justify-center gap-4 pt-6">
+          {categories.map((cat) => (
             <button
-              key={cat.label}
-              onClick={() => setActiveCategory(cat.label)}
-              className={`w-full text-left px-8 py-4  mb-5 rounded-bl-4xl rounded-tr-4xl  rounded-md font-mono t transition-all ${
-                activeCategory === cat.label
-                  ? "bg-bg-secondary  text-white text-xl"
-                  : "bg-gradient-to-r from-[#4a4a4a] to-[#2a2a2a] text-gray-300 hover:bg-gray-700"
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`whitespace-nowrap px-4 py-2 rounded-full font-medium transition ${
+                activeCategory === cat
+                  ? "bg-primary text-white"
+                  : "bg-bg-primary text-gray-300 hover:bg-gray-700"
               }`}
             >
-              {cat.label} ({cat.count})
+              {cat} {cat !== "All" && `(${categoryMap[cat]})`}
             </button>
           ))}
-        </aside>
+        </nav>
 
-        {/* Main Content */}
-        <main className="px-8 w-full">
-          {/* Header & Search */}
-          <div className="flex justify-between items-center py-4 my-8">
-            <h2 className="text-2xl font-semibold text-white">
-              {activeCategory}
-            </h2>
-            <div className="flex items-center w-80 bg-[#2b2b2b] rounded-full px-4 py-2">
-              <Search className="w-4 h-4 text-gray-400 mr-2" />
-              <input
-                type="text"
-                placeholder="Search within menu"
-                className="bg-transparent text-white placeholder-gray-400 text-sm outline-none w-full"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Food Items */}
-          <div className="space-y-6">
-            {menuItems
-              .filter(
-                (item) =>
-                  item.category.toLowerCase() ===
-                    activeCategory.toLowerCase() &&
-                  item.name.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between border-b border-gray-700 pb-4"
-                >
-                  <div className="flex items-start gap-4">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-16 h-16 rounded-full object-cover border border-gray-600"
-                    />
-                    <div className="">
-                      {/* Title and Price */}
-                      <h3 className="text-base font-semibold text-white">
-                        {item.name}
-                      </h3>
-                      <p className="text-xl font-medium text-orange-400">
-                        ${item.price}
-                      </p>
-
-                      {/* Description */}
-                      <p className="text-sm text-gray-400 leading-snug max-w-md">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                  <button className="bg-orange-400 hover:bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-md">
-                    <Plus size={16} />
-                  </button>
-                </div>
-              ))}
-          </div>
-        </main>
+        <div className="bg-bg-primary rounded-lg shadow divide-y divide-gray-700">
+          {[...new Set(filtered.map((item) => item.category))].map(
+            (category) => (
+              <section key={category} className="py-6 px-4">
+                <h2 className="text-2xl font-bold text-white mb-4">
+                  {category}
+                </h2>
+                <ul className="space-y-4">
+                  {filtered
+                    .filter((item) =>
+                      activeCategory === "All"
+                        ? item.category === category
+                        : item.category === activeCategory
+                    )
+                    .map((item) => (
+                      <li key={item.id} className="flex gap-4 items-center">
+                        <img
+                          src={item.images[0]}
+                          alt={item.title}
+                          className="w-24 h-24 rounded-lg object-cover flex-shrink-0"
+                        />
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold text-white">
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-400 mt-1 leading-snug">
+                            {item.ingredients.join(", ")}
+                          </p>
+                        </div>
+                        <div className="text-right space-y-2">
+                          <span className="text-lg font-medium text-primary block">
+                            ${item.sizes[0].price.toFixed(2)}
+                          </span>
+                          <Link
+                            to={`/food-details/${item.id}`}
+                            state={{ item }}
+                          >
+                            <button className="text-sm font-semibold text-primary hover:underline">
+                              View Details
+                            </button>
+                          </Link>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </section>
+            )
+          )}
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import TotalCancel from "/assets/Icon/TotalCancel.png";
 import TotalRevenue from "/assets/Icon/TotalRevenue.png";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
-export const MonthlySellStat = () => {
+export const AllTimeSellStat = () => {
   const statsData = [
     {
       id: 1,
@@ -51,7 +51,7 @@ export const MonthlySellStat = () => {
   return (
     <>
       <h1 className="text-2xl font-bold text-primary mb-3">
-        Monthly Statistics
+        All Time Sell Statistics
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 p-2">
         {statsData.map((stat) => (

@@ -1,6 +1,6 @@
+import { AllTimeSellStat } from "./AllTimeSellStat";
 import { DailySellStat } from "./DailySellStat";
 import { GrowthStatPie } from "./GrowthStatPie";
-import { MonthlySellStat } from "./MonthlySellStat";
 import { OrderMap } from "./OrderMap";
 import { RevenueChart } from "./RevenueChart";
 import { TrendingItems } from "./TrendingItems";
@@ -8,7 +8,7 @@ import { TrendingItems } from "./TrendingItems";
 export const DashStatics = () => {
   return (
     <div className="w-full bg-white">
-      <MonthlySellStat />
+      <AllTimeSellStat />
       <DailySellStat />
 
       <div className="flex gap-4 my-5">

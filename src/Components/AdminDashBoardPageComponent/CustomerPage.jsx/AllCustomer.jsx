@@ -6,6 +6,8 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ShieldCheck,
+  Trash2,
 } from "lucide-react";
 import { customers } from "../../../FakeDB/mockCustomer";
 import { formatDate } from "../../../utils/formatDate";
@@ -88,7 +90,108 @@ export const AllCustomer = () => {
     }
     return pages;
   };
+  const makeAdmin = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Promote to Admin?",
+      text: "This user will be promoted to admin with elevated privileges!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#10b981",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, promote",
+      cancelButtonText: "Cancel",
+    });
 
+    if (confirm.isConfirmed) {
+      setActionLoading(id);
+      try {
+        await axiosInstance.put(`auth/make-admin/${id}`);
+        Swal.fire({
+          title: "Success!",
+          text: "User promoted to admin successfully",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        fetchUsers();
+      } catch (error) {
+        Swal.fire("Error", "Failed to promote user", "error");
+      } finally {
+        setActionLoading(null);
+      }
+    }
+  };
+
+  const removeAdmin = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Remove Admin Role?",
+      text: "This admin will be demoted to a regular user!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#f59e0b",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, demote",
+      cancelButtonText: "Cancel",
+    });
+
+    if (confirm.isConfirmed) {
+      setActionLoading(id);
+      try {
+        await axiosInstance.put(`auth/remove-admin/${id}`);
+        Swal.fire({
+          title: "Success!",
+          text: "Admin role removed successfully",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        fetchUsers();
+      } catch (error) {
+        Swal.fire("Error", "Failed to remove admin role", "error");
+      } finally {
+        setActionLoading(null);
+      }
+    }
+  };
+
+  const deleteUser = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Delete User?",
+      text: "This action cannot be undone! The user will be permanently deleted.",
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete",
+      cancelButtonText: "Cancel",
+      input: "text",
+      inputPlaceholder: "Type 'DELETE' to confirm",
+      inputValidator: (value) => {
+        if (value !== "DELETE") {
+          return "Please type 'DELETE' to confirm";
+        }
+      },
+    });
+
+    if (confirm.isConfirmed) {
+      setActionLoading(id);
+      try {
+        await axiosInstance.delete(`auth/${id}`);
+        Swal.fire({
+          title: "Deleted!",
+          text: "User has been deleted successfully",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        fetchUsers();
+      } catch (error) {
+        Swal.fire("Error", "Failed to delete user", "error");
+      } finally {
+        setActionLoading(null);
+      }
+    }
+  };
   return (
     <div className="p-6 min-h-screen text-white">
       <h2 className="text-2xl text-black font-bold mb-6">All Customers</h2>
@@ -160,13 +263,22 @@ export const AllCustomer = () => {
                 <td className="px-4 py-3">{customer.name}</td>
                 <td className="px-4 py-3">{customer.email}</td>
                 <td className="px-4 py-3">{customer.number}</td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 flex gap-3">
                   <button
                     onClick={() => setSelectedCustomer(customer)}
-                    className="hover:text-yellow-400 transition-colors"
+                    className=" transition-colors flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-500/50 text-white font-medium rounded-xl hover:bg-primary "
                   >
                     <Eye size={18} />
                   </button>
+                  <div className="flex gap-2">
+                    <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-50 border border-green-300 text-green-700 font-medium rounded-xl hover:bg-green-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                      <ShieldCheck className="w-4 h-4" />
+                      Promote
+                    </button>
+                    <button className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
