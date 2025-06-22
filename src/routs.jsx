@@ -22,8 +22,12 @@ import { OrderList } from "./Components/AdminDashBoardPageComponent/OrderPage/Or
 import PrivateRoute from "./router/PrivateRoute";
 import AdminRoute from "./router/AdminRoute";
 import ErrorPage from "./Pages/Error/ErrorPage";
+<<<<<<< HEAD
 import { ManageReviews } from "./Components/AdminDashBoardPageComponent/ManageReviews/ManageReviews";
 import { AddCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/AddCategory";
+=======
+import ResetPassword from "./Pages/Authentication/ResetPassword";
+>>>>>>> 4f7a344761a4aae4f462981273350387e5d9cec0
 
 export const router = createBrowserRouter([
   {
@@ -71,15 +75,20 @@ export const router = createBrowserRouter([
         path: "/signup",
         element: <SignUp />,
       },
-      {
-        path: "/verify-email",
-        element: <VerifyEmail />,
-      },
-      {
-        path: "/verification-email",
-        element: <ShowEmailVerification />,
-      },
     ],
+  },
+  // Email verification & reset password
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+  },
+  {
+    path: "/verify-email",
+    element: <VerifyEmail />,
+  },
+  {
+    path: "/verification-email",
+    element: <ShowEmailVerification />,
   },
   // User Dashboard
   {
