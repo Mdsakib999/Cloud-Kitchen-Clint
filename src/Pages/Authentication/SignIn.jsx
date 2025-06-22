@@ -57,7 +57,7 @@ const SignIn = () => {
       );
 
       // Check email verification status
-      if (!result.user.emailVerified) {
+      if (!result.user?.emailVerified) {
         toast.success(<h1 className="font-serif">Signed in successfully!</h1>);
         // Redirect to verification page for unverified email users
         navigate("/verification-email", {

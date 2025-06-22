@@ -21,6 +21,7 @@ import { CustomerDetails } from "./Components/AdminDashBoardPageComponent/Custom
 import PrivateRoute from "./router/PrivateRoute";
 import AdminRoute from "./router/AdminRoute";
 import ErrorPage from "./Pages/Error/ErrorPage";
+import ResetPassword from "./Pages/Authentication/ResetPassword";
 
 export const router = createBrowserRouter([
   {
@@ -68,15 +69,20 @@ export const router = createBrowserRouter([
         path: "/signup",
         element: <SignUp />,
       },
-      {
-        path: "/verify-email",
-        element: <VerifyEmail />,
-      },
-      {
-        path: "/verification-email",
-        element: <ShowEmailVerification />,
-      },
     ],
+  },
+  // Email verification & reset password
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+  },
+  {
+    path: "/verify-email",
+    element: <VerifyEmail />,
+  },
+  {
+    path: "/verification-email",
+    element: <ShowEmailVerification />,
   },
   // User Dashboard
   {

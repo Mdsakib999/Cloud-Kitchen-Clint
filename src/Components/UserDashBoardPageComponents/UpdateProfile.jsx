@@ -17,7 +17,7 @@ import axiosInstance from "../../Utils/axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const UpdateProfile = () => {
-  const { user, setUser, logout } = useAuth();
+  const { user, setUser } = useAuth();
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -27,7 +27,7 @@ export const UpdateProfile = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
+  console.log("user==>", user);
 
   const {
     register,
@@ -363,65 +363,68 @@ export const UpdateProfile = () => {
                       />
                     </div>
 
+                    {user.provider === "password" ? (
+                      <div>
+                        <label className="block text-sm font-medium text-secondary mb-2">
+                          Current Password *
+                        </label>
+                        <div className="relative">
+                          <input
+                            type={showCurrentPassword ? "text" : "password"}
+                            {...register("currentPassword", {
+                              required: "Current password is required",
+                            })}
+                            className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-12"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowCurrentPassword(!showCurrentPassword)
+                            }
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary hover:text-primary"
+                          >
+                            {showCurrentPassword ? (
+                              <EyeOff size={18} />
+                            ) : (
+                              <Eye size={18} />
+                            )}
+                          </button>
+                        </div>
+                        {errors.currentPassword && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.currentPassword.message}
+                          </p>
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {user.provider === "password" ? (
                     <div>
                       <label className="block text-sm font-medium text-secondary mb-2">
-                        Current Password *
+                        New Password (optional)
                       </label>
                       <div className="relative">
                         <input
-                          type={showCurrentPassword ? "text" : "password"}
-                          {...register("currentPassword", {
-                            required: "Current password is required",
-                          })}
+                          type={showNewPassword ? "text" : "password"}
+                          {...register("newPassword")}
                           className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-12"
+                          placeholder="Leave blank to keep current password"
                         />
                         <button
                           type="button"
-                          onClick={() =>
-                            setShowCurrentPassword(!showCurrentPassword)
-                          }
+                          onClick={() => setShowNewPassword(!showNewPassword)}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary hover:text-primary"
                         >
-                          {showCurrentPassword ? (
+                          {showNewPassword ? (
                             <EyeOff size={18} />
                           ) : (
                             <Eye size={18} />
                           )}
                         </button>
                       </div>
-                      {errors.currentPassword && (
-                        <p className="text-red-500 text-sm mt-1">
-                          {errors.currentPassword.message}
-                        </p>
-                      )}
                     </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-secondary mb-2">
-                      New Password (optional)
-                    </label>
-                    <div className="relative">
-                      <input
-                        type={showNewPassword ? "text" : "password"}
-                        {...register("newPassword")}
-                        className="w-full px-4 py-3 border border-bg-secondary rounded-lg bg-bg-secondary text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-12"
-                        placeholder="Leave blank to keep current password"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary hover:text-primary"
-                      >
-                        {showNewPassword ? (
-                          <EyeOff size={18} />
-                        ) : (
-                          <Eye size={18} />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
+                  ) : null}
                   <div>
                     <label className="block text-sm font-medium text-secondary mb-2">
                       Address
