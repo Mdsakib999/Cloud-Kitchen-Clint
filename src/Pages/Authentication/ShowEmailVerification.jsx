@@ -6,7 +6,6 @@ const ShowEmailVerification = () => {
   const { user, loading } = useAuth();
   const location = useLocation();
   const email = location.state?.email || user?.email;
-  console.log("location.state", location);
 
   if (loading) {
     return (
