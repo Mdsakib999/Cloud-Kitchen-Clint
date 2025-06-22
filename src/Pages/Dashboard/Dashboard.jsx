@@ -4,7 +4,6 @@ import { DashBoardLeftNav } from "./DasboardLeftNav";
 import { ScrollToTop } from "../../utils/ScrollToTop";
 import Navbar from "../../Components/SharedComponent/Navbar";
 import InfoBar from "../../Components/SharedComponent/InfoBar";
-import HomeStats from "../../Components/HomeComponents/HomeStats";
 import { StatHeader } from "../../Components/SharedComponent/StatHeader";
 
 export const Dashboard = () => {
@@ -60,8 +59,8 @@ export const Dashboard = () => {
           </div>
 
           {/* Desktop Sidebar */}
-          <div className="hidden lg:block lg:w-72 lg:flex-shrink-0 scrollbar-hide">
-            <div className="sticky top-24 h-screen bg-white shadow-md scrollbar-hide">
+          <div className="hidden lg:block lg:w-72 lg:flex-shrink-0 ">
+            <div className="sticky top-24 h-screen bg-white shadow-md">
               <DashBoardLeftNav />
             </div>
           </div>
