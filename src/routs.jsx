@@ -25,6 +25,8 @@ import ErrorPage from "./Pages/Error/ErrorPage";
 import { ManageReviews } from "./Components/AdminDashBoardPageComponent/ManageReviews/ManageReviews";
 import { AddCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/AddCategory";
 import ResetPassword from "./Pages/Authentication/ResetPassword";
+import { AddCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/AddCupon";
+import { ManageCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCupon";
 
 export const router = createBrowserRouter([
   {
@@ -90,11 +92,7 @@ export const router = createBrowserRouter([
   // User Dashboard
   {
     path: "/dashboard",
-    element: (
-      <PrivateRoute>
-        <Dashboard />
-      </PrivateRoute>
-    ),
+    element: <Dashboard />,
     children: [
       {
         path: "",
@@ -138,6 +136,14 @@ export const router = createBrowserRouter([
       {
         path: "add-category",
         element: <AddCategory />,
+      },
+      {
+        path: "add-cupon",
+        element: <AddCupon />,
+      },
+      {
+        path: "manage-cupon",
+        element: <ManageCupon />,
       },
     ],
   },
