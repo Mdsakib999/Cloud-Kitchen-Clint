@@ -81,28 +81,28 @@ const VerifyEmail = () => {
   }, [user, checkEmailVerification, from, navigate, searchParams]);
 
   // ✅ Resend email
-  const handleResend = async () => {
-    if (cooldown > 0 || !user) return;
-    setIsLoading(true);
-    try {
-      await auth.sendEmailVerification(user, {
-        url: "http://localhost:5173/verify-email",
-        handleCodeInApp: true,
-      });
-      toast.success(<h1 className="font-serif">Verification email sent!</h1>);
-      setCooldown(60);
-    } catch (err) {
-      console.error(err);
-      toast.error(
-        err.code === "auth/too-many-requests"
-          ? "Too many attempts. Try later."
-          : "Failed to resend verification."
-      );
-      setCooldown(120);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const handleResend = async () => {
+  //   if (cooldown > 0 || !user) return;
+  //   setIsLoading(true);
+  //   try {
+  //     await auth.sendEmailVerification(user, {
+  //       url: "http://localhost:5173/verify-email",
+  //       handleCodeInApp: true,
+  //     });
+  //     toast.success(<h1 className="font-serif">Verification email sent!</h1>);
+  //     setCooldown(60);
+  //   } catch (err) {
+  //     console.error(err);
+  //     toast.error(
+  //       err.code === "auth/too-many-requests"
+  //         ? "Too many attempts. Try later."
+  //         : "Failed to resend verification."
+  //     );
+  //     setCooldown(120);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // ⏳ Cooldown countdown
   useEffect(() => {
