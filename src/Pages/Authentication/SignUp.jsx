@@ -261,7 +261,7 @@ const SignUp = () => {
                     value:
                       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
                     message:
-                      "Password must contain at least one letter, one number, and one special character",
+                      "Password must be at least 6 characters long and include at least one letter, one number, and one special character",
                   },
                 })}
                 className="w-full px-4 py-3 bg-transparent focus:outline-none placeholder-gray-400"
