@@ -35,7 +35,7 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     {
       label: "Customer Reviews",
       icon: <FaStar size={20} />,
-      path: "/admin/reviews",
+      path: "/admin/dashboard/manage-reviews",
     },
     {
       label: "Add Food",
@@ -50,12 +50,12 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     {
       label: "Add Category",
       icon: <FaFolderPlus size={20} />,
-      path: "/admin/add-category",
+      path: "/admin/dashboard/add-category",
     },
     {
       label: "Profile",
       icon: <FaUser size={20} />,
-      path: "/admin/profile",
+      path: "/admin/dashboard/profile",
     },
   ];
 
