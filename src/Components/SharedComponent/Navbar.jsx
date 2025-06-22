@@ -82,13 +82,11 @@ const Navbar = () => {
   const closeUserDropdown = () => setShowUserDropdown(false);
 
   const handleLogout = async () => {
-    // Add your logout logic here
     await logout();
     toast.success(
       <h1 className="text-center font-serif">Logged out successfully</h1>
     );
     setShowUserDropdown(false);
-    // Example: dispatch logout action, clear tokens, redirect, etc.
   };
 
   return (
