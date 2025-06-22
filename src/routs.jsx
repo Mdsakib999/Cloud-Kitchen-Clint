@@ -25,11 +25,8 @@ import ErrorPage from "./Pages/Error/ErrorPage";
 import { ManageReviews } from "./Components/AdminDashBoardPageComponent/ManageReviews/ManageReviews";
 import { AddCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/AddCategory";
 import ResetPassword from "./Pages/Authentication/ResetPassword";
-<<<<<<< HEAD
 import { AddCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/AddCupon";
 import { ManageCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCupon";
-=======
->>>>>>> 3009e12799df442cbdd8c542894b84ad9f9a4229
 
 export const router = createBrowserRouter([
   {
