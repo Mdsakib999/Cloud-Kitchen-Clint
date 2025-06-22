@@ -3,7 +3,7 @@ import orderNowbg from "/assets/Food/orderNowbg.png";
 export const OrderNowBanner = () => {
   return (
     <div
-      className="w-full h-screen bg-black bg-cover bg-center bg-no-repeat text-white relative"
+      className="w-full bg-black bg-cover bg-center bg-no-repeat text-white relative"
       style={{ backgroundImage: `url(${orderNowbg})` }}
     >
       <div className="bg-black/20 w-full h-full">
