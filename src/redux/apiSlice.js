@@ -13,8 +13,63 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Category"],
+  endpoints: (builder) => ({
+    getCategories: builder.query({
+      query: () => "/admin/categories",
+      providesTags: (result = []) => [
+        ...result.map(({ _id }) => ({ type: "Category", id: _id })),
+        { type: "Category", id: "LIST" },
+      ],
+    }),
 
-  endpoints: (builder) => ({}),
+    addCategory: builder.mutation({
+      query: ({ name, imageFile }) => {
+        const form = new FormData();
+        form.append("name", name);
+        if (imageFile) form.append("image", imageFile);
+        return {
+          url: "/admin/categories",
+          method: "POST",
+          body: form,
+        };
+      },
+      invalidatesTags: [{ type: "Category", id: "LIST" }],
+    }),
+
+    editCategory: builder.mutation({
+      query: ({ id, name, imageFile }) => {
+        const form = new FormData();
+        if (name) form.append("name", name);
+        if (imageFile) form.append("image", imageFile);
+        return {
+          url: `/admin/categories/${id}`,
+          method: "PUT",
+          body: form,
+        };
+      },
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Category", id },
+        { type: "Category", id: "LIST" },
+      ],
+    }),
+
+    deleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/admin/categories/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Category", id },
+        { type: "Category", id: "LIST" },
+      ],
+    }),
+  }),
 });
 
-export const {} = apiSlice;
+export const {
+  useGetCategoriesQuery,
+  useAddCategoryMutation,
+  useEditCategoryMutation,
+  useDeleteCategoryMutation,
+} = apiSlice;
