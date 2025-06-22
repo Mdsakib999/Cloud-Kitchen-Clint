@@ -23,6 +23,8 @@ import PrivateRoute from "./router/PrivateRoute";
 import AdminRoute from "./router/AdminRoute";
 import ErrorPage from "./Pages/Error/ErrorPage";
 import ResetPassword from "./Pages/Authentication/ResetPassword";
+import ReRoute from "./Pages/Authentication/ReRoute";
+import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +78,14 @@ export const router = createBrowserRouter([
   {
     path: "/reset-password",
     element: <ResetPassword />,
+  },
+  {
+    path: "/view-reset-password",
+    element: <ShowPasswordResetSent />,
+  },
+  {
+    path: "/handle-auth",
+    element: <ReRoute />,
   },
   {
     path: "/verify-email",

@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
   const isAdmin = role === "admin";
 
   const actionCodeSettings = {
-    url: "http://localhost:5173/verify-email",
+    url: "http://localhost:5173/handle-auth",
     handleCodeInApp: true,
   };
 
@@ -51,7 +51,11 @@ const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     setLoading(true);
     try {
-      return await signInWithEmailAndPassword(auth, email, password);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      if (!result.user.emailVerified) {
+        await sendEmailVerification(result.user, actionCodeSettings);
+      }
+      return result;
     } finally {
       setLoading(false);
     }
@@ -61,7 +65,8 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      // No need to send verification email for Google sign-in as Google accounts are already verified
+      // No need to send verification email for Google sign-in as
+      // Google accounts are already verified
       return result;
     } finally {
       setLoading(false);
@@ -71,8 +76,8 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     setLoading(true);
     try {
-      await axiosInstance.post("/auth/logout");
       await signOut(auth);
+      localStorage.removeItem("token");
     } finally {
       setLoading(false);
     }
@@ -142,6 +147,7 @@ const AuthProvider = ({ children }) => {
             { headers: { Authorization: `Bearer ${idToken}` } }
           );
           const userData = result.data;
+          localStorage.setItem("token", userData?.token);
           setUser(userData);
           setRole(userData?.role);
           setIsEmailVerified(currentUser.emailVerified);
