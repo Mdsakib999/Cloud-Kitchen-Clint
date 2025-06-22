@@ -59,9 +59,11 @@ export const Dashboard = () => {
           </div>
 
           {/* Desktop Sidebar */}
-          <div className="hidden lg:block lg:w-72 lg:flex-shrink-0 ">
-            <div className="sticky top-24 h-screen bg-white shadow-md">
-              <DashBoardLeftNav />
+          <div className="hidden lg:block lg:w-72 lg:flex-shrink-0">
+            <div className="h-screen sticky top-24">
+              <div className="h-full overflow-y-auto  shadow-md">
+                <DashBoardLeftNav />
+              </div>
             </div>
           </div>
 
