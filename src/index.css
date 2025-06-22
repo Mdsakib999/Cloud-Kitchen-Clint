@@ -21,6 +21,17 @@
   --font-roboto: "Roboto", sans-serif;
   --font-playfair-display: "Playfair Display", serif;
 }
+:root {
+  --color-primary: #e6a344;
+  --color-secondary: #938888;
+  --color-tertiary: #00b074;
+  --color-bg-primary: #102b2a;
+  --color-bg-secondary: #091d1c;
+  --color-bg-tertiary: #0b2422;
+  --color-bg-input: #314544;
+  --color-bg-cart: #02403d;
+  --color-bg-footer: #052c21;
+}
 @layer base {
   /* Chrome, Safari, Edge, Opera */
   input[type="number"]::-webkit-outer-spin-button,
