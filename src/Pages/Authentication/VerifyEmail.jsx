@@ -1,10 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  useLocation,
-  useNavigate,
-  useSearchParams,
-  Link,
-} from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { auth, useAuth } from "../../providers/AuthProvider";
 import { applyActionCode } from "firebase/auth";
@@ -13,14 +8,13 @@ import axiosInstance from "../../Utils/axios";
 const VerifyEmail = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [cooldown, setCooldown] = useState(0);
-  const hasVerifiedRef = useRef(false); // ✅ Prevent multiple toasts
+  const hasVerifiedRef = useRef(false);
   const { user, checkEmailVerification } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const from = location.state?.from || "/";
-  const email = location.state?.email || user?.email;
 
   // ✅ Apply verification link from email
   useEffect(() => {
@@ -79,30 +73,6 @@ const VerifyEmail = () => {
 
     return () => clearInterval(interval);
   }, [user, checkEmailVerification, from, navigate, searchParams]);
-
-  // ✅ Resend email
-  // const handleResend = async () => {
-  //   if (cooldown > 0 || !user) return;
-  //   setIsLoading(true);
-  //   try {
-  //     await auth.sendEmailVerification(user, {
-  //       url: "http://localhost:5173/verify-email",
-  //       handleCodeInApp: true,
-  //     });
-  //     toast.success(<h1 className="font-serif">Verification email sent!</h1>);
-  //     setCooldown(60);
-  //   } catch (err) {
-  //     console.error(err);
-  //     toast.error(
-  //       err.code === "auth/too-many-requests"
-  //         ? "Too many attempts. Try later."
-  //         : "Failed to resend verification."
-  //     );
-  //     setCooldown(120);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   // ⏳ Cooldown countdown
   useEffect(() => {
