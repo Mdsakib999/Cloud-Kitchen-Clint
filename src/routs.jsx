@@ -22,9 +22,13 @@ import { OrderList } from "./Components/AdminDashBoardPageComponent/OrderPage/Or
 import PrivateRoute from "./router/PrivateRoute";
 import AdminRoute from "./router/AdminRoute";
 import ErrorPage from "./Pages/Error/ErrorPage";
+import { ManageReviews } from "./Components/AdminDashBoardPageComponent/ManageReviews/ManageReviews";
+import { AddCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/AddCategory";
 import ResetPassword from "./Pages/Authentication/ResetPassword";
 import ReRoute from "./Pages/Authentication/ReRoute";
 import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
+import { AddCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/AddCupon";
+import { ManageCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCupon";
 
 export const router = createBrowserRouter([
   {
@@ -98,11 +102,7 @@ export const router = createBrowserRouter([
   // User Dashboard
   {
     path: "/dashboard",
-    element: (
-      <PrivateRoute>
-        <Dashboard />
-      </PrivateRoute>
-    ),
+    element: <Dashboard />,
     children: [
       {
         path: "",
@@ -117,11 +117,7 @@ export const router = createBrowserRouter([
   // Admin Dashboard
   {
     path: "admin/dashboard",
-    element: (
-      <AdminRoute>
-        <Dashboard />
-      </AdminRoute>
-    ),
+    element: <Dashboard />,
     children: [
       {
         path: "",
@@ -142,6 +138,22 @@ export const router = createBrowserRouter([
       {
         path: "order-deatils/:id",
         element: <OrderDetails />,
+      },
+      {
+        path: "manage-reviews",
+        element: <ManageReviews />,
+      },
+      {
+        path: "add-category",
+        element: <AddCategory />,
+      },
+      {
+        path: "add-cupon",
+        element: <AddCupon />,
+      },
+      {
+        path: "manage-cupon",
+        element: <ManageCupon />,
       },
     ],
   },

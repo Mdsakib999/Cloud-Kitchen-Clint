@@ -10,6 +10,7 @@ import {
   FaThList,
   FaFolderPlus,
 } from "react-icons/fa";
+import { IoTicketSharp } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 
@@ -17,6 +18,11 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
   const adminRoutes = [
+    {
+      label: "Profile",
+      icon: <FaUser size={20} />,
+      path: "/admin/dashboard/profile",
+    },
     {
       label: "Statistics",
       icon: <MdDashboard size={20} />,
@@ -28,14 +34,14 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
       path: "/admin/dashboard/customers",
     },
     {
-      label: "Order List",
+      label: "Order History",
       icon: <FaClipboardList size={20} />,
       path: "/admin/dashboard/orders",
     },
     {
       label: "Customer Reviews",
       icon: <FaStar size={20} />,
-      path: "/admin/reviews",
+      path: "/admin/dashboard/manage-reviews",
     },
     {
       label: "Add Food",
@@ -48,14 +54,19 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
       path: "/admin/manage-food",
     },
     {
-      label: "Add Category",
+      label: "Manage Category",
       icon: <FaFolderPlus size={20} />,
-      path: "/admin/add-category",
+      path: "/admin/dashboard/add-category",
     },
     {
-      label: "Profile",
-      icon: <FaUser size={20} />,
-      path: "/admin/profile",
+      label: "Add Cupon",
+      icon: <IoTicketSharp size={20} />,
+      path: "/admin/dashboard/add-cupon",
+    },
+    {
+      label: "Manage Cupon",
+      icon: <IoTicketSharp size={20} />,
+      path: "/admin/dashboard/manage-cupon",
     },
   ];
 
@@ -104,8 +115,10 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
                 <button
                   className={`cursor-pointer flex items-center gap-3 px-3 py-2 w-full font-medium ${
                     isActive
-                      ? "bg-tertiary  text-white shadow"
-                      : "bg-white  text-black"
+                      ? "text-primary text-xl font-bold"
+                      : isAdmin
+                      ? "text-black"
+                      : "text-white"
                   }`}
                 >
                   {icon}
