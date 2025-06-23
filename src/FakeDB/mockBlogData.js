@@ -112,3 +112,26 @@ export const blogPosts = [
         tags: ["Top Picks", "Trending", "Customer Love"],
     },
 ];
+export const relatedPosts = [
+    {
+        id: 3,
+        title: "Virtual Cooking Class with Chef Lena – Book Now!",
+        image: "https://colonialdomestics.com/wp-content/uploads/2023/03/a-successful-chef.jpg",
+        category: "Event",
+        date: "June 15, 2025"
+    },
+    {
+        id: 4,
+        title: "Behind the Scenes: How We Prep 1000+ Meals Daily",
+        image: "https://www.fooddocs.com/hs-fs/hubfs/commercial%20kitchen%20safety.jpg",
+        category: "Feature",
+        date: "June 12, 2025"
+    },
+    {
+        id: 5,
+        title: "Allergen-Friendly Menu Expanded!",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp9x3gcoiOA3z_2xgY98VXGXn-u82fX2cNAg&s",
+        category: "Announcement",
+        date: "June 9, 2025"
+    }
+];
