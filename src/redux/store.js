@@ -8,7 +8,7 @@ import { persistReducer, persistStore } from "redux-persist";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", apiSlice.reducerPath, "cart"],
+  whitelist: ["cart"],
 };
 
 const rootReducer = combineReducers({
@@ -27,5 +27,4 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-
 export default store;
