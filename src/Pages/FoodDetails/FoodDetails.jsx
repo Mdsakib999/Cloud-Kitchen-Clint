@@ -1,5 +1,5 @@
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Clock,
@@ -8,24 +8,55 @@ import {
   Heart,
   ShoppingCart,
 } from "lucide-react";
+import { addToCart } from "../../redux/cartSlice";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 export const FoodDetails = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const food = state?.item;
 
   const [isFavorite, setIsFavorite] = useState(false);
-  const [mainImage, setMainImage] = useState(food.images?.[0]);
-  const handleBack = () => {
-    window.history.back();
-  };
+  const [mainImage, setMainImage] = useState("");
+
+  // initialize mainImage safely
+  useEffect(() => {
+    if (food) {
+      const firstImg = Array.isArray(food.images)
+        ? food.images[0]?.url ?? food.images[0]
+        : "";
+      setMainImage(firstImg);
+    }
+  }, [food]);
+
+  // redirect if no food
+  useEffect(() => {
+    if (!food) {
+      navigate(-1, { replace: true });
+    }
+  }, [food, navigate]);
+
+  const handleBack = () => navigate(-1);
 
   const handleAddToCart = () => {
-    console.log("Adding to cart:", food);
+    if (!food) return;
+    dispatch(
+      addToCart({
+        _id: food._id,
+        name: food.name,
+        image: Array.isArray(food.images)
+          ? food.images[0]?.url ?? food.images[0]
+          : "",
+        price: food.discountPrice ?? food.price,
+        quantity: 1,
+      })
+    );
+    toast.success("Added to cart", { duration: 3000 });
   };
 
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
+  const toggleFavorite = () => setIsFavorite((fav) => !fav);
 
   if (!food) {
     return (
@@ -48,7 +79,7 @@ export const FoodDetails = () => {
   return (
     <div className="pt-30">
       {/* Header */}
-      <div className=" sticky top-0 z-10">
+      <div className="sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <button
             onClick={handleBack}
@@ -87,19 +118,23 @@ export const FoodDetails = () => {
 
             {/* Thumbnails */}
             <div className="flex gap-2 overflow-x-auto pb-2">
-              {food.images?.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`${food.name} ${index + 1}`}
-                  onClick={() => setMainImage(img)}
-                  className={`w-20 h-20 object-cover rounded-lg cursor-pointer transition-all duration-200 border-2 ${
-                    img === mainImage
-                      ? "border-orange-500 scale-105"
-                      : "border-transparent hover:opacity-80"
-                  }`}
-                />
-              ))}
+              {Array.isArray(food.images) &&
+                food.images.map((img, index) => {
+                  const url = img.url ?? img;
+                  return (
+                    <img
+                      key={index}
+                      src={url}
+                      alt={`${food.name} ${index + 1}`}
+                      onClick={() => setMainImage(url)}
+                      className={`w-20 h-20 object-cover rounded-lg cursor-pointer transition-all duration-200 border-2 ${
+                        url === mainImage
+                          ? "border-orange-500 scale-105"
+                          : "border-transparent hover:opacity-80"
+                      }`}
+                    />
+                  );
+                })}
             </div>
           </div>
 
