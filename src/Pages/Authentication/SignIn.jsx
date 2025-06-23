@@ -12,6 +12,10 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const { signIn, googleSignIn, forgotPassword } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -20,16 +24,12 @@ const SignIn = () => {
     getValues,
   } = useForm();
 
-  const { signIn, googleSignIn, forgotPassword } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
-
   const saveUserToDB = async (userData, idToken) => {
     try {
       const { data } = await axiosInstance.post("/auth/register", userData, {
         headers: { Authorization: `Bearer ${idToken}` },
       });
+      localStorage.setItem("token", data.token);
       return data;
     } catch (error) {
       // If user already exists, that's fine for Google sign-in

@@ -30,6 +30,7 @@ const SignUp = () => {
       const { data } = await axiosInstance.post("/auth/register", userData, {
         headers: { Authorization: `Bearer ${idToken}` },
       });
+      localStorage.setItem("token", data.token);
       return data;
     } catch (error) {
       console.error("Error saving user to DB: ", error);
