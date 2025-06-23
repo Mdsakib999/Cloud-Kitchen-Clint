@@ -25,12 +25,16 @@ import ErrorPage from "./Pages/Error/ErrorPage";
 import { ManageReviews } from "./Components/AdminDashBoardPageComponent/ManageReviews/ManageReviews";
 import { AddCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/AddCategory";
 import ResetPassword from "./Pages/Authentication/ResetPassword";
+import ReRoute from "./Pages/Authentication/ReRoute";
+import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
+import { AddCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/AddCupon";
+import { ManageCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCupon";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
-    errorElement: <ErrorPage />,
+    // errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -80,6 +84,14 @@ export const router = createBrowserRouter([
     element: <ResetPassword />,
   },
   {
+    path: "/view-reset-password",
+    element: <ShowPasswordResetSent />,
+  },
+  {
+    path: "/handle-auth",
+    element: <ReRoute />,
+  },
+  {
     path: "/verify-email",
     element: <VerifyEmail />,
   },
@@ -90,11 +102,7 @@ export const router = createBrowserRouter([
   // User Dashboard
   {
     path: "/dashboard",
-    element: (
-      <PrivateRoute>
-        <Dashboard />
-      </PrivateRoute>
-    ),
+    element: <Dashboard />,
     children: [
       {
         path: "",
@@ -138,6 +146,14 @@ export const router = createBrowserRouter([
       {
         path: "add-category",
         element: <AddCategory />,
+      },
+      {
+        path: "add-cupon",
+        element: <AddCupon />,
+      },
+      {
+        path: "manage-cupon",
+        element: <ManageCupon />,
       },
     ],
   },

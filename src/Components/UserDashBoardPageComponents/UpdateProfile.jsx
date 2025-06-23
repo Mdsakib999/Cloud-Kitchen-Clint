@@ -17,7 +17,7 @@ import axiosInstance from "../../Utils/axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const UpdateProfile = () => {
-  const { user, setUser } = useAuth();
+  const { user, setUser, logout } = useAuth();
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -26,7 +26,6 @@ export const UpdateProfile = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
   console.log("user==>", user);
 
   const {
@@ -104,7 +103,12 @@ export const UpdateProfile = () => {
 
       const updatedResult = await axiosInstance.put(
         `/auth/${user?._id}`,
-        updateData
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       console.log("updatedResult", updatedResult);
       setUser(updatedResult.data);
@@ -142,8 +146,13 @@ export const UpdateProfile = () => {
     if (result.isConfirmed) {
       setIsSubmitting(true);
       try {
-        const result = await axiosInstance.delete(`/auth/${user?._id}`);
+        const result = await axiosInstance.delete(`/auth/${user?._id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         if (result?.data?.success) {
+          await logout();
           setUser(null);
           showToast({
             title: "Account deleted successfully!",

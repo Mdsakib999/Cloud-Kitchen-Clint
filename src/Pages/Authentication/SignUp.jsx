@@ -40,6 +40,7 @@ const SignUp = () => {
     }
   };
 
+  // FROM submit
   const onSubmit = async (data) => {
     setLoading(true);
     try {

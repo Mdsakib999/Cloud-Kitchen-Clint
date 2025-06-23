@@ -11,6 +11,8 @@ import { useAuth } from "../../providers/AuthProvider";
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -62,7 +64,7 @@ const SignIn = () => {
         // Redirect to verification page for unverified email users
         navigate("/verification-email", {
           state: {
-            email: data.email,
+            email: data.email || result.user.email,
             from: from,
           },
         });
@@ -142,12 +144,16 @@ const SignIn = () => {
         <h1 className="font-serif">Please enter your email first</h1>
       );
     }
-    setIsLoading(true);
+    setIsResettingPassword(true);
+
     try {
       await forgotPassword(email);
-      toast.success(
-        <h1 className="font-serif">Password reset email sent successfully!</h1>
-      );
+      navigate("/view-reset-password", {
+        state: {
+          email: email,
+          from: from,
+        },
+      });
     } catch (error) {
       console.error("Password reset error:", error);
       if (error.code === "auth/user-not-found") {
@@ -158,7 +164,7 @@ const SignIn = () => {
         toast.error(<h1 className="font-serif">Failed to send reset email</h1>);
       }
     } finally {
-      setIsLoading(false);
+      setIsResettingPassword(false);
     }
   };
 
@@ -229,7 +235,7 @@ const SignIn = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 text-white focus:outline-none"
+                className="absolute right-3 text-white focus:outline-none cursor-pointer"
               >
                 {showPassword ? (
                   <EyeOff className="h-5 w-5" />
@@ -249,9 +255,10 @@ const SignIn = () => {
             <button
               onClick={handleResetPassword}
               type="button"
+              disabled={isResettingPassword}
               className="text-sm font-medium text-green-600 hover:text-green-500 focus:outline-none transition-colors cursor-pointer"
             >
-              Forgot your password?
+              {isResettingPassword ? "please wait..." : "Forgot your password?"}
             </button>
           </div>
 
