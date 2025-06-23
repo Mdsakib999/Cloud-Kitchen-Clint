@@ -1,6 +1,6 @@
 export const MENU = [
   {
-    id: 1,
+    _id: 1,
     title: "Classic Beef Burger",
     category: "Burger",
     images: [
@@ -40,7 +40,7 @@ export const MENU = [
     },
   },
   {
-    id: 2,
+    _id: 2,
     title: "Pepperoni Pizza",
     category: "Pizza",
     images: [
@@ -79,7 +79,7 @@ export const MENU = [
     },
   },
   {
-    id: 3,
+    _id: 3,
     title: "Fancy Truffle Fries",
     category: "fancy fry",
     images: [
@@ -110,7 +110,7 @@ export const MENU = [
     },
   },
   {
-    id: 4,
+    _id: 4,
     title: "Club Sandwich",
     category: "Club sandwich",
     images: [
@@ -142,7 +142,7 @@ export const MENU = [
     },
   },
   {
-    id: 5,
+    _id: 5,
     title: "Spicy Chicken Wings",
     category: "Chicken Wings",
     images: [
@@ -168,7 +168,7 @@ export const MENU = [
     },
   },
   {
-    id: 6,
+    _id: 6,
     title: "Chicken Chow Mein",
     category: "Chow Mein",
     images: [
@@ -199,7 +199,7 @@ export const MENU = [
     },
   },
   {
-    id: 7,
+    _id: 7,
     title: "Iced Cold Coffee",
     category: "Cold Coffee",
     images: [
