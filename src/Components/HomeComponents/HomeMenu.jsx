@@ -3,7 +3,7 @@ import FoodCard from "../SharedComponent/FoodCard";
 
 const MENU_ITEMS = [
   {
-    id: 1,
+    _id: 1,
     title: "Chickpea Pancakes",
     category: "Indian",
     images: [
@@ -37,7 +37,7 @@ const MENU_ITEMS = [
     },
   },
   {
-    id: 2,
+    _id: 2,
     title: "South Indian Meal",
     category: "Indian",
     images: [
@@ -70,7 +70,7 @@ const MENU_ITEMS = [
     },
   },
   {
-    id: 3,
+    _id: 3,
     title: "Margherita Pizza",
     category: "Italian",
     images: [
@@ -105,7 +105,7 @@ const MENU_ITEMS = [
     },
   },
   {
-    id: 4,
+    _id: 4,
     title: "French Baguette Sandwich",
     category: "French",
     images: [
@@ -138,7 +138,7 @@ const MENU_ITEMS = [
     },
   },
   {
-    id: 5,
+    _id: 5,
     title: "Kung Pao Chicken",
     category: "Chinese",
     images: [
@@ -213,7 +213,7 @@ const HomeMenu = () => {
         {/* Item Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filtered.map((item) => (
-            <FoodCard key={item.id} item={item} />
+            <FoodCard key={item._id} item={item} />
           ))}
         </div>
       </div>
