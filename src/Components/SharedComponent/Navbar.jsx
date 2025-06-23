@@ -133,6 +133,16 @@ const Navbar = () => {
                 About
               </Link>
             </li>
+            <li>
+              <Link to="/contact" className="hover:underline">
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link to="/blogs" className="hover:underline">
+                Blogs
+              </Link>
+            </li>
           </ul>
 
           {/* Desktop Right Side */}
@@ -240,6 +250,8 @@ const Navbar = () => {
                   { to: "/menu", label: "Menu" },
                   { to: "/order", label: "Price List" },
                   { to: "/about", label: "About" },
+                  { to: "/contact", label: "Contact" },
+                  { to: "/news", label: "News" },
                   { to: "/dashboard", label: "Dashboard" },
                 ].map(({ to, label }) => (
                   <li key={label}>
