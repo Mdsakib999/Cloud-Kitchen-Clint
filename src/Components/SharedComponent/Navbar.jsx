@@ -139,8 +139,8 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link to="/news" className="hover:underline">
-                News
+              <Link to="/blogs" className="hover:underline">
+                Blogs
               </Link>
             </li>
           </ul>
