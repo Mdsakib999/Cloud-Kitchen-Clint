@@ -50,7 +50,7 @@ const ResetPassword = () => {
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
       setMessage("Password reset successfully!");
-      setTimeout(() => navigate("/signin"), 3000);
+      setTimeout(() => navigate("/signin"), 2000);
     } catch (err) {
       setError("Failed to reset password. Try again.");
     } finally {
