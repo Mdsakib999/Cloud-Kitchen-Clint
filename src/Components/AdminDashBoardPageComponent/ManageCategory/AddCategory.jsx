@@ -14,7 +14,6 @@ export const AddCategory = () => {
   const [addCategory] = useAddCategoryMutation();
   const [editCategory] = useEditCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
-  console.log(categories);
   const [categoryName, setCategoryName] = useState("");
   const [editId, setEditId] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -47,12 +46,6 @@ export const AddCategory = () => {
     e.preventDefault();
     if (!categoryName.trim()) return;
     try {
-      const formData = new FormData();
-      formData.append("name", categoryName);
-      if (selectedImage) {
-        formData.append("image", selectedImage);
-      }
-
       if (editId) {
         await editCategory({
           id: editId,
@@ -61,15 +54,13 @@ export const AddCategory = () => {
         }).unwrap();
         showToast({
           title: "Updated",
-          text: "Category updated successfully",
+          text: "Category updated",
           icon: "success",
         });
       } else {
         await addCategory({ name: categoryName, imageFile }).unwrap();
         showToast({ title: "Added", text: "Category added", icon: "success" });
       }
-
-      // Reset form
       setCategoryName("");
       setEditId(null);
       setImageFile(null);
@@ -90,7 +81,7 @@ export const AddCategory = () => {
       await deleteCategory(id).unwrap();
       showToast({
         title: "Deleted",
-        text: "Category deleted successfully",
+        text: "Category deleted",
         icon: "success",
       });
       if (editId === id) {
