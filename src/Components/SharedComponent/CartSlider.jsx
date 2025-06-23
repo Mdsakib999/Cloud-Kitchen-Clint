@@ -7,6 +7,7 @@ import { updateQuantity, removeFromCart } from "../../redux/cartSlice";
 const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
+  console.log(cartItems.entities);
 
   const handleDecrease = (id, currentQty) => {
     if (currentQty > 1) {
@@ -51,7 +52,7 @@ const CartSlider = ({ isOpen, onClose }) => {
                 className="flex items-center border-b border-gray-500 pb-4"
               >
                 <img
-                  src={item.image}
+                  src={item.image || ""}
                   alt={item.name}
                   className="w-16 h-16 object-cover rounded mr-3"
                 />
