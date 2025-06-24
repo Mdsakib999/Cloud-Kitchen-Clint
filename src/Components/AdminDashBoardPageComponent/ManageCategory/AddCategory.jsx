@@ -72,9 +72,6 @@ export const AddCategory = () => {
       setImageFile(null);
       setImagePreview(null);
       setUploadStatus("");
-
-      console.log("Category Name:", categoryName);
-      console.log("Image File:", imageFile);
     } catch (error) {
       console.error("Error saving category:", error);
       showToast({

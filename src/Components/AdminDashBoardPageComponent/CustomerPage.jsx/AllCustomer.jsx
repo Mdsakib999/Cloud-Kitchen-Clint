@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import {
   Eye,
   Search,
@@ -9,41 +9,68 @@ import {
   ShieldCheck,
   Trash2,
 } from "lucide-react";
-import { customers } from "../../../FakeDB/mockCustomer";
 import { formatDate } from "../../../utils/formatDate";
+import axiosInstance from "../../../Utils/axios";
+import { useAuth } from "../../../providers/AuthProvider";
+import { MdRemoveModerator } from "react-icons/md";
+import { FaUserShield } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 export const AllCustomer = () => {
+  const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const { user } = useAuth();
+
+  const fetchUsers = async () => {
+    try {
+      const res = await axiosInstance.get("/user/all-users", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      // Sort admins to the top
+      const sortedUsers = res.data.sort((a, b) => {
+        if (a.role === "admin" && b.role !== "admin") return -1;
+        if (a.role !== "admin" && b.role === "admin") return 1;
+        return 0;
+      });
+      setCustomers(sortedUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   // Filter customers based on search term
-  const filteredCustomers = useMemo(() => {
-    return customers.filter(
-      (customer) =>
-        customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        customer.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        customer.number.includes(searchTerm)
-    );
-  }, [searchTerm]);
+  const filteredCustomers = customers.filter(
+    (customer) =>
+      (customer.name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (customer.email?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
+      (customer.id?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (customer.phone || "").includes(searchTerm)
+  );
 
   // Sort customers
-  const sortedCustomers = useMemo(() => {
-    if (!sortField) return filteredCustomers;
+  const sortedCustomers = !sortField
+    ? filteredCustomers
+    : [...filteredCustomers].sort((a, b) => {
+        let aValue = a[sortField];
+        let bValue = b[sortField];
 
-    return [...filteredCustomers].sort((a, b) => {
-      let aValue = a[sortField];
-      let bValue = b[sortField];
-
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-  }, [filteredCustomers, sortField, sortDirection]);
+        if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+        return 0;
+      });
 
   // Pagination
   const totalPages = Math.ceil(sortedCustomers.length / itemsPerPage);
@@ -92,106 +119,75 @@ export const AllCustomer = () => {
   };
   const makeAdmin = async (id) => {
     const confirm = await Swal.fire({
-      title: "Promote to Admin?",
-      text: "This user will be promoted to admin with elevated privileges!",
-      icon: "question",
+      title: "Are you sure?",
+      text: "This user will be promoted to admin!",
+      icon: "info",
       showCancelButton: true,
-      confirmButtonColor: "#10b981",
-      cancelButtonColor: "#6b7280",
-      confirmButtonText: "Yes, promote",
-      cancelButtonText: "Cancel",
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Yes, make admin",
     });
 
     if (confirm.isConfirmed) {
-      setActionLoading(id);
       try {
-        await axiosInstance.put(`auth/make-admin/${id}`);
-        Swal.fire({
-          title: "Success!",
-          text: "User promoted to admin successfully",
-          icon: "success",
-          timer: 2000,
-          showConfirmButton: false,
+        await axiosInstance.put(`/user/make-admin/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
+        Swal.fire("Success", "User promoted to admin", "success");
         fetchUsers();
       } catch (error) {
         Swal.fire("Error", "Failed to promote user", "error");
-      } finally {
-        setActionLoading(null);
       }
     }
   };
 
   const removeAdmin = async (id) => {
     const confirm = await Swal.fire({
-      title: "Remove Admin Role?",
-      text: "This admin will be demoted to a regular user!",
+      title: "Are you sure?",
+      text: "This Admin will turn into a user!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#f59e0b",
-      cancelButtonColor: "#6b7280",
-      confirmButtonText: "Yes, demote",
-      cancelButtonText: "Cancel",
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
     });
 
     if (confirm.isConfirmed) {
-      setActionLoading(id);
       try {
-        await axiosInstance.put(`auth/remove-admin/${id}`);
-        Swal.fire({
-          title: "Success!",
-          text: "Admin role removed successfully",
-          icon: "success",
-          timer: 2000,
-          showConfirmButton: false,
+        await axiosInstance.put(`/user/remove-admin/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
+        Swal.fire("Success", "Admin role removed", "success");
         fetchUsers();
       } catch (error) {
         Swal.fire("Error", "Failed to remove admin role", "error");
-      } finally {
-        setActionLoading(null);
       }
     }
   };
 
   const deleteUser = async (id) => {
     const confirm = await Swal.fire({
-      title: "Delete User?",
-      text: "This action cannot be undone! The user will be permanently deleted.",
-      icon: "error",
+      title: "Are you sure?",
+      text: "This user will be permanently deleted!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#6b7280",
+      confirmButtonColor: "#d33",
       confirmButtonText: "Yes, delete",
-      cancelButtonText: "Cancel",
-      input: "text",
-      inputPlaceholder: "Type 'DELETE' to confirm",
-      inputValidator: (value) => {
-        if (value !== "DELETE") {
-          return "Please type 'DELETE' to confirm";
-        }
-      },
     });
 
     if (confirm.isConfirmed) {
-      setActionLoading(id);
       try {
         await axiosInstance.delete(`auth/${id}`);
-        Swal.fire({
-          title: "Deleted!",
-          text: "User has been deleted successfully",
-          icon: "success",
-          timer: 2000,
-          showConfirmButton: false,
-        });
+        Swal.fire("Deleted!", "User has been deleted.", "success");
         fetchUsers();
       } catch (error) {
         Swal.fire("Error", "Failed to delete user", "error");
-      } finally {
-        setActionLoading(null);
       }
     }
   };
+
   return (
     <div className="p-6 min-h-screen text-white">
       <h2 className="text-2xl text-black font-bold mb-6">All Customers</h2>
@@ -254,34 +250,70 @@ export const AllCustomer = () => {
             </tr>
           </thead>
           <tbody>
-            {paginatedCustomers.map((customer) => (
-              <tr
-                key={customer.id}
-                className="border-t border-white/10 hover:bg-white/5 transition-colors"
-              >
-                <td className="px-4 py-3">{customer.id}</td>
-                <td className="px-4 py-3">{customer.name}</td>
-                <td className="px-4 py-3">{customer.email}</td>
-                <td className="px-4 py-3">{customer.number}</td>
-                <td className="px-4 py-3 flex gap-3">
-                  <button
-                    onClick={() => setSelectedCustomer(customer)}
-                    className=" transition-colors flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-500/50 text-white font-medium rounded-xl hover:bg-primary "
+            {paginatedCustomers.length > 0 ? (
+              paginatedCustomers.map((customer) => {
+                const isCurrentUser = customer.email === user?.email;
+                const buttonBaseClasses =
+                  "disabled:opacity-50 " +
+                  (isCurrentUser ? "cursor-not-allowed" : "cursor-pointer");
+
+                return (
+                  <tr
+                    key={customer._id}
+                    className={`border-t transition ${
+                      isCurrentUser
+                        ? "bg-gradient-to-l from-primary to-secondary  font-semibold"
+                        : "hover:bg-gray-50 hover:text-black"
+                    }`}
                   >
-                    <Eye size={18} />
-                  </button>
-                  <div className="flex gap-2">
-                    <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-50 border border-green-300 text-green-700 font-medium rounded-xl hover:bg-green-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                      <ShieldCheck className="w-4 h-4" />
-                      Promote
-                    </button>
-                    <button className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+                    <td className="px-4 py-3">#CID{customer._id.slice(-5)}</td>
+                    <td className="px-4 py-3">{customer.name}</td>
+                    <td className="px-4 py-3">{customer.email}</td>
+                    <td className="px-4 py-3">{customer.phone}</td>
+                    <td className=" py-3 flex gap-5">
+                      <button
+                        onClick={() => setSelectedCustomer(customer)}
+                        className="transition-colors flex items-center justify-center gap-2 px-2 py-2 bg-blue-500/50 text-white font-medium rounded-xl hover:bg-primary"
+                      >
+                        <Eye size={18} />
+                      </button>
+                      {customer.role === "admin" ? (
+                        <button
+                          title="Demote to User"
+                          className={`flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 ${buttonBaseClasses}`}
+                          onClick={() => removeAdmin(customer._id)}
+                          disabled={isCurrentUser}
+                        >
+                          <MdRemoveModerator size={18} />
+                        </button>
+                      ) : (
+                        <button
+                          title="Promote to Admin"
+                          className={`flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 border border-blue-300 text-blue-700 font-medium rounded-xl hover:bg-blue-100 transition-colors disabled:opacity-50 ${buttonBaseClasses}`}
+                          onClick={() => makeAdmin(customer._id)}
+                          disabled={isCurrentUser}
+                        >
+                          <FaUserShield size={18} />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => deleteUser(customer._id)}
+                        disabled={isCurrentUser}
+                        className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan="5" className="px-4 py-3 text-center">
+                  No customers found
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -378,7 +410,7 @@ export const AllCustomer = () => {
                       </span>
                     </div>
                     <p className="text-lg font-semibold text-primary font-inter">
-                      {selectedCustomer.id}
+                      #CID{selectedCustomer._id.slice(-5)}
                     </p>
                   </div>
 
@@ -414,7 +446,7 @@ export const AllCustomer = () => {
                       </span>
                     </div>
                     <p className="text-lg font-semibold text-white font-inter">
-                      {selectedCustomer.number}
+                      {selectedCustomer.phone || "No phone number added."}
                     </p>
                   </div>
                 </div>
@@ -429,7 +461,7 @@ export const AllCustomer = () => {
                       </span>
                     </div>
                     <p className="text-lg font-semibold text-white font-sans">
-                      {selectedCustomer.address}
+                      {selectedCustomer.address || "No address added."}
                     </p>
                   </div>
 
@@ -441,7 +473,7 @@ export const AllCustomer = () => {
                       </span>
                     </div>
                     <p className="text-lg font-semibold text-white font-inter">
-                      {formatDate(selectedCustomer.joinDate)}
+                      {formatDate(selectedCustomer.createdAt)}
                     </p>
                   </div>
 
@@ -456,7 +488,7 @@ export const AllCustomer = () => {
                         </span>
                       </div>
                       <p className="text-3xl font-bold font-playfair-display text-[#00b074]">
-                        ৳{selectedCustomer.totalSpent.toLocaleString()}
+                        ৳{selectedCustomer.totalSpent?.toLocaleString() || 0}
                       </p>
                     </div>
                   </div>
