@@ -30,7 +30,6 @@ export const CheckoutForm = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("Form submitted:", data);
     alert("Order placed successfully!");
   };
 
