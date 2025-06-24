@@ -45,7 +45,11 @@ const GlobalSearch = () => {
       {isFocused && (
         <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300 opacity-100 pointer-events-auto"
-          onClick={() => setIsFocused(false)}
+          onClick={() => {
+            setIsFocused(false);
+            setSuggestions([]);
+            setSearchText("");
+          }}
         />
       )}
 
@@ -67,11 +71,10 @@ const GlobalSearch = () => {
             value={searchText}
             onChange={handleChange}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
           />
         </div>
 
-        {suggestions.length > 0 && (
+        {isFocused && suggestions.length > 0 && (
           <ul className="absolute left-0 right-0 mt-3 w-full bg-white/90 backdrop-blur-lg border border-primary/20 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all duration-200 animate-fade-in">
             {suggestions.map((item) => {
               const idx = item.name

@@ -96,7 +96,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 mt-14 w-full z-50 transition-colors duration-300 px-4 md:px-6 py-4 ${
+        className={`fixed top-0 mt-14 w-full z-50 transition-colors duration-300 px-4 md:px-6 py-4 font-serif ${
           isDashboard
             ? "bg-bg-primary text-white shadow-lg"
             : isTransparent
@@ -152,9 +152,12 @@ const Navbar = () => {
             {/* TODO "Search" */}
             <GlobalSearch />
             <button onClick={openCart} className="relative cursor-pointer">
-              <IoCartOutline className="text-2xl hover:text-primary transition-colors" />
+              <IoCartOutline
+                size={28}
+                className="hover:text-primary transition-colors"
+              />
               {totalQty > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                   {totalQty}
                 </span>
               )}
@@ -221,9 +224,12 @@ const Navbar = () => {
           <div className="flex md:hidden items-center space-x-3">
             <GlobalSearch />
             <button onClick={openCart} className="relative cursor-pointer">
-              <IoCartOutline className="text-2xl hover:text-primary transition-colors" />
+              <IoCartOutline
+                size={28}
+                className="hover:text-primary transition-colors"
+              />
               {totalQty > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                   {totalQty}
                 </span>
               )}
