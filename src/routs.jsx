@@ -31,6 +31,7 @@ import { BlogDetail } from "./Pages/Blogs/BlogDetails";
 import { AllBlogs } from "./Pages/Blogs/AllBlogs";
 import AddCoupon from "./Components/AdminDashBoardPageComponent/CuponPage/AddCoupon";
 import { ManageCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/ManageCategory";
+import AddFood from "./Components/AdminDashBoardPageComponent/AddFood/AddFood";
 import ManageCoupon from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCoupon";
 
 export const router = createBrowserRouter([
@@ -162,6 +163,11 @@ export const router = createBrowserRouter([
         path: "add-category",
         element: <AddCategory />,
       },
+      {
+        path: "add-food",
+        element: <AddFood />,
+      },
+
       {
         path: "add-coupon",
         element: <AddCoupon />,

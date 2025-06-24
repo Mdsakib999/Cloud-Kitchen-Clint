@@ -13,16 +13,16 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Category"],
+  tagTypes: ["Category", "Product"],
   endpoints: (builder) => ({
     getCategories: builder.query({
       query: () => "/admin/categories",
       providesTags: (result, error) =>
         result && Array.isArray(result)
           ? [
-            { type: "Category", id: "LIST" },
-            ...result.map((cat) => ({ type: "Category", id: cat._id })),
-          ]
+              { type: "Category", id: "LIST" },
+              ...result.map((cat) => ({ type: "Category", id: cat._id })),
+            ]
           : [{ type: "Category", id: "LIST" }],
     }),
 
@@ -67,6 +67,16 @@ export const apiSlice = createApi({
         { type: "Category", id: "LIST" },
       ],
     }),
+
+    // Product
+    addProduct: builder.mutation({
+      query: (formData) => ({
+        url: "/admin/products",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: [{ type: "Product", id: "LIST" }],
+    }),
   }),
 });
 
@@ -75,4 +85,5 @@ export const {
   useAddCategoryMutation,
   useEditCategoryMutation,
   useDeleteCategoryMutation,
+  useAddProductMutation,
 } = apiSlice;

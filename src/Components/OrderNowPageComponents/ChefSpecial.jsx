@@ -4,6 +4,7 @@ export const ChefSpecial = () => {
   return (
     <div className="py-16 px-4 max-w-7xl mx-auto">
       {/* Header Section */}
+      {/* newndwd */}
       <div className="text-center mb-16">
         <div className="inline-flex items-center gap-2 mb-4">
           <Award className="w-8 h-8 text-primary" />
