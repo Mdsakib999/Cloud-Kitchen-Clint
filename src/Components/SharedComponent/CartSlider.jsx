@@ -7,7 +7,6 @@ import { updateQuantity, removeFromCart } from "../../redux/cartSlice";
 const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
-  console.log(cartItems.entities);
 
   const handleDecrease = (id, currentQty) => {
     if (currentQty > 1) {
