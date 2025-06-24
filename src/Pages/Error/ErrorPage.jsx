@@ -17,7 +17,7 @@ const ErrorPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 flex items-center justify-center p-4 relative overflow-hidden font-inknut">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-yellow-50 flex items-center justify-center p-4 relative overflow-hidden font-inknut">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div
@@ -66,7 +66,7 @@ const ErrorPage = () => {
         {/* Main 404 Section */}
         <div className="space-y-6">
           <div className="relative">
-            <h1 className="text-9xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-600 to-yellow-500 animate-pulse">
+            <h1 className="text-9xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-green-600 to-emerald-500 animate-pulse">
               404
             </h1>
             <div className="absolute inset-0 flex items-center justify-center">
@@ -80,7 +80,7 @@ const ErrorPage = () => {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-center space-x-2 text-orange-600">
+            <div className="flex items-center justify-center space-x-2 text-emerald-600">
               <ChefHat className="w-8 h-8" />
               <UtensilsCrossed className="w-8 h-8" />
               <Coffee className="w-8 h-8" />
@@ -98,9 +98,9 @@ const ErrorPage = () => {
         </div>
 
         {/* Kitchen-themed message */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-orange-100">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-emerald-100">
           <div className="flex items-center justify-center mb-4">
-            <div className="bg-gradient-to-r from-orange-500 to-red-500 p-3 rounded-full">
+            <div className="bg-gradient-to-r from-emerald-500 to-green-500 p-3 rounded-full">
               <ChefHat className="w-8 h-8 text-white" />
             </div>
           </div>
@@ -118,7 +118,7 @@ const ErrorPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/"
-              className="cursor-pointer group bg-gradient-to-r from-orange-500 to-red-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-red-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+              className="cursor-pointer group bg-gradient-to-r from-emerald-500 to-green-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
             >
               <Home className="w-5 h-5 group-hover:rotate-12 transition-transform" />
               <span>Back to Kitchen</span>
@@ -128,7 +128,7 @@ const ErrorPage = () => {
 
         {/* Quick navigation */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 transition-all duration-300 cursor-pointer group border border-orange-100 hover:border-orange-300 hover:shadow-lg">
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 transition-all duration-300 cursor-pointer group border border-emerald-100 hover:border-emerald-300 hover:shadow-lg">
             <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
               🍕
             </div>
@@ -136,7 +136,7 @@ const ErrorPage = () => {
             <p className="text-sm text-gray-600">Explore our bestsellers</p>
           </div>
 
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 transition-all duration-300 cursor-pointer group border border-orange-100 hover:border-orange-300 hover:shadow-lg">
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 transition-all duration-300 cursor-pointer group border border-emerald-100 hover:border-emerald-300 hover:shadow-lg">
             <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
               📍
             </div>
@@ -144,7 +144,7 @@ const ErrorPage = () => {
             <p className="text-sm text-gray-600">Find locations near you</p>
           </div>
 
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 transition-all duration-300 cursor-pointer group border border-orange-100 hover:border-orange-300 hover:shadow-lg">
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 transition-all duration-300 cursor-pointer group border border-emerald-100 hover:border-emerald-300 hover:shadow-lg">
             <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
               🎯
             </div>
@@ -161,7 +161,7 @@ const ErrorPage = () => {
           </p>
           <Link
             to="/contact"
-            className="text-orange-600 hover:text-orange-700 font-medium underline underline-offset-4 hover:underline-offset-2 transition-all"
+            className="text-emerald-600 hover:text-emerald-700 font-medium underline underline-offset-4 hover:underline-offset-2 transition-all"
           >
             Contact Support
           </Link>

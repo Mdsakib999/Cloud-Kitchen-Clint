@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   IoCartOutline,
@@ -10,6 +10,7 @@ import CartSlider from "./CartSlider";
 import { useSelector } from "react-redux";
 import { useAuth } from "../../providers/AuthProvider";
 import toast from "react-hot-toast";
+import GlobalSearch from "../HomeComponents/GlobalSearch";
 
 const Navbar = () => {
   const cartItems = useSelector((state) => state.cart);
@@ -89,6 +90,7 @@ const Navbar = () => {
       <h1 className="text-center font-serif">Logged out successfully</h1>
     );
     setShowUserDropdown(false);
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -147,6 +149,8 @@ const Navbar = () => {
 
           {/* Desktop Right Side */}
           <div className="hidden md:flex space-x-4 items-center gap-3">
+            {/* TODO "Search" */}
+            <GlobalSearch />
             <button onClick={openCart} className="relative cursor-pointer">
               <IoCartOutline className="text-2xl hover:text-primary transition-colors" />
               {totalQty > 0 && (
@@ -155,7 +159,6 @@ const Navbar = () => {
                 </span>
               )}
             </button>
-
             {user ? (
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -205,22 +208,18 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
-                <Link to="/signin" className="hover:underline cursor-pointer">
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="px-4 py-2 bg-primary text-bg-secondary rounded-full hover:bg-accent/80 transition cursor-pointer"
-                >
-                  Register
-                </Link>
-              </div>
+              <Link
+                to="/signin"
+                className="w-32 bg-primary text-bg-secondary hover:bg-white hover:text-bg-primary rounded-full transition cursor-pointer px-2 py-1 md:px-4 md:py-2 font-serif text-center"
+              >
+                Log in
+              </Link>
             )}
           </div>
 
           {/* Mobile Right Side */}
           <div className="flex md:hidden items-center space-x-3">
+            <GlobalSearch />
             <button onClick={openCart} className="relative cursor-pointer">
               <IoCartOutline className="text-2xl hover:text-primary transition-colors" />
               {totalQty > 0 && (
@@ -287,15 +286,9 @@ const Navbar = () => {
                   <div className="flex flex-col space-y-3">
                     <Link
                       to="/signin"
-                      className="hover:underline cursor-pointer"
-                    >
-                      Log in
-                    </Link>
-                    <Link
-                      to="/signup"
                       className="px-4 py-2 bg-primary text-bg-secondary rounded-full hover:bg-accent/80 transition text-center cursor-pointer"
                     >
-                      Register
+                      Log in
                     </Link>
                   </div>
                 )}
