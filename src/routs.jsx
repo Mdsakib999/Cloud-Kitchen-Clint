@@ -29,6 +29,8 @@ import ReRoute from "./Pages/Authentication/ReRoute";
 import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
 import { AddCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/AddCupon";
 import { ManageCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCupon";
+import { BlogDetail } from "./Pages/Blogs/BlogDetails";
+import { AllBlogs } from "./Pages/Blogs/AllBlogs";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +53,14 @@ export const router = createBrowserRouter([
       {
         path: "/menu",
         element: <AllFoodItem />,
+      },
+      {
+        path: "/blogs",
+        element: <AllBlogs />,
+      },
+      {
+        path: "/blog-details/:id",
+        element: <BlogDetail />,
       },
       {
         path: "/food-details/:id",
