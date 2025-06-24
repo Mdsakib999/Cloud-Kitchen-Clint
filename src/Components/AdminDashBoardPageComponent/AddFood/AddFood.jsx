@@ -185,7 +185,8 @@ export default function AddFood() {
           fieldDefs={[{ name: "0", type: "text", placeholder: "Ingredient" }]}
         />
 
-        {/* Sizes */}
+        {/* Sizes  */}
+        {/*  */}
         <DynamicFieldArray
           name="sizes"
           label="Sizes"
@@ -367,7 +368,7 @@ export default function AddFood() {
         </button>
 
         {isError && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div className="mt-4 p-4  bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-600 font-medium">{error?.toString()}</p>
           </div>
         )}

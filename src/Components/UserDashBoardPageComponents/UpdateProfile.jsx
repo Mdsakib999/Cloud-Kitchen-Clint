@@ -24,13 +24,11 @@ export const UpdateProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-
-  console.log("user==>", user);
 
   const {
     register,
@@ -95,7 +93,7 @@ export const UpdateProfile = () => {
         updateData.append("profilePicture", selectedImage);
 
       const updatedResult = await axiosInstance.put(
-        `/auth/${user?._id}`,
+        `/user/${user?._id}`,
         updateData,
         {
           headers: {
@@ -285,7 +283,7 @@ export const UpdateProfile = () => {
                   <span className="text-sm">
                     Member since{" "}
                     {user?.createdAt
-                      ? new Date(user?.createdAt).toLocaleDateString("en-US", {
+                      ? new Date(user?.createdAt)?.toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
