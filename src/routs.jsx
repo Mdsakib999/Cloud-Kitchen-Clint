@@ -27,10 +27,10 @@ import { AddCategory } from "./Components/AdminDashBoardPageComponent/ManageCate
 import ResetPassword from "./Pages/Authentication/ResetPassword";
 import ReRoute from "./Pages/Authentication/ReRoute";
 import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
-import { AddCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/AddCupon";
-import { ManageCupon } from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCupon";
 import { BlogDetail } from "./Pages/Blogs/BlogDetails";
 import { AllBlogs } from "./Pages/Blogs/AllBlogs";
+import { ManageCoupon } from "./Components/AdminDashBoardPageComponent/CouponPage/ManageCoupon";
+import AddCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/AddCoupon";
 
 export const router = createBrowserRouter([
   {
@@ -158,12 +158,12 @@ export const router = createBrowserRouter([
         element: <AddCategory />,
       },
       {
-        path: "add-cupon",
-        element: <AddCupon />,
+        path: "add-coupon",
+        element: <AddCoupon />,
       },
       {
-        path: "manage-cupon",
-        element: <ManageCupon />,
+        path: "manage-coupon",
+        element: <ManageCoupon />,
       },
     ],
   },
