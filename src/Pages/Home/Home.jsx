@@ -5,6 +5,7 @@ import HomeMenu from "../../Components/HomeComponents/HomeMenu";
 import HomeChefs from "../../Components/HomeComponents/HomeChefs";
 import ClientTestimonials from "../../Components/HomeComponents/ClientTestimonials";
 import { HomeBlog } from "../../Components/HomeComponents/HomeBlog";
+import PromotionalOffer from "../../Components/HomeComponents/PromotionalOffer";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <HomeMenu />
       <HomeBlog />
       <HomeChefs />
+      <PromotionalOffer />
       <ClientTestimonials />
     </div>
   );

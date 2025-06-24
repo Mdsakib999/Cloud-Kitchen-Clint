@@ -283,7 +283,7 @@ export const UpdateProfile = () => {
                   <span className="text-sm">
                     Member since{" "}
                     {user?.createdAt
-                      ? new Date(user?.createdAt).toLocaleDateString("en-US", {
+                      ? new Date(user?.createdAt)?.toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
