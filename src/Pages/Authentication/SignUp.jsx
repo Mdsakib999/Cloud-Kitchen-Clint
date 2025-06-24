@@ -60,7 +60,6 @@ const SignUp = () => {
       };
 
       const dbData = await saveUserToDB(userData, idToken);
-      console.log("userdata from database", dbData);
 
       if (userData) {
         toast.success(

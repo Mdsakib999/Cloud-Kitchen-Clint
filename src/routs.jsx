@@ -163,11 +163,11 @@ export const router = createBrowserRouter([
         element: <AddCategory />,
       },
       {
-        path: "add-cupon",
+        path: "add-coupon",
         element: <AddCupon />,
       },
       {
-        path: "manage-cupon",
+        path: "manage-coupon",
         element: <ManageCupon />,
       },
     ],
