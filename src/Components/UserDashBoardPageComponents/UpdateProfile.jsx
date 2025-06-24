@@ -24,6 +24,7 @@ export const UpdateProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,7 +36,6 @@ export const UpdateProfile = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     reset,
     formState: { errors },
   } = useForm();
@@ -50,6 +50,12 @@ export const UpdateProfile = () => {
       setImagePreview(user.profilePicture);
     }
   }, [user, setValue, showUpdateModal]);
+
+  useEffect(() => {
+    if (user) {
+      setIsLoading(false);
+    }
+  }, [user]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -182,6 +188,7 @@ export const UpdateProfile = () => {
     if (result.isConfirmed) {
       try {
         await forgotPassword(email);
+        await logout();
         navigate("/view-reset-password", {
           state: {
             email: email,
@@ -197,6 +204,38 @@ export const UpdateProfile = () => {
       }
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-emerald-950">
+        <div className="flex flex-col items-center gap-4">
+          <svg
+            className="animate-spin h-12 w-12 text-emerald-400"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8z"
+            ></path>
+          </svg>
+          <span className="text-emerald-300 text-lg font-semibold font-serif">
+            Loading profile...
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -362,7 +401,7 @@ export const UpdateProfile = () => {
               {/* Address & Actions */}
               <div className="space-y-6">
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                  <div className="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full"></div>
+                  <div className="w-1 h-8 bg-gradient-to-b from-emerald-500 to-emerald-600 rounded-full"></div>
                   Address & Settings
                 </h3>
 
