@@ -4,7 +4,6 @@ import { Navigate, useLocation } from "react-router-dom";
 
 const AdminRoute = ({ children }) => {
   const { user, isAdmin, loading } = useAuth();
-  console.log("admin route=>", isAdmin);
   const location = useLocation();
 
   if (loading) return <Loading />;

@@ -7,7 +7,6 @@ import {
   FaClipboardList,
   FaStar,
   FaPlusCircle,
-  FaThList,
   FaFolderPlus,
 } from "react-icons/fa";
 import { IoTicketSharp } from "react-icons/io5";
@@ -37,11 +36,6 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
       label: "Order History",
       icon: <FaClipboardList size={20} />,
       path: "/admin/dashboard/orders",
-    },
-    {
-      label: "Customer Reviews",
-      icon: <FaStar size={20} />,
-      path: "/admin/dashboard/manage-reviews",
     },
     {
       label: "Add Food",
