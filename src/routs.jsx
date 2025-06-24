@@ -29,8 +29,9 @@ import ReRoute from "./Pages/Authentication/ReRoute";
 import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
 import { BlogDetail } from "./Pages/Blogs/BlogDetails";
 import { AllBlogs } from "./Pages/Blogs/AllBlogs";
-import { ManageCoupon } from "./Components/AdminDashBoardPageComponent/CouponPage/ManageCoupon";
-import AddCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/AddCoupon";
+import AddCoupon from "./Components/AdminDashBoardPageComponent/CuponPage/AddCoupon";
+import { ManageCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/ManageCategory";
+import ManageCoupon from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCoupon";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: "/order",
         element: <OrderNow />,
+      },
+      {
+        path: "/manage-category",
+        element: <ManageCategory />,
       },
       {
         path: "/order-track",
@@ -159,11 +164,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "add-coupon",
-        element: <AddCoupon />,
+        element: <AddCoupon></AddCoupon>,
       },
       {
         path: "manage-coupon",
-        element: <ManageCoupon />,
+        element: <ManageCoupon></ManageCoupon>,
       },
     ],
   },
