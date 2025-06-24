@@ -20,9 +20,9 @@ export const apiSlice = createApi({
       providesTags: (result, error) =>
         result && Array.isArray(result)
           ? [
-              { type: "Category", id: "LIST" },
-              ...result.map((cat) => ({ type: "Category", id: cat._id })),
-            ]
+            { type: "Category", id: "LIST" },
+            ...result.map((cat) => ({ type: "Category", id: cat._id })),
+          ]
           : [{ type: "Category", id: "LIST" }],
     }),
 
