@@ -50,7 +50,7 @@ const ResetPassword = () => {
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
       setMessage("Password reset successfully!");
-      setTimeout(() => navigate("/signin"), 2000);
+      setTimeout(() => navigate("/signin"), 1200);
     } catch (err) {
       setError("Failed to reset password. Try again.");
     } finally {
@@ -83,7 +83,7 @@ const ResetPassword = () => {
           </p>
         )}
         {error && (
-          <p className="text-red-600 text-center mb-4 font-medium">{error}</p>
+          <p className="text-red-200 text-center mb-4 font-medium">{error}</p>
         )}
 
         {!message && !error && (
@@ -111,7 +111,7 @@ const ResetPassword = () => {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
               {errors.newPassword && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-200 text-sm mt-1">
                   {errors.newPassword.message}
                 </p>
               )}
@@ -136,7 +136,7 @@ const ResetPassword = () => {
                 {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
               {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-200 text-sm mt-1">
                   {errors.confirmPassword.message}
                 </p>
               )}
