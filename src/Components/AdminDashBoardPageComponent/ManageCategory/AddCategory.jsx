@@ -44,7 +44,6 @@ export const AddCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!categoryName.trim()) return;
-
     try {
       if (editId) {
         await editCategory({
@@ -54,7 +53,7 @@ export const AddCategory = () => {
         }).unwrap();
         showToast({
           title: "Updated",
-          text: "Category updated successfully",
+          text: "Category updated",
           icon: "success",
         });
       } else {
@@ -68,8 +67,6 @@ export const AddCategory = () => {
           icon: "success",
         });
       }
-
-      // Reset form
       setCategoryName("");
       setEditId(null);
       setImageFile(null);
@@ -107,7 +104,7 @@ export const AddCategory = () => {
       await deleteCategory(id).unwrap();
       showToast({
         title: "Deleted",
-        text: "Category deleted successfully",
+        text: "Category deleted",
         icon: "success",
       });
 

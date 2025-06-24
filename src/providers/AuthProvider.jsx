@@ -87,9 +87,6 @@ const AuthProvider = ({ children }) => {
   const forgotPassword = async (email) => {
     setLoading(true);
     try {
-      if (user) {
-        await logout();
-      }
       return await sendPasswordResetEmail(auth, email);
     } finally {
       setLoading(false);
