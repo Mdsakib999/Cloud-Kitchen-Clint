@@ -59,14 +59,14 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
       path: "/admin/dashboard/add-category",
     },
     {
-      label: "Add Cupon",
+      label: "Add Coupon",
       icon: <IoTicketSharp size={20} />,
       path: "/admin/dashboard/add-coupon",
     },
     {
-      label: "Manage Cupon",
+      label: "Manage Coupon",
       icon: <IoTicketSharp size={20} />,
-      path: "/admin/dashboard/manage-cupon",
+      path: "/admin/dashboard/manage-coupon",
     },
   ];
 
