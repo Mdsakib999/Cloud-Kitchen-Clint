@@ -222,7 +222,7 @@ export const AddCategory = () => {
             </div>
 
             {/* Image Upload */}
-            <div className="space-y-4 w-full sm:w-3/4 md:w-2/3 lg:w-1/2">
+            <div className="space-y-4 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 cursor-pointer">
               <label className="block text-sm font-semibold mb-3">
                 Category Image <span className="font-normal">(Optional)</span>
               </label>
@@ -245,7 +245,7 @@ export const AddCategory = () => {
                 </div>
               )}
               <div
-                className={`w-full border-2 border-dashed rounded-xl p-8 transition-all duration-300 ${
+                className={`relative w-full border-2 border-dashed rounded-xl p-8 transition-all duration-300 ${
                   isDragOver
                     ? "border-blue-400 bg-blue-500/10"
                     : "border-slate-600/50 bg-slate-800/20 hover:border-slate-500/50 hover:bg-slate-800/30"
@@ -254,13 +254,15 @@ export const AddCategory = () => {
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
+                {/* Hidden file input */}
                 <input
                   type="file"
                   id="category-image"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  className="hidden"
                 />
+
                 <div className="text-center">
                   {uploadStatus === "uploading" ? (
                     <div className="flex flex-col items-center">
@@ -275,7 +277,15 @@ export const AddCategory = () => {
                       <p className="text-green-400 font-medium mb-1">
                         Image uploaded successfully!
                       </p>
-                      <p className="text-sm">Click to change image</p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          document.getElementById("category-image").click()
+                        }
+                        className="text-sm text-blue-400 hover:text-blue-300 underline"
+                      >
+                        Click to change image
+                      </button>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center">
@@ -287,8 +297,17 @@ export const AddCategory = () => {
                           ? "Drop your image here"
                           : "Drag & drop an image here"}
                       </p>
-                      <p className="text-sm mb-3">or click to browse</p>
-                      <div className="flex items-center gap-2 text-xs">
+                      <p className="text-sm mb-3">or</p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          document.getElementById("category-image").click()
+                        }
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                      >
+                        Browse Files
+                      </button>
+                      <div className="flex items-center gap-2 text-xs mt-3">
                         <AlertCircle className="w-3 h-3" />
                         <span>JPG, PNG, GIF up to 5MB</span>
                       </div>
@@ -297,30 +316,30 @@ export const AddCategory = () => {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Submit buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row justify-end gap-3">
-            {editId && (
+            {/* Submit buttons */}
+            <div className="mt-8 flex flex-col sm:flex-row justify-end gap-3">
+              {editId && (
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="px-8 py-3 rounded-xl font-semibold bg-slate-700 text-white hover:bg-slate-600"
+                >
+                  Cancel
+                </button>
+              )}
               <button
-                type="button"
-                onClick={handleCancelEdit}
-                className="px-8 py-3 rounded-xl font-semibold bg-slate-700 text-white hover:bg-slate-600"
+                type="submit"
+                disabled={!categoryName.trim()}
+                className={`px-8 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                  categoryName.trim()
+                    ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl"
+                    : "bg-slate-700 text-white cursor-not-allowed"
+                }`}
               >
-                Cancel
+                {editId ? "Update Category" : "Create Category"}
               </button>
-            )}
-            <button
-              type="submit"
-              disabled={!categoryName.trim()}
-              className={`px-8 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                categoryName.trim()
-                  ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl"
-                  : "bg-slate-700 text-white cursor-not-allowed"
-              }`}
-            >
-              {editId ? "Update Category" : "Create Category"}
-            </button>
+            </div>
           </div>
         </div>
       </form>
