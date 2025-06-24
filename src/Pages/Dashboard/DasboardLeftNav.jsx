@@ -7,7 +7,6 @@ import {
   FaClipboardList,
   FaStar,
   FaPlusCircle,
-  FaThList,
   FaFolderPlus,
 } from "react-icons/fa";
 import { IoTicketSharp } from "react-icons/io5";
@@ -39,11 +38,6 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
       path: "/admin/dashboard/orders",
     },
     {
-      label: "Customer Reviews",
-      icon: <FaStar size={20} />,
-      path: "/admin/dashboard/manage-reviews",
-    },
-    {
       label: "Add Food",
       icon: <FaPlusCircle size={20} />,
       path: "/admin/dashboard/add-food",
@@ -59,14 +53,14 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
       path: "/admin/dashboard/add-category",
     },
     {
-      label: "Add Cupon",
+      label: "Add Coupon",
       icon: <IoTicketSharp size={20} />,
-      path: "/admin/dashboard/add-cupon",
+      path: "/admin/dashboard/add-coupon",
     },
     {
-      label: "Manage Cupon",
+      label: "Manage Coupon",
       icon: <IoTicketSharp size={20} />,
-      path: "/admin/dashboard/manage-cupon",
+      path: "/admin/dashboard/manage-coupon",
     },
   ];
 

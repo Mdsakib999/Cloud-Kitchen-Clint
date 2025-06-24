@@ -96,7 +96,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 mt-14 w-full z-50 transition-colors duration-300 px-4 md:px-6 py-4 font-serif ${
+        className={`w-full mx-auto fixed top-0 mt-14 z-50 transition-colors duration-300 px-4 md:px-6 py-4 font-serif ${
           isDashboard
             ? "bg-bg-primary text-white shadow-lg"
             : isTransparent

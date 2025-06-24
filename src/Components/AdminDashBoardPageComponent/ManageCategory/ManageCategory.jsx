@@ -162,7 +162,6 @@ export const ManageCategory = () => {
     handleRemoveImage();
     handleCancelEdit();
   };
-  console.log("Categories:", categories);
 
   return (
     <div className="w-full pt-40 max-w-7xl mx-auto">
