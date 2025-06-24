@@ -164,11 +164,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "add-coupon",
-        element: <AddCoupon></AddCoupon>,
+        element: <AddCoupon />,
       },
       {
         path: "manage-coupon",
-        element: <ManageCoupon></ManageCoupon>,
+        element: <ManageCoupon />,
       },
     ],
   },

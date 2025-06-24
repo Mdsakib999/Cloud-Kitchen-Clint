@@ -17,7 +17,6 @@ export const Booking = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log("Form submitted:", data);
     alert("Booking request submitted successfully!");
     reset();
   };

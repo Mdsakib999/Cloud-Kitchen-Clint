@@ -178,9 +178,6 @@ export const OrderMap = () => {
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
     setIsDropdownOpen(false);
-
-    // Optional: Add a loading state or animation here
-    console.log(`Switched to ${period} view`);
   };
 
   // Get summary stats for current period
