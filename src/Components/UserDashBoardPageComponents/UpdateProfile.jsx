@@ -492,8 +492,8 @@ export const UpdateProfile = () => {
                       <div className="w-28 h-28 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-500 p-1">
                         <img
                           src={imagePreview || user?.profilePicture}
-                          alt="Profile Preview"
-                          className="w-full h-full rounded-full object-cover bg-white"
+                          alt="Profile"
+                          className="w-full h-full rounded-full object-cover bg-black"
                         />
                       </div>
                       <label className="absolute -bottom-2 -right-2 bg-gradient-to-r from-emerald-500 to-emerald-800 text-white p-3 rounded-full cursor-pointer hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-lg transform hover:scale-110">
