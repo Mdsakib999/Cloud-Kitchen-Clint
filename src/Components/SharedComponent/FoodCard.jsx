@@ -7,7 +7,6 @@ const FoodCard = ({ item }) => {
   const [selectedSize, setSelectedSize] = useState(item.sizes[0]);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-  console.log(item);
   return (
     <div className="text-center group">
       <div
