@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { BadgeDollarSign } from "lucide-react";
 import { IoTicketSharp } from "react-icons/io5";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdOutlineTrackChanges } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 
 export const DashBoardLeftNav = ({ closeSidebar }) => {
