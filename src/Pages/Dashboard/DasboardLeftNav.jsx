@@ -9,6 +9,7 @@ import {
   FaPlusCircle,
   FaFolderPlus,
 } from "react-icons/fa";
+import { BadgeDollarSign } from "lucide-react";
 import { IoTicketSharp } from "react-icons/io5";
 import { MdDashboard, MdOutlineTrackChanges } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
@@ -44,7 +45,7 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     },
     {
       label: "Add Offer",
-      icon: <FaStar size={20} />,
+      icon: <BadgeDollarSign size={20} />,
       path: "/admin/dashboard/add-offer",
     },
     {
