@@ -28,10 +28,12 @@ import ResetPassword from "./Pages/Authentication/ResetPassword";
 import ReRoute from "./Pages/Authentication/ReRoute";
 import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
 import { AllBlogs } from "./Pages/Blogs/AllBlogs";
-import AddCoupon from "./Components/AdminDashBoardPageComponent/CuponPage/AddCoupon";
+import AddCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/AddCoupon";
 import { ManageCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/ManageCategory";
-import ManageCoupon from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCoupon";
 import { BlogDetails } from "./Pages/Blogs/BlogDetails";
+import ManageCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/ManageCoupon";
+import AddOffer from "./Components/AdminDashBoardPageComponent/Offer/AddOffer";
+import AddFood from "./Components/AdminDashBoardPageComponent/AddFood/AddFood";
 
 export const router = createBrowserRouter([
   {
@@ -155,7 +157,7 @@ export const router = createBrowserRouter([
         element: <OrderList />,
       },
       {
-        path: "order-deatils/:id",
+        path: "order-details/:id",
         element: <OrderDetails />,
       },
       {
@@ -165,6 +167,14 @@ export const router = createBrowserRouter([
       {
         path: "add-category",
         element: <AddCategory />,
+      },
+      {
+        path: "add-offer",
+        element: <AddOffer />,
+      },
+      {
+        path: "add-food",
+        element: <AddFood />,
       },
       {
         path: "add-coupon",

@@ -102,10 +102,10 @@ export const OrderList = () => {
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <Link to={`/admin/dashboard/order-deatils/${order.oid}`}>
+                  <Link to={`/admin/dashboard/order-details/${order.oid}`}>
                     <button
                       onClick={() => setSelectedOrder(order)}
-                      className="transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md"
+                      className="cursor-pointer transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md"
                     >
                       View Details
                       <Eye size={18} />
