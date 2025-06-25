@@ -3,6 +3,10 @@ import showToast from "../../utils/ShowToast";
 import { formatDate } from "../../utils/formatDate";
 import { mockOrders } from "../../FakeDB/mockOrder";
 import { Loader } from "../SharedComponent/Loader";
+import { Link } from "react-router-dom";
+import { Cross } from "lucide-react";
+import { GrMultiple } from "react-icons/gr";
+import { MdOutlineClose } from "react-icons/md";
 
 const getStatusColor = (status) => {
   const colors = {
@@ -294,6 +298,22 @@ export const OrderHistory = () => {
 
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:ml-4">
+                    {order.status === "pending" && (
+                      <button
+                        onClick={() => handleCancelOrder(order._id)}
+                        className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-all"
+                      >
+                        Cancel Order
+                      </button>
+                    )}
+                    {order.status === "out_for_delivery" && (
+                      <Link to={`/dashboard/track-order/${order._id}`}>
+                        <button className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition-all">
+                          Track Order
+                        </button>{" "}
+                      </Link>
+                    )}
+
                     <button
                       onClick={() => handleViewOrder(order)}
                       className="px-4 py-2 bg-tertiary text-white text-sm rounded-lg hover:bg-opacity-90 transition-all"
@@ -307,16 +327,6 @@ export const OrderHistory = () => {
                         className="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:bg-opacity-90 transition-all"
                       >
                         Reorder
-                      </button>
-                    )}
-
-                    {(order.status === "pending" ||
-                      order.status === "confirmed") && (
-                      <button
-                        onClick={() => handleCancelOrder(order._id)}
-                        className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-all"
-                      >
-                        Cancel Order
                       </button>
                     )}
                   </div>
@@ -353,19 +363,7 @@ export const OrderHistory = () => {
                   onClick={() => setShowModal(false)}
                   className="text-secondary hover:text-primary transition"
                 >
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  <MdOutlineClose className="w-6 h-6" />
                 </button>
               </div>
 
@@ -374,7 +372,7 @@ export const OrderHistory = () => {
                 <div className="bg-bg-input p-4 rounded-xl">
                   <p className="text-sm text-secondary mb-1">Order Status</p>
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold text-white ${getStatusColor(
+                    className={`px-3 py-1 rounded-full text-sm font-semibold  ${getStatusColor(
                       selectedOrder.status
                     )}`}
                   >
@@ -384,7 +382,7 @@ export const OrderHistory = () => {
                 <div className="bg-bg-input p-4 rounded-xl">
                   <p className="text-sm text-secondary mb-1">Payment Status</p>
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold text-white ${getPaymentStatusColor(
+                    className={`px-3 py-1 rounded-full text-sm font-semibold  ${getPaymentStatusColor(
                       selectedOrder.paymentStatus
                     )}`}
                   >
