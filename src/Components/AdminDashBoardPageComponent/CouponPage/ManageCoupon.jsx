@@ -5,8 +5,9 @@ const dummyCoupons = [
   {
     _id: "1",
     code: "SUMMER20",
-    discountAmount: 20,
+    discountAmount: 10,
     type: "percentage",
+    minimumPurchase: 1000,
     startDate: "2025-06-01T00:00",
     endDate: "2025-07-01T23:59",
   },
@@ -15,6 +16,7 @@ const dummyCoupons = [
     code: "FLAT100",
     discountAmount: 100,
     type: "flat",
+    minimumPurchase: 100,
     startDate: "2025-06-10T00:00",
     endDate: "2025-06-24T23:59",
   },
@@ -23,6 +25,7 @@ const dummyCoupons = [
     code: "NEWUSER50",
     discountAmount: 50,
     type: "flat",
+    minimumPurchase: 0,
     startDate: "2025-06-05T00:00",
     endDate: "2025-06-01T23:59",
   }
@@ -52,6 +55,7 @@ const ManageCoupon = () => {
             <tr>
               <th className="py-3 px-4 text-left text-sm font-semibold">#</th>
               <th className="py-3 px-4 text-left text-sm font-semibold">Coupon Code</th>
+              <th className="py-3 px-4 text-left text-sm font-semibold">Min Purchase</th>
               <th className="py-3 px-4 text-left text-sm font-semibold">Discount</th>
               <th className="py-3 px-4 text-left text-sm font-semibold">Type</th>
               <th className="py-3 px-4 text-left text-sm font-semibold">Validity</th>
@@ -63,7 +67,8 @@ const ManageCoupon = () => {
               <tr key={coupon._id} className="border-t border-gray-200 hover:bg-gray-50">
                 <td className="py-3 px-4">{index + 1}</td>
                 <td className="py-3 px-4 font-medium">{coupon.code}</td>
-                <td className="py-3 px-4">{coupon.discountAmount}</td>
+                <td className="py-3 px-4 ">{coupon.minimumPurchase} TK</td>
+                <td className="py-3 px-4">{coupon.discountAmount} {coupon.type === "percentage" ? "%" : "Tk"} </td>
                 <td className="py-3 px-4 capitalize">{coupon.type}</td>
                 <td className="py-3 px-4 ">
                   <Countdown date={new Date(coupon.endDate)} renderer={renderer} />
