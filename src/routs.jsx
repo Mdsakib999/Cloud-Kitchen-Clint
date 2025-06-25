@@ -27,11 +27,11 @@ import { AddCategory } from "./Components/AdminDashBoardPageComponent/ManageCate
 import ResetPassword from "./Pages/Authentication/ResetPassword";
 import ReRoute from "./Pages/Authentication/ReRoute";
 import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
-import { BlogDetail } from "./Pages/Blogs/BlogDetails";
 import { AllBlogs } from "./Pages/Blogs/AllBlogs";
 import AddCoupon from "./Components/AdminDashBoardPageComponent/CuponPage/AddCoupon";
 import { ManageCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/ManageCategory";
 import ManageCoupon from "./Components/AdminDashBoardPageComponent/CuponPage/ManageCoupon";
+import { BlogDetails } from "./Pages/Blogs/BlogDetails";
 
 export const router = createBrowserRouter([
   {
@@ -61,7 +61,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/blog-details/:id",
-        element: <BlogDetail />,
+        element: <BlogDetails />,
       },
       {
         path: "/food-details/:id",
@@ -122,6 +122,10 @@ export const router = createBrowserRouter([
       {
         path: "",
         element: <UpdateProfile />,
+      },
+      {
+        path: "track-order/:id",
+        element: <TrackOrder />,
       },
       {
         path: "order",
