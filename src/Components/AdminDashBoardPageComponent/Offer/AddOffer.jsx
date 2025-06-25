@@ -1,24 +1,57 @@
-import React, { useState, useRef } from "react";
-import { Upload, X, ImageIcon, Plus, Check, AlertCircle } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import {
+  Upload,
+  X,
+  ImageIcon,
+  Plus,
+  Check,
+  AlertCircle,
+  Trash2,
+} from "lucide-react";
+import axiosInstance from "../../../Utils/axios";
+import Swal from "sweetalert2";
 
 const AddOffer = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(null);
+  const [fetching, setFetching] = useState(true);
   const fileInputRef = useRef(null);
+
+  // Fetch existing offers on mount
+  useEffect(() => {
+    const fetchOffers = async () => {
+      setFetching(true);
+      try {
+        const res = await axiosInstance.get("/admin/all-offers");
+        const offer = res.data?.data?.[0];
+        if (offer && offer.images) {
+          setImages(
+            offer.images.map((img, idx) => ({
+              id: img.public_id || img.url || idx,
+              url: img.url,
+              name: img.public_id?.split("/").pop() || `offer${idx + 1}.jpg`,
+              preview: img.url,
+              isExisting: true,
+            }))
+          );
+        }
+      } catch (e) {
+        // ignore
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchOffers();
+  }, []);
 
   // Handle file selection
   const handleFileSelect = (event) => {
     const files = Array.from(event.target.files);
-
     if (images.length + files.length > 4) {
-      setUploadStatus({
-        type: "error",
-        message: "Maximum 4 images allowed",
-      });
+      setUploadStatus({ type: "error", message: "Maximum 4 images allowed" });
       return;
     }
-
     files.forEach((file) => {
       if (file.type.startsWith("image/")) {
         const reader = new FileReader();
@@ -27,17 +60,16 @@ const AddOffer = () => {
             ...prev,
             {
               id: Date.now() + Math.random(),
-              file: file,
+              file,
               preview: e.target.result,
               name: file.name,
+              isExisting: false,
             },
           ]);
         };
         reader.readAsDataURL(file);
       }
     });
-
-    // Clear the input value to allow selecting the same file again if needed
     event.target.value = "";
   };
 
@@ -49,13 +81,13 @@ const AddOffer = () => {
     }
   };
 
-  // Remove image
+  // Remove image (existing or new)
   const removeImage = (id) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
     setUploadStatus(null);
   };
 
-  // Upload images to backend
+  // Upload images to backend (replace all)
   const handleUpload = async () => {
     if (images.length === 0) {
       setUploadStatus({
@@ -64,34 +96,47 @@ const AddOffer = () => {
       });
       return;
     }
-
+    // Warn if both new and existing images are present (backend does not support keeping)
+    const hasNew = images.some((img) => img.file);
+    const hasExisting = images.some((img) => img.url && !img.file);
+    if (hasNew && hasExisting) {
+      setUploadStatus({
+        type: "error",
+        message:
+          "Cannot mix new and existing images. Please remove old images or upload only new ones. (Or update backend to support keeping existing images.)",
+      });
+      return;
+    }
     setLoading(true);
     setUploadStatus(null);
-
     try {
       const formData = new FormData();
       images.forEach((img) => {
-        formData.append("images", img.file);
+        if (img.file) {
+          formData.append("images", img.file);
+        }
       });
-
-      const response = await fetch("/api/promote-offers", {
-        method: "POST",
-        body: formData,
+      const response = await axiosInstance.post("/admin/add-offers", formData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
+      if (response.data?.success) {
         setUploadStatus({
           type: "success",
-          message: "Images uploaded successfully!",
+          message: "Offers updated successfully!",
         });
-        // Optionally clear images after successful upload
-        // setImages([]);
+        setImages(
+          response.data.data.images.map((img, idx) => ({
+            id: img.public_id || img.url || idx,
+            url: img.url,
+            name: img.public_id?.split("/").pop() || `offer${idx + 1}.jpg`,
+            preview: img.url,
+            isExisting: true,
+          }))
+        );
       } else {
         setUploadStatus({
           type: "error",
-          message: data.message || "Upload failed",
+          message: response.data?.message || "Upload failed",
         });
       }
     } catch (error) {
@@ -101,6 +146,48 @@ const AddOffer = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Delete all offers
+  const handleDeleteAll = async () => {
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "This will delete all promotional offers.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete all!",
+      cancelButtonText: "Cancel",
+      customClass: {
+        popup: "bg-gray-800 text-white rounded-2xl",
+        title: "text-white font-bold",
+        content: "text-gray-300",
+        confirmButton:
+          "bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition",
+        cancelButton:
+          "bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition",
+      },
+      buttonsStyling: false,
+    });
+    if (confirm.isConfirmed) {
+      setLoading(true);
+      try {
+        const res = await axiosInstance.get("/admin/all-offers");
+        const offer = res.data?.data?.[0];
+        if (offer) {
+          await axiosInstance.delete(`/admin/delete-offer/${offer._id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+        }
+        setImages([]);
+        setUploadStatus({ type: "success", message: "All offers deleted." });
+      } catch (e) {
+        setUploadStatus({ type: "error", message: "Failed to delete offers." });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -170,7 +257,7 @@ const AddOffer = () => {
               Click to upload images
             </p>
             <p className="text-gray-500">
-              PNG, JPG, JPEG up to 10MB each (Max 4 images) - Press Enter to
+              PNG, JPG, JPEG up to 5MB each (Max 4 images) - Press Enter to
               upload after selecting
             </p>
             <input
@@ -230,8 +317,8 @@ const AddOffer = () => {
             </div>
           )}
 
-          {/* Action Button */}
-          <div className="mt-8">
+          {/* Action Buttons */}
+          <div className="mt-8 flex gap-4">
             <button
               onClick={handleUpload}
               disabled={loading || images.length === 0}
@@ -246,6 +333,23 @@ const AddOffer = () => {
                 <>
                   <Upload className="w-5 h-5" />
                   Upload Images {images.length > 0 && `(${images.length})`}
+                </>
+              )}
+            </button>
+            <button
+              onClick={handleDeleteAll}
+              disabled={loading || fetching || images.length === 0}
+              className="w-full bg-red-500 text-white font-bold py-4 px-6 rounded-xl hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="w-5 h-5" />
+                  Delete All Offers
                 </>
               )}
             </button>
