@@ -133,6 +133,18 @@ export default function AddFood() {
             )}
           </div>
         </div>
+        {/* Size & Price */}
+        <DynamicFieldArray
+          name="sizes"
+          label="Sizes"
+          control={control}
+          register={register}
+          errors={errors}
+          fieldDefs={[
+            { name: "label", type: "text", placeholder: "e.g. Small" },
+            { name: "price", type: "number", placeholder: "e.g. 5.99" },
+          ]}
+        />
 
         {/* Image Upload Section */}
         <div className="mb-8">
@@ -176,28 +188,46 @@ export default function AddFood() {
         </div>
 
         {/* Ingredients */}
-        <DynamicFieldArray
-          name="ingredients"
-          label="Ingredients"
-          control={control}
-          register={register}
-          errors={errors}
-          fieldDefs={[{ name: "0", type: "text", placeholder: "Ingredient" }]}
-        />
+        <fieldset className="mb-8">
+          <legend className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-800">Ingredients</h3>
+            <button
+              type="button"
+              onClick={() => ingredientsArray.append("")}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+            >
+              <Plus className="w-4 h-4" /> Add Ingredient
+            </button>
+          </legend>
 
-        {/* Sizes  */}
-        {/*  */}
-        <DynamicFieldArray
-          name="sizes"
-          label="Sizes"
-          control={control}
-          register={register}
-          errors={errors}
-          fieldDefs={[
-            { name: "label", type: "text" },
-            { name: "price", type: "number" },
-          ]}
-        />
+          <div className="space-y-3">
+            {ingredientsArray.fields.map((field, idx) => (
+              <div key={field.id} className="flex gap-3">
+                <input
+                  type="text"
+                  placeholder="Ingredient"
+                  className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 transition-colors"
+                  {...register(`ingredients.${idx}`, {
+                    required: "Ingredient is required",
+                  })}
+                />
+                <button
+                  type="button"
+                  onClick={() => ingredientsArray.remove(idx)}
+                  className="px-4 py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {errors.ingredients && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.ingredients.message}
+            </p>
+          )}
+        </fieldset>
 
         {/* Add-ons */}
         <div className="mb-8">

@@ -2,18 +2,6 @@ import React from "react";
 import { useFieldArray } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
 
-/**
- * Generic dynamic field array component for React Hook Form
- *
- * Props:
- * - name: string - field-array name (e.g. "ingredients", "sizes", "addons")
- * - label: string - display label
- * - control: RHF control object
- * - register: RHF register function
- * - errors: RHF errors object
- * - fieldDefs: Array<{ name: string, placeholder?: string, type: string }>
- *      definitions for each sub-field
- */
 export default function DynamicFieldArray({
   name,
   label,
