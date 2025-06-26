@@ -9,7 +9,6 @@ const HomeMenu = () => {
     isError,
     error,
   } = useGetAllProductsQuery();
-  console.log(menuItems);
 
   const [activeCategory, setActiveCategory] = useState("All");
 
