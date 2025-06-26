@@ -1,23 +1,22 @@
-import { useState, useRef } from "react";
-
+import React, { useState, useRef } from "react";
 import { FiStar } from "react-icons/fi";
+import { FaClock } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const FoodCard = ({ item }) => {
   const [selectedSize, setSelectedSize] = useState(item.sizes[0]);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-  console.log(item);
   return (
     <div className="text-center group">
       <div
-        key={item.id}
+        key={item._id}
         className="bg-bg-secondary rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-700 hover:border-primary overflow-hidden group"
       >
         <div className="relative">
           <img
-            src={item.images?.[0] || ""}
-            alt={item.name}
+            src={item.images?.[0]?.url || ""}
+            alt={item.title}
             className="w-full h-58 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <span className="absolute top-3 right-3 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
@@ -30,13 +29,19 @@ const FoodCard = ({ item }) => {
       <p className="mt-4 font-medium text-lg text-gray-200 group-hover:text-white">
         {item.title}
       </p>
+      {/* Added cook time */}
+      {item.cookTime && (
+        <div className="text-sm text-gray-400 my-1 flex items-center justify-center gap-1">
+          <FaClock className="w-4 h-4" /> {item.cookTime} mins
+        </div>
+      )}
 
       {/* Dynamic Price */}
       <p className="font-semibold text-primary text-lg group-hover:text-white">
         ${selectedSize.price.toFixed(2)}
       </p>
 
-      <div className="flex justify-center items-center gap-3 pt-3">
+      <div className="flex justify-center items-center gap-3 ">
         <div className="relative inline-block mt-4" ref={dropdownRef}>
           <button
             onClick={() => setOpen((prev) => !prev)}
@@ -74,7 +79,7 @@ const FoodCard = ({ item }) => {
             </ul>
           )}
         </div>
-        <Link to={`/food-details/${item.id}`} state={{ item }}>
+        <Link to={`/food-details/${item._id}`} state={{ item }}>
           <button className="px-5 py-2 border-2 border-primary text-primary rounded-full text-sm hover:bg-primary hover:text-white transition mt-4">
             View Details
           </button>

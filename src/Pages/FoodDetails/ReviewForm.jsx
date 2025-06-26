@@ -1,17 +1,33 @@
 import { useState } from "react";
-import { Star } from "lucide-react";
+import { StarRating } from "../../utils/StarRating";
 
 export const ReviewForm = ({ onSubmit }) => {
   const [rating, setRating] = useState(0);
-  const [hoveredStar, setHoveredStar] = useState(null);
-  const [text, setText] = useState("");
+  const [hoverRating, setHoverRating] = useState(null);
+  const [review, setReview] = useState("");
+  const [suggestion, setSuggestion] = useState("");
 
-  const handleSubmit = () => {
-    if (!rating || !text.trim()) {
-      return alert("Please provide both rating and review text.");
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    if (!rating || !review.trim()) {
+      alert("Please provide both rating and review.");
+      return;
     }
+
+    const formData = {
+      rating,
+      review: review.trim(),
+      suggestion: suggestion.trim(),
+    };
+
+    onSubmit?.(formData);
+
+    // Reset form
     setRating(0);
-    setText("");
+    setHoverRating(null);
+    setReview("");
+    setSuggestion("");
   };
 
   return (
@@ -19,40 +35,48 @@ export const ReviewForm = ({ onSubmit }) => {
       <h3 className="text-xl text-white font-semibold mb-3">Leave a Review</h3>
 
       {/* Star Rating */}
-      <div className="flex gap-1 mb-4">
-        {[1, 2, 3, 4, 5].map((num) => (
-          <button
-            key={num}
-            type="button"
-            onClick={() => setRating(num)}
-            onMouseEnter={() => setHoveredStar(num)}
-            onMouseLeave={() => setHoveredStar(null)}
-            className="focus:outline-none"
-          >
-            <Star
-              className={`w-6 h-6 ${
-                (hoveredStar || rating) >= num
-                  ? "fill-yellow-400 text-yellow-400"
-                  : "text-white"
-              }`}
-            />
-          </button>
-        ))}
+      <div className="mb-4">
+        <StarRating
+          rating={rating}
+          setRating={setRating}
+          hoverRating={hoverRating}
+          setHoverRating={setHoverRating}
+        />
+        <p className="text-sm text-gray-400 mt-1">
+          {rating > 0
+            ? `Rating: ${rating} star${rating !== 1 ? "s" : ""}`
+            : "Click to rate"}
+        </p>
       </div>
 
-      {/* Textarea */}
+      {/* Review Textarea */}
       <textarea
         rows="4"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={review}
+        onChange={(e) => setReview(e.target.value)}
         placeholder="Write your thoughts about this dish..."
-        className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 mb-4"
+        className="w-full p-3 rounded-lg bg-bg-input text-white border border-gray-600 mb-4 focus:border-yellow-400 focus:outline-none"
+        required
       />
 
-      {/* Submit Button */}
+      {/* Tips for Improvement */}
+      <label className="block text-white mb-2 font-medium">
+        Tips for Improvement{" "}
+        <span className="text-sm text-gray-400">(optional)</span>
+      </label>
+      <input
+        type="text"
+        value={suggestion}
+        onChange={(e) => setSuggestion(e.target.value)}
+        placeholder="Any suggestion for improvement?"
+        className="w-full p-3 rounded-lg bg-bg-input text-white border border-gray-600 mb-4 focus:border-yellow-400 focus:outline-none"
+      />
+
+      {/* Submit */}
       <button
-        onClick={handleSubmit}
-        className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition"
+        type="button"
+        onClick={handleFormSubmit}
+        className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition font-semibold"
       >
         Submit Review
       </button>

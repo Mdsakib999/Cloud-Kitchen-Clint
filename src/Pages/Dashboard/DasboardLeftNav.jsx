@@ -5,17 +5,17 @@ import {
   FaHistory,
   FaUtensils,
   FaClipboardList,
-  FaStar,
   FaPlusCircle,
   FaFolderPlus,
 } from "react-icons/fa";
+import { BadgeDollarSign } from "lucide-react";
 import { IoTicketSharp } from "react-icons/io5";
-import { MdDashboard, MdOutlineTrackChanges } from "react-icons/md";
+import { MdDashboard } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 
-export const DashBoardLeftNav = ({ closeSidebar }) => {
+export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
   const { pathname } = useLocation();
-  const isAdmin = pathname.startsWith("/admin");
+
   const adminRoutes = [
     {
       label: "Profile",
@@ -39,7 +39,7 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     },
     {
       label: "Add Offer",
-      icon: <FaStar size={20} />,
+      icon: <BadgeDollarSign size={20} />,
       path: "/admin/dashboard/add-offer",
     },
     {
@@ -50,7 +50,7 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     {
       label: "Manage Food",
       icon: <FaUtensils size={20} />,
-      path: "/admin/manage-food",
+      path: "/admin/dashboard/manage-food",
     },
     {
       label: "Manage Category",
@@ -78,39 +78,58 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     },
   ];
 
-  const routesToRender = isAdmin === true ? adminRoutes : customerRoutes;
+  const routesToRender = isAdmin ? adminRoutes : customerRoutes;
 
   return (
     <aside
-      className={`h-full w-full p-4 relative md:w-80 lg:w-72 ${
-        isAdmin ? "bg-white" : "bg-bg-secondary"
-      }`}
+      className={`
+    flex flex-col overflow-y-auto
+    ${isAdmin ? "bg-white border-r border-gray-200" : "bg-bg-secondary"}
+    lg:fixed lg:top-32 lg:left-0 lg:w-72
+    h-[calc(100vh-8rem)]  
+  `}
     >
-      {/* Close button for mobile */}
-      <button
-        onClick={closeSidebar}
-        className={`absolute top-20 md:top-24 right-4 lg:hidden ${
-          isAdmin ? "text-black" : "text-white"
-        } hover:text-red-300`}
-      >
-        <FaTimes size={22} />
-      </button>
+      {/* Header Section - Fixed */}
+      <div className="flex-shrink-0 p-4 border-b border-gray-200 pt-10">
+        {/* Close button for mobile */}
+        <button
+          onClick={closeSidebar}
+          className={`
+            absolute top-4 right-4 lg:hidden z-10
+            ${
+              isAdmin
+                ? "text-black hover:text-red-500"
+                : "text-white hover:text-red-300"
+            }
+            transition-colors duration-200
+          `}
+        >
+          <FaTimes size={22} />
+        </button>
 
-      <div className="flex flex-col gap-6 mt-16 lg:mt-14 justify-center items-center">
         <h2
-          className={`text-2xl font-bold text-center ${
-            isAdmin ? "text-black" : "text-white"
-          }`}
+          className={`
+            text-xl font-bold text-center mt-8 lg:mt-0
+            ${isAdmin ? "text-black" : "text-white"}
+          `}
         >
           {isAdmin ? "Admin" : "User"} Dashboard
         </h2>
+      </div>
 
-        <nav className="flex flex-col gap-2">
+      {/* Navigation Menu - Scrollable */}
+      <nav className="flex-1 overflow-y-auto p-4">
+        <div className="flex flex-col gap-2">
           {routesToRender.map(({ label, icon, path }) => {
             const isActive = pathname === path;
 
             return (
-              <Link to={path} onClick={closeSidebar} key={label}>
+              <Link
+                to={path}
+                onClick={closeSidebar}
+                key={label}
+                className="block"
+              >
                 <button
                   className={`cursor-pointer flex items-center gap-3 px-3 py-2 w-full font-medium ${
                     isActive
@@ -126,8 +145,8 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
               </Link>
             );
           })}
-        </nav>
-      </div>
+        </div>
+      </nav>
     </aside>
   );
 };

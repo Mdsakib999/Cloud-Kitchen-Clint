@@ -60,7 +60,7 @@ const HomeChefs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-primary text-white relative overflow-hidden">
+    <div className="mb-28 bg-bg-primary text-white relative overflow-hidden">
       <div className="mx-auto px-6 py-16 relative z-10 max-w-6xl">
         {/* Header Section */}
         <div className="mb-16">
