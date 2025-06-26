@@ -68,7 +68,7 @@ export const apiSlice = createApi({
       ],
     }),
 
-    // Product
+    // Product (Admin)
     addProduct: builder.mutation({
       query: (formData) => ({
         url: "/admin/products",
@@ -76,6 +76,21 @@ export const apiSlice = createApi({
         body: formData,
       }),
       invalidatesTags: [{ type: "Product", id: "LIST" }],
+    }),
+    // Public
+    getAllProducts: builder.query({
+      query: () => "/user/products",
+      providesTags: (result) =>
+        result
+          ? [
+              { type: "Product", id: "LIST" },
+              ...result.map(({ _id }) => ({ type: "Product", id: _id })),
+            ]
+          : [{ type: "Product", id: "LIST" }],
+    }),
+    getProductById: builder.query({
+      query: (id) => `/user/products/${id}`,
+      providesTags: (result, error, id) => [{ type: "Products", id }],
     }),
   }),
 });
@@ -86,4 +101,6 @@ export const {
   useEditCategoryMutation,
   useDeleteCategoryMutation,
   useAddProductMutation,
+  useGetAllProductsQuery,
+  useGetProductByIdQuery,
 } = apiSlice;

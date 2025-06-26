@@ -56,7 +56,7 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
     {
       label: "Manage Food",
       icon: <FaUtensils size={20} />,
-      path: "/admin/manage-food",
+      path: "/admin/dashboard/manage-food",
     },
     {
       label: "Manage Category",
