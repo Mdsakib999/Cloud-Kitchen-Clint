@@ -20,6 +20,7 @@ export default function AddFood() {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -46,6 +47,7 @@ export default function AddFood() {
   const sizesArray = useFieldArray({ name: "sizes", control });
   const addonsArray = useFieldArray({ name: "addons", control });
   const optionsArray = useFieldArray({ name: "options", control });
+  const hasVariants = watch("hasVariants");
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -184,20 +186,51 @@ export default function AddFood() {
           errors={errors}
           fieldDefs={[{ name: "0", type: "text", placeholder: "Ingredient" }]}
         />
-
+        <div className="mb-6 flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="hasVariants"
+            {...register("hasVariants")}
+            className="h-4 w-4"
+          />
+          <label htmlFor="hasVariants" className="font-medium">
+            This product has size variants
+          </label>
+        </div>
         {/* Sizes  */}
-        {/*  */}
-        <DynamicFieldArray
-          name="sizes"
-          label="Sizes"
-          control={control}
-          register={register}
-          errors={errors}
-          fieldDefs={[
-            { name: "label", type: "text" },
-            { name: "price", type: "number" },
-          ]}
-        />
+        {hasVariants ? (
+          <DynamicFieldArray
+            name="sizes"
+            label="Sizes"
+            control={control}
+            register={register}
+            errors={errors}
+            fieldDefs={[
+              { name: "label", type: "text", placeholder: "e.g. Small" },
+              { name: "price", type: "number", placeholder: "e.g. 5.99" },
+            ]}
+          />
+        ) : (
+          <div className="mb-8">
+            <label className="block mb-2 font-medium">Price *</label>
+            <input
+              type="number"
+              step="0.01"
+              className="w-48 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 transition-colors"
+              {...register("sizes.0.price", {
+                required: "Price is required",
+                valueAsNumber: true,
+                min: { value: 0, message: "Price must be ≥ 0" },
+              })}
+              placeholder="e.g. 5.99"
+            />
+            {errors.sizes?.[0]?.price && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.sizes[0].price.message}
+              </p>
+            )}
+          </div>
+        )}
 
         {/* Add-ons */}
         <div className="mb-8">
