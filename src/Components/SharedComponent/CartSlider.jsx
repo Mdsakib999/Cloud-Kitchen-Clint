@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { IoClose, IoTrashOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { updateQuantity, removeFromCart } from "../../redux/cartSlice";
+import { Minus, Plus } from "lucide-react";
 
 const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();

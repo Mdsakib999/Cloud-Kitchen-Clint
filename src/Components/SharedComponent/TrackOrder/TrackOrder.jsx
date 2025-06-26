@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import {
-  Search,
   Package,
   User,
   Phone,
   MapPin,
-  Calendar,
   DollarSign,
   Clock,
   CheckCircle,
