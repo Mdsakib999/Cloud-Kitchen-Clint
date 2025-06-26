@@ -18,6 +18,8 @@ export const FoodDetails = () => {
   const dispatch = useDispatch();
   const food = state?.item;
 
+  console.log("food=>", food);
+
   const [isFavorite, setIsFavorite] = useState(false);
   const [mainImage, setMainImage] = useState("");
   const [selectedSize, setSelectedSize] = useState(null);
