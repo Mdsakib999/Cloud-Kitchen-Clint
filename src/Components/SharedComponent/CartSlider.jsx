@@ -1,8 +1,8 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IoClose, IoTrashOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { updateQuantity, removeFromCart } from "../../redux/cartSlice";
+import { Minus, Plus } from "lucide-react";
 
 const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -58,22 +58,22 @@ const CartSlider = ({ isOpen, onClose }) => {
                 <div className="flex-1">
                   <h3 className="font-medium">{item.name}</h3>
 
-                  <div className="flex items-center mt-1">
+                  <div className="flex items-center">
                     <button
                       onClick={() => handleDecrease(item._id, item.quantity)}
-                      className="px-2 py-1 text-sm bg-gray-200 rounded"
+                      className="cursor-pointer p-2 text-sm bg-emerald-50 text-emerald-900 rounded"
                     >
-                      -
+                      <Minus size={16} />
                     </button>
                     <span className="px-3">{item.quantity}</span>
                     <button
                       onClick={() => handleIncrease(item._id, item.quantity)}
-                      className="px-2 py-1 text-sm bg-gray-200 rounded"
+                      className="cursor-pointer p-2 text-sm bg-emerald-50 text-emerald-900 rounded"
                     >
-                      +
+                      <Plus size={16} />
                     </button>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-emerald-200 mt-1">
                     Price: ${(item.price * item.quantity).toFixed(2)}
                   </p>
                 </div>
