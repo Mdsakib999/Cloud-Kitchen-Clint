@@ -1,5 +1,5 @@
 import { ManageCustomerReviews } from "./ManageCustomerReviews";
-import { PreviousReviews } from "./PreviousReviews";
+import { PreviousReviews } from "../../../Pages/FoodDetails/PreviousReviews";
 
 export const ManageReviews = () => {
   return (
