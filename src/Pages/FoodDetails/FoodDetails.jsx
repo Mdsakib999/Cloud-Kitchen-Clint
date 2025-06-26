@@ -53,17 +53,25 @@ export const FoodDetails = () => {
         : [...prev, addon]
     );
   };
+
   const handleAddToCart = () => {
     if (!selectedSize) return;
+    const compositeId = [
+      food._id,
+      selectedSize.label,
+      ...selectedAddons.map((a) => a.label),
+    ].join("__");
+
     dispatch(
       addToCart({
-        _id: food._id,
+        _id: compositeId,
+        baseId: food._id,
         name: food.title,
         image: mainImage,
         price: totalPrice,
         quantity: 1,
         size: selectedSize.label,
-        addons: selectedAddons.map((a) => a.label),
+        addons: selectedAddons,
       })
     );
     toast.success("Added to cart");
