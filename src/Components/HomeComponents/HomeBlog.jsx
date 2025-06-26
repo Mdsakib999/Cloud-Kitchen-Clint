@@ -17,34 +17,43 @@ export const HomeBlog = () => {
           Stay updated with the latest stories
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {blogPosts.slice(0, 3).map((post) => (
           <div
             key={post.id}
-            className=" bg-bg-secondary rounded-md dark:text-white text-black"
+            className="bg-bg-secondary rounded-md text-white flex flex-col h-[500px]"
           >
-            <figure className="w-full h-80">
+            <figure className="h-64 w-full p-3">
               <img
                 src={post.image || "/fallback.jpg"}
                 alt={post.title}
-                className="w-full h-full rounded-lg object-cover transition-all duration-300 hover:transform hover:scale-105"
+                className="w-full h-full object-cover rounded-t-md"
               />
             </figure>
-            <Link to={`/blog-details/${post.id}`}>
-              <article className="p-4 space-y-2">
-                <div className="flex justify-between items-center">
-                  <p className="flex gap-2 items-center">
-                    <FaCalendar /> {post.date}
-                  </p>
-                  <p className="text-sm bg-amber-400/50 px-2 py-1 rounded-full">
-                    {post.category}
+
+            <Link
+              to={`/blog-details/${post.id}`}
+              className="flex-1 flex flex-col"
+            >
+              <article className="p-4 flex flex-col flex-1 justify-between">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="flex gap-2 items-center text-sm">
+                      <FaCalendar /> {post.date}
+                    </p>
+                    <p className="text-sm bg-amber-400/50 px-2 py-1 rounded-full">
+                      {post.category}
+                    </p>
+                  </div>
+                  <h1 className="text-lg font-semibold capitalize line-clamp-2">
+                    {post.title}
+                  </h1>
+                  <p className="text-sm mt-2 line-clamp-3">
+                    {post.content.slice(0, 75)}
                   </p>
                 </div>
-                <h1 className="text-lg font-semibold capitalize h-15">
-                  {post.title}
-                </h1>
-                <p className="text-sm">{post.content.slice(0, 100)}</p>
-                <div className="text-sm hover:text-primary hover:transform hover:scale-105 font-normal flex items-center">
+
+                <div className="text-sm hover:text-primary font-normal flex items-center mt-4">
                   Read More
                   <span>
                     <ChevronRight />
