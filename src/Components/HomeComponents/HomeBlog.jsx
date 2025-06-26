@@ -1,10 +1,11 @@
 import { blogPosts } from "../../FakeDB/mockBlogData";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import { FaCalendar } from "react-icons/fa";
 
 export const HomeBlog = () => {
   return (
-    <div className="my-20">
+    <div className="my-20 max-w-7xl mx-auto">
       <div className="relative z-10 text-center mb-5 px-6">
         <div className="inline-block">
           <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent mb-4 tracking-tight">
@@ -20,34 +21,31 @@ export const HomeBlog = () => {
         {blogPosts.slice(0, 3).map((post) => (
           <div
             key={post.id}
-            className="w-[90%] h-[480px] group mx-auto bg-bg-secondary dark:border-0 border overflow-hidden rounded-md dark:text-white text-black"
+            className=" bg-bg-secondary rounded-md dark:text-white text-black"
           >
-            <figure className="w-full h-80 group-hover:h-72 transition-all duration-300 dark:bg-[#0a121a] bg-[#f0f5fa] p-2 rounded-md relative overflow-hidden">
-              <div
-                style={{
-                  background:
-                    "linear-gradient(123.9deg, #0B65ED 1.52%, rgba(0, 0, 0, 0) 68.91%)",
-                }}
-                className="absolute top-0 left-0 w-full h-full group-hover:opacity-100 opacity-0 transition-all duration-300 "
-              ></div>
+            <figure className="w-full h-80">
               <img
                 src={post.image || "/fallback.jpg"}
                 alt={post.title}
-                className="absolute bottom-10 group-hover:-bottom-5 right-8 h-64 w-[80%] group-hover:border-4 border-4 group-hover:border-[#76aaf82d] rounded-lg object-cover transition-all duration-300"
+                className="w-full h-full rounded-lg object-cover transition-all duration-300 hover:transform hover:scale-105"
               />
             </figure>
             <Link to={`/blog-details/${post.id}`}>
               <article className="p-4 space-y-2">
-                <div className="flex justify-between">
-                  <div className="h-8 w-20 bg-bg-primary rounded-md"></div>
-                  <div className="h-8 w-20 bg-bg-primary rounded-md"></div>
+                <div className="flex justify-between items-center">
+                  <p className="flex gap-2 items-center">
+                    <FaCalendar /> {post.date}
+                  </p>
+                  <p className="text-sm bg-amber-400/50 px-2 py-1 rounded-full">
+                    {post.category}
+                  </p>
                 </div>
-
-                <h1 className="text-lg font-semibold capitalize">
+                <h1 className="text-lg font-semibold capitalize h-15">
                   {post.title}
                 </h1>
-                <div className="text-base dark:text-white text-blue-600 font-normal group-hover:opacity-100 opacity-0 translate-y-2 group-hover:translate-y-0 pt-2 flex gap-1 transition-all duration-300">
-                  View More
+                <p className="text-sm">{post.content.slice(0, 100)}</p>
+                <div className="text-sm hover:text-primary hover:transform hover:scale-105 font-normal flex items-center">
+                  Read More
                   <span>
                     <ChevronRight />
                   </span>
