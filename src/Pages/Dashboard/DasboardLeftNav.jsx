@@ -38,11 +38,6 @@ export const DashBoardLeftNav = ({ closeSidebar }) => {
       path: "/admin/dashboard/orders",
     },
     {
-      label: "Customer Reviews",
-      icon: <FaStar size={20} />,
-      path: "/admin/dashboard/manage-reviews",
-    },
-    {
       label: "Add Offer",
       icon: <FaStar size={20} />,
       path: "/admin/dashboard/add-offer",
