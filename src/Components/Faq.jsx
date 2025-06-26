@@ -74,9 +74,11 @@ const Faq = () => {
         <div className="relative container mx-auto px-4 py-16">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <Home className="w-4 h-4" />
-            <span className="text-sm cursor-pointer hover:text-emerald-600">
-              Home
-            </span>
+            <Link to="/">
+              <span className="text-sm cursor-pointer hover:text-emerald-600">
+                Home
+              </span>
+            </Link>
             <ChevronDown className="w-4 h-4 rotate-[-90deg]" />
             <span className="text-sm font-medium">FAQ</span>
           </div>
