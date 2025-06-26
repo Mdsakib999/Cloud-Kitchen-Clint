@@ -5,18 +5,19 @@ import { Link } from "react-router-dom";
 
 const FoodCard = ({ item }) => {
   const [selectedSize, setSelectedSize] = useState(item.sizes[0]);
+  console.log(item.sizes[0].price);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   console.log(item);
   return (
     <div className="text-center group">
       <div
-        key={item.id}
+        key={item._id}
         className="bg-bg-secondary rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-700 hover:border-primary overflow-hidden group"
       >
         <div className="relative">
           <img
-            src={item.images?.[0] || ""}
+            src={item.images?.[0]?.url || ""}
             alt={item.name}
             className="w-full h-58 object-cover group-hover:scale-105 transition-transform duration-300"
           />
@@ -74,7 +75,7 @@ const FoodCard = ({ item }) => {
             </ul>
           )}
         </div>
-        <Link to={`/food-details/${item.id}`} state={{ item }}>
+        <Link to={`/food-details/${item._id}`} state={{ item }}>
           <button className="px-5 py-2 border-2 border-primary text-primary rounded-full text-sm hover:bg-primary hover:text-white transition mt-4">
             View Details
           </button>
