@@ -80,7 +80,13 @@ export const apiSlice = createApi({
     // Public
     getAllProducts: builder.query({
       query: () => "/user/products",
-      providesTags: ["Products"],
+      providesTags: (result) =>
+        result
+          ? [
+              { type: "Product", id: "LIST" },
+              ...result.map(({ _id }) => ({ type: "Product", id: _id })),
+            ]
+          : [{ type: "Product", id: "LIST" }],
     }),
     getProductById: builder.query({
       query: (id) => `/user/products/${id}`,
