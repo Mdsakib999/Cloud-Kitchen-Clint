@@ -19,10 +19,7 @@ export const HomeBlog = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
         {blogPosts.slice(0, 3).map((post) => (
-          <div
-            key={post.id}
-            className=" bg-bg-secondary rounded-md dark:text-white text-black"
-          >
+          <div key={post.id} className=" bg-bg-secondary rounded-md text-black">
             <figure className="w-full h-80">
               <img
                 src={post.image || "/fallback.jpg"}
