@@ -145,6 +145,11 @@ const Navbar = () => {
                 Blogs
               </Link>
             </li>
+            <li>
+              <Link to="/faq" className="hover:underline">
+                Faq
+              </Link>
+            </li>
           </ul>
 
           {/* Desktop Right Side */}
@@ -258,6 +263,7 @@ const Navbar = () => {
                   { to: "/contact", label: "Contact" },
                   { to: "/news", label: "News" },
                   { to: "/dashboard", label: "Dashboard" },
+                  { to: "/faq", label: "Faq" },
                 ].map(({ to, label }) => (
                   <li key={label}>
                     <Link

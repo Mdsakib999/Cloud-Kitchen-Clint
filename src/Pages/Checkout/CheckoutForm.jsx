@@ -9,6 +9,7 @@ import {
   Package,
   ArrowRight,
 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export const CheckoutForm = () => {
   const {
@@ -33,11 +34,10 @@ export const CheckoutForm = () => {
     alert("Order placed successfully!");
   };
 
-  const orderItems = [
-    { name: "Fresh Vegetable Salad", price: 15.99, quantity: 1, image: "🥗" },
-    { name: "Garden Mix Salad", price: 18.99, quantity: 1, image: "🥙" },
-    { name: "Mediterranean Bowl", price: 22.99, quantity: 1, image: "🍲" },
-  ];
+  let orderItems = useSelector((state) => state.cart);
+
+  orderItems = Object.values(orderItems.entities);
+  console.log("orderItems", orderItems);
 
   const subtotal = orderItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -46,7 +46,10 @@ export const CheckoutForm = () => {
   const tax = subtotal * 0.08;
   const shipping = subtotal > 50 ? 0 : 4.99;
   const total = subtotal + tax + shipping;
-
+  // orderItems.entities.reduce(
+  //     (sum, item) => sum + item.price * item.quantity,
+  //     0
+  //   );
   return (
     <div className="min-h-screen bg-bg-primary py-12 px-4 lg:pt-36">
       <div className="max-w-7xl mx-auto">
@@ -219,15 +222,24 @@ export const CheckoutForm = () => {
                     className="flex items-center justify-between p-4 bg-bg-input rounded-2xl"
                   >
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-bg-secondary rounded-xl flex items-center justify-center text-2xl mr-4 shadow-sm">
-                        {item.image}
-                      </div>
+                      <img
+                        className="w-12 h-12 bg-bg-secondary rounded-xl flex items-center justify-center text-2xl mr-4 shadow-sm"
+                        src={item.image}
+                        alt=""
+                      />
                       <div>
                         <h3 className="font-semibold text-white text-sm">
                           {item.name}
                         </h3>
                         <p className="text-white text-sm">
-                          Qty: {item.quantity}
+                          {item.quantity} x {item.price}
+                        </p>
+                        <p className="text-white text-sm">
+                          {item.addons.map((addon, idx) => (
+                            <span className="text-emerald-200 mt-2" key={idx}>
+                              {addon},
+                            </span>
+                          ))}{" "}
                         </p>
                       </div>
                     </div>
