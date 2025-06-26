@@ -20,7 +20,6 @@ export default function AddFood() {
     handleSubmit,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -47,7 +46,6 @@ export default function AddFood() {
   const sizesArray = useFieldArray({ name: "sizes", control });
   const addonsArray = useFieldArray({ name: "addons", control });
   const optionsArray = useFieldArray({ name: "options", control });
-  const hasVariants = watch("hasVariants");
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -135,6 +133,18 @@ export default function AddFood() {
             )}
           </div>
         </div>
+        {/* Size & Price */}
+        <DynamicFieldArray
+          name="sizes"
+          label="Sizes"
+          control={control}
+          register={register}
+          errors={errors}
+          fieldDefs={[
+            { name: "label", type: "text", placeholder: "e.g. Small" },
+            { name: "price", type: "number", placeholder: "e.g. 5.99" },
+          ]}
+        />
 
         {/* Image Upload Section */}
         <div className="mb-8">
@@ -178,59 +188,46 @@ export default function AddFood() {
         </div>
 
         {/* Ingredients */}
-        <DynamicFieldArray
-          name="ingredients"
-          label="Ingredients"
-          control={control}
-          register={register}
-          errors={errors}
-          fieldDefs={[{ name: "0", type: "text", placeholder: "Ingredient" }]}
-        />
-        <div className="mb-6 flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="hasVariants"
-            {...register("hasVariants")}
-            className="h-4 w-4"
-          />
-          <label htmlFor="hasVariants" className="font-medium">
-            This product has size variants
-          </label>
-        </div>
-        {/* Sizes  */}
-        {hasVariants ? (
-          <DynamicFieldArray
-            name="sizes"
-            label="Sizes"
-            control={control}
-            register={register}
-            errors={errors}
-            fieldDefs={[
-              { name: "label", type: "text", placeholder: "e.g. Small" },
-              { name: "price", type: "number", placeholder: "e.g. 5.99" },
-            ]}
-          />
-        ) : (
-          <div className="mb-8">
-            <label className="block mb-2 font-medium">Price *</label>
-            <input
-              type="number"
-              step="0.01"
-              className="w-48 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 transition-colors"
-              {...register("sizes.0.price", {
-                required: "Price is required",
-                valueAsNumber: true,
-                min: { value: 0, message: "Price must be ≥ 0" },
-              })}
-              placeholder="e.g. 5.99"
-            />
-            {errors.sizes?.[0]?.price && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.sizes[0].price.message}
-              </p>
-            )}
+        <fieldset className="mb-8">
+          <legend className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-800">Ingredients</h3>
+            <button
+              type="button"
+              onClick={() => ingredientsArray.append("")}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+            >
+              <Plus className="w-4 h-4" /> Add Ingredient
+            </button>
+          </legend>
+
+          <div className="space-y-3">
+            {ingredientsArray.fields.map((field, idx) => (
+              <div key={field.id} className="flex gap-3">
+                <input
+                  type="text"
+                  placeholder="Ingredient"
+                  className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 transition-colors"
+                  {...register(`ingredients.${idx}`, {
+                    required: "Ingredient is required",
+                  })}
+                />
+                <button
+                  type="button"
+                  onClick={() => ingredientsArray.remove(idx)}
+                  className="px-4 py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
           </div>
-        )}
+
+          {errors.ingredients && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.ingredients.message}
+            </p>
+          )}
+        </fieldset>
 
         {/* Add-ons */}
         <div className="mb-8">
