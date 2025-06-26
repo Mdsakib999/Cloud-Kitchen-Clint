@@ -1,186 +1,44 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import FoodCard from "../SharedComponent/FoodCard";
-
-const MENU_ITEMS = [
-  {
-    _id: 1,
-    title: "Chickpea Pancakes",
-    category: "Indian",
-    images: [
-      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
-      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
-      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
-    ],
-    sizes: [
-      { label: 'Small (6")', price: 8.99 },
-      { label: 'Medium (9")', price: 10.99 },
-      { label: 'Large (12")', price: 13.99 },
-    ],
-    ingredients: [
-      "Basmati rice",
-      "Chicken",
-      "Yogurt",
-      "Onion",
-      "Spices",
-      "Mint",
-      "Coriander",
-    ],
-    rating: 4.6,
-    reviews: 89,
-    cookTime: "45 mins",
-    servings: 2,
-    nutritionFacts: {
-      calories: 620,
-      protein: "28g",
-      fat: "20g",
-      carbohydrates: "75g",
-    },
-  },
-  {
-    _id: 2,
-    title: "South Indian Meal",
-    category: "Indian",
-    images: [
-      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
-      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
-      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
-    ],
-    sizes: [
-      { label: "Single Serving", price: 7.99 },
-      { label: "Family Pack", price: 19.99 },
-    ],
-    ingredients: [
-      "Basmati rice",
-      "Chicken",
-      "Yogurt",
-      "Onion",
-      "Spices",
-      "Mint",
-      "Coriander",
-    ],
-    rating: 4.6,
-    reviews: 89,
-    cookTime: "45 mins",
-    servings: 2,
-    nutritionFacts: {
-      calories: 620,
-      protein: "28g",
-      fat: "20g",
-      carbohydrates: "75g",
-    },
-  },
-  {
-    _id: 3,
-    title: "Margherita Pizza",
-    category: "Italian",
-    images: [
-      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
-      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
-      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
-    ],
-    sizes: [
-      { label: '10"', price: 9.99 },
-      { label: '12"', price: 12.99 },
-      { label: '14"', price: 15.99 },
-      { label: '16"', price: 18.99 },
-    ],
-    ingredients: [
-      "Basmati rice",
-      "Chicken",
-      "Yogurt",
-      "Onion",
-      "Spices",
-      "Mint",
-      "Coriander",
-    ],
-    rating: 4.6,
-    reviews: 89,
-    cookTime: "45 mins",
-    servings: 2,
-    nutritionFacts: {
-      calories: 620,
-      protein: "28g",
-      fat: "20g",
-      carbohydrates: "75g",
-    },
-  },
-  {
-    _id: 4,
-    title: "French Baguette Sandwich",
-    category: "French",
-    images: [
-      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
-      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
-      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
-    ],
-    sizes: [
-      { label: "Half", price: 5.99 },
-      { label: "Full", price: 10.99 },
-    ],
-    ingredients: [
-      "Basmati rice",
-      "Chicken",
-      "Yogurt",
-      "Onion",
-      "Spices",
-      "Mint",
-      "Coriander",
-    ],
-    rating: 4.6,
-    reviews: 89,
-    cookTime: "45 mins",
-    servings: 2,
-    nutritionFacts: {
-      calories: 620,
-      protein: "28g",
-      fat: "20g",
-      carbohydrates: "75g",
-    },
-  },
-  {
-    _id: 5,
-    title: "Kung Pao Chicken",
-    category: "Chinese",
-    images: [
-      "https://static.vecteezy.com/system/resources/thumbnails/038/970/612/small/ai-generated-chicken-biryani-in-a-shiny-silver-bowl-spicy-curry-and-aromatic-flavors-authentic-indian-food-serving-fancy-food-in-a-restaurant-photo.jpg",
-      "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
-      "https://i.ytimg.com/vi/J7J6OZuKG6U/maxresdefault.jpg",
-    ],
-    sizes: [
-      { label: "Small", price: 8.49 },
-      { label: "Large", price: 14.99 },
-    ],
-    ingredients: [
-      "Basmati rice",
-      "Chicken",
-      "Yogurt",
-      "Onion",
-      "Spices",
-      "Mint",
-      "Coriander",
-    ],
-    rating: 4.6,
-    reviews: 89,
-    cookTime: "45 mins",
-    servings: 2,
-    nutritionFacts: {
-      calories: 620,
-      protein: "28g",
-      fat: "20g",
-      carbohydrates: "75g",
-    },
-  },
-];
-
-const CATEGORIES = ["All", "Indian", "Italian", "French", "Chinese"];
+import { useGetAllProductsQuery } from "../../redux/apiSlice";
 
 const HomeMenu = () => {
+  const {
+    data: menuItems = [],
+    isLoading,
+    isError,
+    error,
+  } = useGetAllProductsQuery();
+
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const filtered =
-    activeCategory === "All"
-      ? MENU_ITEMS
-      : MENU_ITEMS.filter((i) => i.category === activeCategory);
+  // Derive category list from fetched products
+  const categories = React.useMemo(() => {
+    const names = menuItems.map(
+      (item) => item.category?.name || "Uncategorized"
+    );
+    return ["All", ...Array.from(new Set(names))];
+  }, [menuItems]);
+
+  // Filter items by category
+  const filtered = React.useMemo(() => {
+    if (activeCategory === "All") return menuItems;
+    return menuItems.filter(
+      (item) => (item.category?.name || "Uncategorized") === activeCategory
+    );
+  }, [menuItems, activeCategory]);
+
+  if (isLoading) {
+    return <p className="text-center mt-12">Loading menu...</p>;
+  }
+
+  if (isError) {
+    return (
+      <p className="text-center mt-12 text-red-500">
+        Error loading menu: {error?.data?.message || error.error}
+      </p>
+    );
+  }
 
   return (
     <section className="py-12 px-4 bg-bg-secondary text-white min-h-screen">
@@ -195,7 +53,7 @@ const HomeMenu = () => {
 
         {/* Category Tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
