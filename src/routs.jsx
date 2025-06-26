@@ -34,6 +34,7 @@ import { BlogDetails } from "./Pages/Blogs/BlogDetails";
 import ManageCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/ManageCoupon";
 import AddOffer from "./Components/AdminDashBoardPageComponent/Offer/AddOffer";
 import AddFood from "./Components/AdminDashBoardPageComponent/AddFood/AddFood";
+import Faq from "./Components/Faq";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <AllBlogs />,
+      },
+      {
+        path: "/faq",
+        element: <Faq />,
       },
       {
         path: "/blog-details/:id",

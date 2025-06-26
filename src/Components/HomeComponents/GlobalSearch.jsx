@@ -65,7 +65,9 @@ const GlobalSearch = () => {
           <input
             type="search"
             placeholder="Search your favorite food..."
-            className={`w-full pr-5 pl-10 py-2.5 md:py-3 rounded-2xl bg-white/20 border border-primary/30 text-white placeholder:text-gray-300 shadow-lg backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-primary/60 focus:bg-white/20 transition-all duration-200 ${
+            className={`w-64 ${
+              isFocused && "w-full"
+            } pr-5 pl-10 py-2.5 md:py-3 rounded-2xl bg-white/20 border border-primary/30 text-white placeholder:text-gray-300 shadow-lg backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-primary/60 focus:bg-white/20 transition-all duration-200 ${
               isFocused ? "ring-2 ring-primary/60 scale-105" : ""
             }`}
             value={searchText}
@@ -75,7 +77,7 @@ const GlobalSearch = () => {
         </div>
 
         {isFocused && suggestions.length > 0 && (
-          <ul className="absolute left-0 right-0 mt-3 w-full bg-white/90 backdrop-blur-lg border border-primary/20 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all duration-200 animate-fade-in">
+          <ul className="scrollbar-hide absolute left-0 right-0 mt-3 w-full bg-white/90 backdrop-blur-lg border border-primary/20 rounded-2xl shadow-2xl z-50 overflow-y-auto max-h-[500px] transition-all duration-200 animate-fade-in">
             {suggestions.map((item) => {
               const idx = item.name
                 .toLowerCase()
