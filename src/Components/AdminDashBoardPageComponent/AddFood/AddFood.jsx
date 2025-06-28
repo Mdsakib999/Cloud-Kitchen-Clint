@@ -29,15 +29,8 @@ export default function AddFood() {
       servings: 1,
       ingredients: [""],
       sizes: [{ label: "", price: 0 }],
-      addons: [{ label: "", price: 0 }],
-      options: [
-        {
-          name: "",
-          type: "single",
-          required: false,
-          choices: [{ label: "", price: 0 }],
-        },
-      ],
+      addons: [],
+      options: [],
       images: [],
     },
   });
@@ -230,47 +223,18 @@ export default function AddFood() {
         </fieldset>
 
         {/* Add-ons */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Add-ons</h3>
-            <button
-              type="button"
-              onClick={() => addonsArray.append({ label: "", price: 0 })}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-            >
-              <Plus className="w-4 h-4" />
-              Add Add-on
-            </button>
-          </div>
-          <div className="space-y-3">
-            {addonsArray.fields.map((item, index) => (
-              <div key={item.id} className="flex gap-3">
-                <input
-                  placeholder="Add-on name (e.g., Extra Cheese, Bacon)"
-                  className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
-                  {...register(`addons.${index}.label`, { required: true })}
-                />
-                <input
-                  type="number"
-                  step="0.01"
-                  placeholder="Price"
-                  className="w-32 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
-                  {...register(`addons.${index}.price`, {
-                    valueAsNumber: true,
-                    min: 0,
-                  })}
-                />
-                <button
-                  type="button"
-                  onClick={() => addonsArray.remove(index)}
-                  className="px-4 py-3 text-red-600 hover:text-red-700 border-2 border-red-200 hover:border-red-300 rounded-lg transition-colors"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+        <DynamicFieldArray
+          name="addons"
+          label="Add-ons"
+          control={control}
+          register={register}
+          errors={errors}
+          noRequired
+          fieldDefs={[
+            { name: "label", type: "text", placeholder: "e.g. Extra Cheese" },
+            { name: "price", type: "number", placeholder: "e.g. 1.50" },
+          ]}
+        />
 
         {/* Options */}
         <div className="mb-8">
