@@ -9,6 +9,7 @@ export default function DynamicFieldArray({
   register,
   errors,
   fieldDefs,
+  noRequired = false,
 }) {
   const { fields, append, remove } = useFieldArray({ name, control });
 
@@ -37,22 +38,31 @@ export default function DynamicFieldArray({
       <div className="space-y-3">
         {fields.map((item, index) => (
           <div key={item.id} className="flex gap-3">
-            {fieldDefs.map((def) => (
-              <input
-                key={def.name}
-                type={def.type}
-                placeholder={def.placeholder || def.name}
-                className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
-                {...register(`${name}.${index}.${def.name}`, {
-                  required: `${def.name} is required`,
-                  valueAsNumber: def.type === "number",
-                  min:
-                    def.type === "number"
-                      ? { value: 0, message: `${def.name} must be >= 0` }
-                      : undefined,
-                })}
-              />
-            ))}
+            {fieldDefs.map((def) => {
+              // build validation rules
+              const rules = {};
+              if (!noRequired) {
+                rules.required = `${def.name} is required`;
+              }
+              if (def.type === "number") {
+                rules.valueAsNumber = true;
+                rules.min = { value: 0, message: `${def.name} must be >= 0` };
+              }
+              // allow overriding via def.validate
+              if (def.validate) {
+                Object.assign(rules, def.validate);
+              }
+
+              return (
+                <input
+                  key={def.name}
+                  type={def.type}
+                  placeholder={def.placeholder || def.name}
+                  className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
+                  {...register(`${name}.${index}.${def.name}`, rules)}
+                />
+              );
+            })}
             <button
               type="button"
               onClick={() => remove(index)}
@@ -67,10 +77,11 @@ export default function DynamicFieldArray({
       {errors[name] && Array.isArray(errors[name]) && (
         <p className="text-red-500 text-sm mt-2">
           {errors[name]
-            .map((err, i) => {
-              const firstKey = err && Object.keys(err)[0];
-              return err[firstKey]?.message || null;
+            .map((err) => {
+              const key = err && Object.keys(err)[0];
+              return err[key]?.message || null;
             })
+            .filter(Boolean)
             .join(", ")}
         </p>
       )}

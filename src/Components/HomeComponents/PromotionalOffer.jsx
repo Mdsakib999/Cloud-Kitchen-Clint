@@ -23,10 +23,10 @@ const PromotionalOffer = () => {
         ];
       case 4:
         return [
-          { span: "col-span-1 row-span-3", size: "medium" }, // Left 1/3
-          { span: "col-span-1 row-span-1", size: "small" }, // Right top left
-          { span: "col-span-2 row-span-1", size: "small" }, // Right top right
-          { span: "col-span-3 row-span-2", size: "large" }, // Bottom 2/3
+          { span: "col-span-1 row-span-10", size: "large" }, // Left 1/3
+          { span: "col-span-2 row-span-2", size: "small" }, // Right top left
+          { span: "col-span-1 row-span-2", size: "small" }, // Right top right
+          { span: "col-span-3 row-span-8", size: "large" }, // Bottom 2/3
         ];
       default:
         return [];
@@ -92,7 +92,7 @@ const PromotionalOffer = () => {
           className={`grid ${getGridConfig(
             images.length
           )} gap-2 sm:gap-4 w-full`}
-          style={{ height: "400px" }}
+          style={{ height: "500px" }}
         >
           {images.map((img, idx) => (
             <div

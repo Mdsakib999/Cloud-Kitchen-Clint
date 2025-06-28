@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { PreviousReviews } from "./PreviousReviews";
+import { ReviewForm } from "./ReviewForm";
 import { addToCart } from "../../redux/cartSlice";
 
 export const FoodDetails = () => {
@@ -17,6 +19,8 @@ export const FoodDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const food = state?.item;
+
+  console.log("food=>", food);
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [mainImage, setMainImage] = useState("");
@@ -53,17 +57,25 @@ export const FoodDetails = () => {
         : [...prev, addon]
     );
   };
+
   const handleAddToCart = () => {
     if (!selectedSize) return;
+    const compositeId = [
+      food._id,
+      selectedSize.label,
+      ...selectedAddons.map((a) => a.label),
+    ].join("__");
+
     dispatch(
       addToCart({
-        _id: food._id,
+        _id: compositeId,
+        baseId: food._id,
         name: food.title,
         image: mainImage,
         price: totalPrice,
         quantity: 1,
         size: selectedSize.label,
-        addons: selectedAddons.map((a) => a.label),
+        addons: selectedAddons,
       })
     );
     toast.success("Added to cart");
@@ -214,6 +226,12 @@ export const FoodDetails = () => {
           </div>
         </div>
       </div>
+      {/* Add Review field */}
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <ReviewForm />
+      </div>
+      {/* Previous Reviews */}
+      <PreviousReviews foodTitle={food.title} />
     </div>
   );
 };
