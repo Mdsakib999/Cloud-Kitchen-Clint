@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../Utils/axios";
+import { SiV } from "react-icons/si";
 
 const PromotionalOffer = () => {
   const [images, setImages] = useState([]);
@@ -87,30 +88,32 @@ const PromotionalOffer = () => {
     };
 
     return (
-      <div className="max-w-6xl mx-auto px-2 sm:px-4 mb-20 mt-0">
-        <div
-          className={`grid ${getGridConfig(
-            images.length
-          )} gap-2 sm:gap-4 w-full`}
-          style={{ height: "500px" }}
-        >
-          {images.map((img, idx) => (
-            <div
-              key={img.id}
-              className={`relative rounded-2xl ${
-                layout[idx]?.span || ""
-              } flex items-center justify-center w-full h-full`}
-              style={{ minWidth: 0 }}
-            >
-              <img
-                src={img.url}
-                alt={img.name}
-                className="w-full h-full object-center object-cover rounded-4xl"
-                draggable={false}
-                loading="lazy"
-              />
-            </div>
-          ))}
+      <div className="w-full bg-bg-secondary pt-10 pb-24 ">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 ">
+          <div
+            className={`grid ${getGridConfig(
+              images.length
+            )} gap-2 sm:gap-4 w-full`}
+            style={{ height: "500px" }}
+          >
+            {images.map((img, idx) => (
+              <div
+                key={img.id}
+                className={`relative rounded-2xl ${
+                  layout[idx]?.span || ""
+                } flex items-center justify-center w-full h-full`}
+                style={{ minWidth: 0 }}
+              >
+                <img
+                  src={img.url}
+                  alt={img.name}
+                  className="w-full h-full object-center object-cover rounded-4xl"
+                  draggable={false}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
