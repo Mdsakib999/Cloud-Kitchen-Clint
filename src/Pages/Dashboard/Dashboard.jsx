@@ -10,28 +10,38 @@ export const Dashboard = () => {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     if (sidebarOpen) {
-      window.scrollTo({ top: 100, behavior: "smooth" });
+      // Prevent body scroll when mobile sidebar is open
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
     }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [sidebarOpen]);
+
   return (
     <>
       <ScrollToTop />
       <InfoBar />
       <Navbar />
-      <div className={`${isAdmin ? "bg-white" : "bg-bg-primary"}`}>
+      <div className={`${isAdmin ? "bg-white" : "bg-bg-primary"} pt-24`}>
         {/* Main Dashboard Container */}
-        <div className="flex min-h-screen">
+        <div className="flex h-screen relative">
           {/* Mobile Sidebar Toggle Button */}
           <button
             className={`
-            fixed top-32 md:top-36 left-4 md:left-10 z-40 lg:hidden
-            bg-primary text-white px-4 py-2 rounded
-            text-sm font-medium shadow-lg
-            transition-opacity duration-300
-            ${sidebarOpen ? "opacity-0 pointer-events-none" : "opacity-100"}
-          `}
+              fixed top-28 left-4 z-50 lg:hidden
+              bg-primary text-white px-4 py-2 rounded
+              text-sm font-medium shadow-lg
+              transition-all duration-300
+              ${sidebarOpen ? "opacity-0 pointer-events-none" : "opacity-100"}
+            `}
             onClick={() => setSidebarOpen(true)}
           >
             Open Sidebar
@@ -40,7 +50,7 @@ export const Dashboard = () => {
           {/* Mobile Sidebar Overlay */}
           {sidebarOpen && (
             <div
-              className="fixed top-0 left-0 w-full h-full lg:hidden"
+              className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
               onClick={() => setSidebarOpen(false)}
             />
           )}
@@ -48,37 +58,32 @@ export const Dashboard = () => {
           {/* Mobile Sidebar */}
           <div
             className={`
-            fixed top-0 left-0 h-full w-full md:w-80 shadow-lg z-40 lg:hidden
-            transform transition-transform duration-300 ease-in-out
-            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-          `}
+              fixed top-0 left-0 h-full w-80 z-50 lg:hidden
+              transform transition-transform duration-300 ease-in-out
+              ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+            `}
           >
-            <div className="pt-16 h-full overflow-y-auto">
-              <DashBoardLeftNav closeSidebar={() => setSidebarOpen(false)} />
-            </div>
+            <DashBoardLeftNav
+              closeSidebar={() => setSidebarOpen(false)}
+              isAdmin={isAdmin}
+            />
           </div>
 
           {/* Desktop Sidebar */}
           <div className="hidden lg:block lg:w-72 lg:flex-shrink-0">
-            <div className="h-screen sticky top-24">
-              <div className="h-full overflow-y-auto  shadow-md">
-                <DashBoardLeftNav />
-              </div>
-            </div>
+            <DashBoardLeftNav isAdmin={isAdmin} />
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 min-w-0 overflow-hidden">
-            <div className="h-full overflow-y-auto lg:mt-30 md:mt-40">
+          <div className="flex-1 min-w-0 lg:ml-0">
+            <div className="h-full">
               <div className="p-4 lg:p-6">
                 {isAdmin ? (
-                  <div className="flex flex-col min-h-screen gap-2">
-                    <>
-                      <StatHeader />
-                    </>
-                    <>
+                  <div className="flex flex-col min-h-full gap-4 mt-4">
+                    <StatHeader />
+                    <div className="flex-1">
                       <Outlet />
-                    </>
+                    </div>
                   </div>
                 ) : (
                   <Outlet />

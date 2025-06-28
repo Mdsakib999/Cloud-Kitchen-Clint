@@ -17,6 +17,8 @@ import { useAuth } from "../../providers/AuthProvider";
 import Swal from "sweetalert2";
 import axiosInstance from "../../Utils/axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FaUserCog } from "react-icons/fa";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 export const UpdateProfile = () => {
   const { user, setUser, forgotPassword, logout } = useAuth();
@@ -236,7 +238,7 @@ export const UpdateProfile = () => {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen py-8 px-4 font-serif">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -257,7 +259,7 @@ export const UpdateProfile = () => {
 
           {/* Profile Content */}
           <div className="px-8 pb-8">
-            <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 -mt-20">
+            <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 -mt-6 md:-mt-10 lg:-mt-12 relative z-10">
               {/* Profile Picture */}
               <div className="relative group">
                 <div className="w-32 h-32 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-800 p-1">
@@ -272,11 +274,17 @@ export const UpdateProfile = () => {
 
               {/* User Info */}
               <div className="text-center lg:text-left flex-1">
-                <h2 className="text-xl md:text-2xl lg:text-4xl font-bold text-white mb-2">
-                  {user?.name}
-                </h2>
-                <p className="text-slate-300 text-sm md:text-lg mb-2 break-all">
-                  {user?.email}
+                <p className="flex items-center justify-center lg:justify-normal gap-x-1 text-slate-300 text-sm md:text-lg mb-2 break-all">
+                  <span className="text-emerald-100">
+                    {user?.role === "admin" ? (
+                      <MdAdminPanelSettings size={24} />
+                    ) : (
+                      <FaUserCog size={24} />
+                    )}{" "}
+                  </span>
+                  <span className="font-semibold font-serif">
+                    {user?.role === "admin" ? "Admin" : "User"}
+                  </span>
                 </p>
                 <div className="flex items-center justify-center lg:justify-start gap-2 text-slate-400">
                   <Calendar size={16} />
@@ -373,7 +381,7 @@ export const UpdateProfile = () => {
                             <p className="text-slate-400 text-sm font-medium">
                               Phone Number
                             </p>
-                            <p className="text-white text-lg font-semibold">
+                            <p className="text-white text-lg font-semibold font-sans">
                               {user?.phone || (
                                 <span className="italic text-slate-400 text-base">
                                   No phone added

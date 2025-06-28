@@ -308,7 +308,7 @@ export const OrderHistory = () => {
                     )}
                     {order.status === "out_for_delivery" && (
                       <Link to={`/dashboard/track-order/${order._id}`}>
-                        <button className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition-all">
+                        <button className="w-full px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition-all">
                           Track Order
                         </button>{" "}
                       </Link>
