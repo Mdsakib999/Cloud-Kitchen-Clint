@@ -13,6 +13,7 @@ import { IoTicketSharp } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { SiGoogletagmanager } from "react-icons/si";
+import { LuNotebookPen } from "react-icons/lu";
 
 export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
   const { pathname } = useLocation();
@@ -67,6 +68,16 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
       label: "Manage Coupon",
       icon: <SiGoogletagmanager size={20} />,
       path: "/admin/dashboard/manage-coupon",
+    },
+    {
+      label: "Create-Blogs",
+      icon: <LuNotebookPen />,
+      path: "/admin/dashboard/create-blogs",
+    },
+    {
+      label: "Manage-Blogs",
+      icon: <LuNotebookPen />,
+      path: "/admin/dashboard/manage-blogs",
     },
   ];
 
