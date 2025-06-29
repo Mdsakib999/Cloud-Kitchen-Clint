@@ -129,11 +129,16 @@ export const AllCustomer = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axiosInstance.put(`/user/make-admin/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const result = await axiosInstance.put(
+          `/user/make-admin/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        console.log("result", result);
         Swal.fire("Success", "User promoted to admin", "success");
         fetchUsers();
       } catch (error) {
@@ -143,22 +148,27 @@ export const AllCustomer = () => {
   };
 
   const removeAdmin = async (id) => {
+    console.log(id);
     const confirm = await Swal.fire({
       title: "Are you sure?",
       text: "This Admin will turn into a user!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
-      confirmButtonText: "Yes, delete",
+      confirmButtonText: "Yes, Make User",
     });
 
     if (confirm.isConfirmed) {
       try {
-        await axiosInstance.put(`/user/remove-admin/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        await axiosInstance.put(
+          `/user/remove-admin/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         Swal.fire("Success", "Admin role removed", "success");
         fetchUsers();
       } catch (error) {
