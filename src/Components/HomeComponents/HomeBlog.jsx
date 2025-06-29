@@ -17,17 +17,17 @@ export const HomeBlog = () => {
           Stay updated with the latest stories
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {blogPosts.slice(0, 3).map((post) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-3">
+        {blogPosts.slice(0, 4).map((post) => (
           <div
             key={post.id}
             className="bg-bg-secondary rounded-md text-white flex flex-col h-[500px]"
           >
-            <figure className="h-64 w-full p-3">
+            <figure className="h-64 w-full p-2">
               <img
                 src={post.image || "/fallback.jpg"}
                 alt={post.title}
-                className="w-full h-full object-cover rounded-t-md"
+                className="w-full h-full object-fit rounded-t-md"
               />
             </figure>
 
