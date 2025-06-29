@@ -10,7 +10,6 @@ import ShowEmailVerification from "./Pages/Authentication/ShowEmailVerification"
 import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
 import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
 import { OrderNow } from "./Pages/OrderNow/OrderNow";
-import { CheckoutForm } from "./Pages/Checkout/CheckoutForm";
 import { UpdateProfile } from "./Components/UserDashBoardPageComponents/UpdateProfile";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { OrderHistory } from "./Components/UserDashBoardPageComponents/OrderHistory";
@@ -36,6 +35,7 @@ import AddOffer from "./Components/AdminDashBoardPageComponent/Offer/AddOffer";
 import AddFood from "./Components/AdminDashBoardPageComponent/AddFood/AddFood";
 import Faq from "./Components/Faq";
 import ManageFood from "./Components/AdminDashBoardPageComponent/ManageFood/ManageFood";
+import CheckoutForm from "./Pages/Checkout/CheckoutForm";
 import { CreateBlog } from "./Components/AdminDashBoardPageComponent/Blogs/CreateBlog";
 import { ManageBlog } from "./Components/AdminDashBoardPageComponent/Blogs/ManageBlog";
 
