@@ -103,14 +103,14 @@ export const FoodDetails = () => {
               alt={food.title}
               className="w-full h-96 object-cover rounded-lg shadow-lg"
             />
-            <button
+            {/* <button
               onClick={toggleFavorite}
               className={`absolute top-4 right-4 p-2 rounded-full ${
                 isFavorite ? "bg-red-500" : "bg-primary"
               } text-white shadow-lg`}
             >
               <Heart className="w-5 h-5" />
-            </button>
+            </button> */}
             <div className="flex gap-2 mt-4 overflow-x-auto">
               {food.images.map(({ url }, idx) => (
                 <img

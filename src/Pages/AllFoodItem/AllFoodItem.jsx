@@ -4,7 +4,7 @@ import { AllFoodCard } from "../../Components/AllFoodItemPageComponents/AllFoodC
 export const AllFoodItem = () => {
   return (
     <div>
-      <AllFoodBanner />
+      {/* <AllFoodBanner /> */}
       <AllFoodCard />
     </div>
   );
