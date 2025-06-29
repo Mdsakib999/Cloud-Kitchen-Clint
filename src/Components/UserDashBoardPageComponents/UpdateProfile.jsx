@@ -470,7 +470,7 @@ export const UpdateProfile = () => {
         {/* Update Profile Modal */}
         {showUpdateModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-emerald-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-emerald-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 w-full max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide">
               <div className="p-8">
                 {/* Modal Header */}
                 <div className="flex items-center justify-between mb-8">

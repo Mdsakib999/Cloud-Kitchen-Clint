@@ -12,7 +12,7 @@ import { useAuth } from "../../providers/AuthProvider";
 import toast from "react-hot-toast";
 import GlobalSearch from "../HomeComponents/GlobalSearch";
 
-const Navbar = () => {
+const Navbar = ({ offsetTop = 56 }) => {
   const cartItems = useSelector((state) => state.cart);
   const totalQty = cartItems.ids.length;
   const location = useLocation();
@@ -96,13 +96,14 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`w-full mx-auto fixed top-0 mt-14 z-50 transition-colors duration-300 px-4 md:px-6 py-4 font-serif ${
+        className={`w-full mx-auto fixed z-50 transition-colors duration-300 px-4 md:px-6 py-4 font-serif ${
           isDashboard
             ? "bg-bg-primary text-white shadow-lg"
             : isTransparent
             ? "bg-transparent text-white"
             : "bg-bg-primary text-white shadow-lg"
         }`}
+        style={{ top: offsetTop }}
         ref={mobileMenuRef}
       >
         <div className="flex items-center justify-between w-full">
@@ -235,27 +236,29 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Right Side */}
-          <div className="flex md:hidden items-center space-x-3">
+          <div className="flex md:hidden justify-around px-3">
             <GlobalSearch />
-            <button onClick={openCart} className="relative cursor-pointer">
-              <IoCartOutline
-                size={28}
-                className="hover:text-primary transition-colors"
-              />
-              {totalQty > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                  {totalQty}
-                </span>
-              )}
-            </button>
+            <div className="flex gap-5">
+              <button onClick={openCart} className="relative cursor-pointer">
+                <IoCartOutline
+                  size={28}
+                  className="hover:text-primary transition-colors"
+                />
+                {totalQty > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {totalQty}
+                  </span>
+                )}
+              </button>
 
-            <button
-              onClick={toggleMobileMenu}
-              className="text-2xl focus:outline-none cursor-pointer"
-              aria-label="Toggle mobile menu"
-            >
-              {isMobileMenuOpen ? <IoCloseOutline /> : <IoMenuOutline />}
-            </button>
+              <button
+                onClick={toggleMobileMenu}
+                className="text-2xl focus:outline-none cursor-pointer"
+                aria-label="Toggle mobile menu"
+              >
+                {isMobileMenuOpen ? <IoCloseOutline /> : <IoMenuOutline />}
+              </button>
+            </div>
           </div>
         </div>
 
