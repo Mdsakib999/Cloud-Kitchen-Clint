@@ -190,12 +190,21 @@ const Navbar = () => {
                     </div>
                     <div className="p-4 space-y-5">
                       <div className="w-full">
-                        <Link
-                          className="text-sm text-emerald-100 bg-emerald-900 py-2 w-full px-5 my-3 rounded"
-                          to="/dashboard"
-                        >
-                          Dashboard
-                        </Link>
+                        {user?.role === "admin" ? (
+                          <Link
+                            className="text-sm text-emerald-100 bg-emerald-900 py-2 w-full px-5 my-3 rounded"
+                            to="/admin/dashboard"
+                          >
+                            Dashboard
+                          </Link>
+                        ) : (
+                          <Link
+                            className="text-sm text-emerald-100 bg-emerald-900 py-2 w-full px-5 my-3 rounded"
+                            to="/dashboard"
+                          >
+                            Dashboard
+                          </Link>
+                        )}
                       </div>
                       <div>
                         <p className="text-sm text-gray-300">Name</p>
@@ -262,8 +271,14 @@ const Navbar = () => {
                   { to: "/about", label: "About" },
                   { to: "/contact", label: "Contact" },
                   { to: "/news", label: "News" },
-                  { to: "/dashboard", label: "Dashboard" },
                   { to: "/faq", label: "Faq" },
+                  {
+                    to:
+                      user?.role === "admin"
+                        ? "/admin/dashboard"
+                        : "/dashboard",
+                    label: "Dashboard",
+                  },
                 ].map(({ to, label }) => (
                   <li key={label}>
                     <Link
