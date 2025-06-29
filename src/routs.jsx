@@ -37,6 +37,8 @@ import AddFood from "./Components/AdminDashBoardPageComponent/AddFood/AddFood";
 import Faq from "./Components/Faq";
 import ManageFood from "./Components/AdminDashBoardPageComponent/ManageFood/ManageFood";
 import EditFoodForm from "./Components/AdminDashBoardPageComponent/ManageFood/EditFood";
+import { CreateBlog } from "./Components/AdminDashBoardPageComponent/Blogs/CreateBlog";
+import { ManageBlog } from "./Components/AdminDashBoardPageComponent/Blogs/ManageBlog";
 
 export const router = createBrowserRouter([
   {
@@ -195,6 +197,14 @@ export const router = createBrowserRouter([
       {
         path: "manage-coupon",
         element: <ManageCoupon />,
+      },
+      {
+        path: "create-blogs",
+        element: <CreateBlog />,
+      },
+      {
+        path: "manage-blogs",
+        element: <ManageBlog />,
       },
     ],
   },
