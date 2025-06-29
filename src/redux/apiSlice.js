@@ -20,9 +20,9 @@ export const apiSlice = createApi({
       providesTags: (result, error) =>
         result && Array.isArray(result)
           ? [
-            { type: "Category", id: "LIST" },
-            ...result.map((cat) => ({ type: "Category", id: cat._id })),
-          ]
+              { type: "Category", id: "LIST" },
+              ...result.map((cat) => ({ type: "Category", id: cat._id })),
+            ]
           : [{ type: "Category", id: "LIST" }],
     }),
 
@@ -77,20 +77,47 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
+    editProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/admin/products/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
+    }),
+
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `/admin/products/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "Product", id }],
+    }),
+
     // Public
     getAllProducts: builder.query({
       query: () => "/user/products",
       providesTags: (result) =>
         result
           ? [
-            { type: "Product", id: "LIST" },
-            ...result.map(({ _id }) => ({ type: "Product", id: _id })),
-          ]
+              { type: "Product", id: "LIST" },
+              ...result.map(({ _id }) => ({ type: "Product", id: _id })),
+            ]
           : [{ type: "Product", id: "LIST" }],
     }),
     getProductById: builder.query({
       query: (id) => `/user/products/${id}`,
       providesTags: (result, error, id) => [{ type: "Products", id }],
+    }),
+    getMenuCategories: builder.query({
+      query: () => "/user/get-categories",
+      providesTags: (result, error) =>
+        result && Array.isArray(result)
+          ? [
+              { type: "Category", id: "LIST" },
+              ...result.map((cat) => ({ type: "Category", id: cat._id })),
+            ]
+          : [{ type: "Category", id: "LIST" }],
     }),
   }),
 });
@@ -101,6 +128,9 @@ export const {
   useEditCategoryMutation,
   useDeleteCategoryMutation,
   useAddProductMutation,
+  useEditProductMutation,
+  useDeleteProductMutation,
   useGetAllProductsQuery,
   useGetProductByIdQuery,
+  useGetMenuCategoriesQuery,
 } = apiSlice;
