@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import showToast from "../../../utils/ShowToast";
 import { ImageUploader } from "../../SharedComponent/ImageUploader";
+import { toast } from "react-hot-toast";
 
-function UpdateBlogModal({ onClose, data }) {
+function UpdateBlogModal({ onClose, data, onSave, isSaving }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -47,10 +46,13 @@ function UpdateBlogModal({ onClose, data }) {
       await updateBlog(data._id, updatedData);
       await fetchBlogs();
       showToast("Success", "Blog updated successfully!", "success");
+      await onSave(updatedData);
+      toast.success("Blog updated successfully!");
       onClose();
     } catch (error) {
       console.error("Error updating blog:", error);
       showToast("Error", "Failed to update blog", "error");
+      toast.error("Failed to update blog");
     }
   };
 
@@ -151,9 +153,14 @@ function UpdateBlogModal({ onClose, data }) {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+              disabled={isSaving}
+              className={`px-6 py-2 rounded-md text-white font-semibold ${
+                isSaving
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
             >
-              Submit
+              {isSaving ? "Saving..." : "Submit"}
             </button>
           </div>
         </form>

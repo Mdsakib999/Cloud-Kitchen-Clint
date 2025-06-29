@@ -13,7 +13,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Category", "Product"],
+  tagTypes: ["Category", "Product", "Blog"],
   endpoints: (builder) => ({
     getCategories: builder.query({
       query: () => "/admin/categories",
@@ -85,7 +85,6 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
     }),
-
     deleteProduct: builder.mutation({
       query: (id) => ({
         url: `/admin/products/${id}`,
@@ -119,6 +118,49 @@ export const apiSlice = createApi({
             ]
           : [{ type: "Category", id: "LIST" }],
     }),
+
+    // Blogs
+    getAllBlogs: builder.query({
+      query: () => "/admin/all-blogs",
+      transformResponse: (response) => response.blogs,
+      providesTags: (blogs = []) => [
+        { type: "Blog", id: "LIST" },
+        ...blogs.map((b) => ({ type: "Blog", id: b._id })),
+      ],
+    }),
+    getBlogById: builder.query({
+      query: (id) => `/admin/blog/${id}`,
+      providesTags: (result, error, id) => [{ type: "Blog", id }],
+    }),
+    createBlog: builder.mutation({
+      query: (formData) => ({
+        url: "/admin/create-blog",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: [{ type: "Blog", id: "LIST" }],
+    }),
+    updateBlog: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: `/admin/blog/${id}`,
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Blog", id },
+        { type: "Blog", id: "LIST" },
+      ],
+    }),
+    deleteBlog: builder.mutation({
+      query: (id) => ({
+        url: `/admin/blog/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Blog", id },
+        { type: "Blog", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -133,4 +175,10 @@ export const {
   useGetAllProductsQuery,
   useGetProductByIdQuery,
   useGetMenuCategoriesQuery,
+  // Blogs
+  useGetAllBlogsQuery,
+  useGetBlogByIdQuery,
+  useCreateBlogMutation,
+  useUpdateBlogMutation,
+  useDeleteBlogMutation,
 } = apiSlice;
