@@ -43,7 +43,7 @@ export const AllFoodCard = () => {
   );
 
   return (
-    <div className="px-4 py-8">
+    <div className="px-4 py-8 pt-36">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -68,8 +68,8 @@ export const AllFoodCard = () => {
                 onClick={() => setActiveCategory(cat.label)}
                 className={`w-full text-left px-8 py-4 mb-5 rounded-bl-4xl rounded-tr-4xl font-mono transition-all ${
                   activeCategory === cat.label
-                    ? "bg-bg-secondary text-white text-xl"
-                    : "bg-gradient-to-r from-[#4a4a4a] to-[#2a2a2a] text-gray-300 hover:bg-gray-700"
+                    ? "bg-primary text-white text-xl"
+                    : "bg-bg-secondary text-gray-300 hover:bg-gray-700"
                 }`}
               >
                 {cat.label} ({cat.count})
@@ -80,23 +80,12 @@ export const AllFoodCard = () => {
           {/* Main Content */}
           <main className="px-8 w-full">
             {/* Header & Search */}
-            <div className="flex justify-between items-center py-4 my-16">
+            {/* <div className="flex justify-between items-center py-4 my-10 ">
               <h2 className="text-2xl font-semibold text-white">
                 {activeCategory}
               </h2>
-              <div className="flex items-center w-80 bg-[#2b2b2b] rounded-full px-4 py-2">
-                <Search className="w-4 h-4 text-gray-400 mr-2" />
-                <input
-                  type="text"
-                  placeholder="Search within menu"
-                  className="bg-transparent text-white placeholder-gray-400 text-sm outline-none w-full"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            </div> */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-20 mb-36">
               {filtered.map((item) => (
                 <FoodCard key={item._id} item={item} />
               ))}
