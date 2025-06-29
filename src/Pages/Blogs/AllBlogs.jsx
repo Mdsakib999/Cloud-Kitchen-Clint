@@ -1,7 +1,26 @@
-import { blogPosts } from "../../FakeDB/mockBlogData";
 import { Link } from "react-router-dom";
+import { useGetAllBlogsQuery } from "../../redux/apiSlice";
 
 export const AllBlogs = () => {
+  const { data: blogs = [], isLoading, isError, error } = useGetAllBlogsQuery();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-40">
+        <span className="text-xl font-medium">Loading blogs…</span>
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center py-40">
+        <span className="text-xl font-medium text-red-500">
+          Error: {"message" in error ? error.message : "Failed to load"}
+        </span>
+      </div>
+    );
+  }
+  const list = Array.isArray(blogs) ? blogs : [];
   return (
     <div className="relative w-full mx-auto overflow-hidden py-40 bg-bg-primary">
       {/* Background gradient */}
@@ -22,8 +41,8 @@ export const AllBlogs = () => {
 
       {/* News Cards */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 space-y-20">
-        {blogPosts?.map((blog, index) => (
-          <div key={index} className="group relative">
+        {list?.map((blog, index) => (
+          <div key={blog._id} className="group relative">
             {/* Card background */}
             <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl "></div>
 
