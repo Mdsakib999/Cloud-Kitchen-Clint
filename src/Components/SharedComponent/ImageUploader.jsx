@@ -51,7 +51,7 @@ export const ImageUploader = ({ image, setImage }) => {
         className={`relative w-full lg:w-1/2 border-2 border-dashed rounded-xl p-8 transition-all duration-300 ${
           isDragOver
             ? "border-blue-400 bg-blue-500/10"
-            : "border-slate-600/50 bg-slate-800/20 hover:border-slate-500/50 hover:bg-slate-800/30"
+            : "border-slate-600/50 bg-bg-secondary hover:border-slate-500/50 hover:bg-bg-input"
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -105,7 +105,7 @@ export const ImageUploader = ({ image, setImage }) => {
                 onClick={() =>
                   document.getElementById("blog-cover-image").click()
                 }
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                className="bg-primary hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
               >
                 Browse Files
               </button>
@@ -124,7 +124,7 @@ export const ImageUploader = ({ image, setImage }) => {
           <img
             src={URL.createObjectURL(image)}
             alt="Preview"
-            className="w-full h-80 object-cover bg-slate-800 rounded-xl"
+            className="w-full h-80 object-cover bg-bg-secondary rounded-xl"
           />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
             <button
