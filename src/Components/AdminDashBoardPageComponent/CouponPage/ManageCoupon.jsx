@@ -4,13 +4,13 @@ import axiosInstance from "../../../Utils/axios";
 import { EditIcon } from "lucide-react";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
-import CouponEditModal from "./CouponEditModal"; // Import the modal component
+import CouponEditModal from "./CouponEditModal";
 
 const ManageCoupon = () => {
   const [loading, setLoading] = useState(false);
-  const [allCoupons, setAllCoupons] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [allCoupons, setAllCoupons] = useState([]);
 
   const fetchCoupons = async () => {
     setLoading(true);
