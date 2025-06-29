@@ -3,7 +3,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import { DashBoardLeftNav } from "./DasboardLeftNav";
 import { ScrollToTop } from "../../utils/ScrollToTop";
 import Navbar from "../../Components/SharedComponent/Navbar";
-import InfoBar from "../../Components/SharedComponent/InfoBar";
 import { StatHeader } from "../../Components/SharedComponent/StatHeader";
 
 export const Dashboard = () => {
@@ -11,15 +10,9 @@ export const Dashboard = () => {
   const isAdmin = pathname.startsWith("/admin");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Sidebar body scroll lock
   useEffect(() => {
-    if (sidebarOpen) {
-      // Prevent body scroll when mobile sidebar is open
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-
-    // Cleanup on unmount
+    document.body.style.overflow = sidebarOpen ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -28,26 +21,22 @@ export const Dashboard = () => {
   return (
     <>
       <ScrollToTop />
-      <InfoBar />
-      <Navbar />
-      <div className={`${isAdmin ? "bg-white" : "bg-bg-primary"} pt-24`}>
-        {/* Main Dashboard Container */}
-        <div className="flex h-screen relative">
-          {/* Mobile Sidebar Toggle Button */}
+      {/* You can pass scroll transparency state to Navbar */}
+      <Navbar offsetTop={0} />
+
+      <div className={`${isAdmin ? "bg-white" : "bg-bg-primary"} pt-8`}>
+        <div className="flex min-h-screen relative">
+          {/* Mobile Sidebar Toggle */}
           <button
-            className={`
-              fixed top-28 left-4 z-50 lg:hidden
-              bg-primary text-white px-4 py-2 rounded
-              text-sm font-medium shadow-lg
-              transition-all duration-300
-              ${sidebarOpen ? "opacity-0 pointer-events-none" : "opacity-100"}
-            `}
+            className={`fixed top-28 left-4 z-50 lg:hidden bg-primary text-white px-4 py-2 rounded text-sm font-medium shadow-lg transition-all duration-300 ${
+              sidebarOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+            }`}
             onClick={() => setSidebarOpen(true)}
           >
             Open Sidebar
           </button>
 
-          {/* Mobile Sidebar Overlay */}
+          {/* Overlay */}
           {sidebarOpen && (
             <div
               className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
@@ -57,11 +46,9 @@ export const Dashboard = () => {
 
           {/* Mobile Sidebar */}
           <div
-            className={`
-              fixed top-0 left-0 h-full w-80 z-50 lg:hidden
-              transform transition-transform duration-300 ease-in-out
-              ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-            `}
+            className={`fixed top-0 left-0 h-full w-80 z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
           >
             <DashBoardLeftNav
               closeSidebar={() => setSidebarOpen(false)}
@@ -74,7 +61,7 @@ export const Dashboard = () => {
             <DashBoardLeftNav isAdmin={isAdmin} />
           </div>
 
-          {/* Main Content Area */}
+          {/* Main Content */}
           <div className="flex-1 min-w-0 lg:ml-0">
             <div className="h-full">
               <div className="p-4 lg:p-6">
