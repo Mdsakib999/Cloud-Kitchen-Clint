@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import {
-  CreditCard,
   DollarSign,
   Tag,
   Shield,
@@ -8,372 +7,549 @@ import {
   CheckCircle,
   Package,
   ArrowRight,
+  CreditCard,
 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart, selectAllCartItems } from "../../redux/cartSlice";
+import { useAuth } from "../../providers/AuthProvider";
+import { useEffect, useState } from "react";
+import axiosInstance from "../../Utils/axios";
+import toast from "react-hot-toast";
 
-export const CheckoutForm = () => {
+const CheckoutForm = () => {
+  const { user, loading } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [coupons, setCoupons] = useState([]);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(() => {
+    const stored = localStorage.getItem("appliedCoupon");
+    return stored ? JSON.parse(stored) : null;
+  });
+  const [discount, setDiscount] = useState(() => {
+    const stored = localStorage.getItem("discount");
+    return stored ? Number(stored) : 0;
+  });
+  const [couponCode, setCouponCode] = useState("");
+  const [placingOrder, setPlacingOrder] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState("");
+  console.log("user", user);
+
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm({
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      country: "",
-      streetAddress: "",
-      townCity: "",
-      phone: "",
+      name: user?.name || "",
+      country: "Bangladesh",
+      streetAddress: user?.address || "",
+      city: "Chattogram",
+      phone: user?.phone || "",
       additionalInfo: "",
       couponCode: "",
       paymentMethod: "cash",
     },
   });
 
-  const onSubmit = (data) => {
-    alert("Order placed successfully!");
+  const orderItems = useSelector(selectAllCartItems);
+
+  const subtotal = orderItems.reduce((sum, item) => {
+    const addonsTotal =
+      item.addons?.reduce((acc, addon) => acc + (addon.price || 0), 0) || 0;
+    return sum + (item.price + addonsTotal) * item.quantity;
+  }, 0);
+
+  const discountedSubtotal = Math.max(subtotal - discount, 0);
+  const shipping = discountedSubtotal >= 1599 ? 0 : 100;
+  const total = discountedSubtotal + shipping;
+
+  const fetchCoupons = async () => {
+    setIsLoading(true);
+    try {
+      const res = await axiosInstance.get("/admin", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setCoupons(res.data.filter((coup) => coup.isActive));
+    } catch (error) {
+      console.error("Failed to fetch coupons:", error);
+      toast.error("Failed to load coupons");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  let orderItems = useSelector((state) => state.cart);
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
 
-  orderItems = Object.values(orderItems.entities);
-  console.log("orderItems", orderItems);
+  const handleCouponApply = async () => {
+    try {
+      setCouponLoading(true);
+      const res = await axiosInstance.post(
+        "/admin/apply",
+        { code: couponCode, cartTotal: subtotal + shipping },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      setDiscount(res.data.discount);
+      setAppliedCoupon({ code: couponCode, discount: res.data.discount });
+      localStorage.setItem(
+        "appliedCoupon",
+        JSON.stringify({ code: couponCode, discount: res.data.discount })
+      );
+      localStorage.setItem("discount", res.data.discount);
+      setCouponCode("");
+      toast.success(
+        <h1 className="text-center font-serif">Coupon applied successfully</h1>
+      );
+    } catch (error) {
+      toast.error(
+        <h1 className="text-center font-serif">
+          {error.response?.data?.error || "Invalid coupon"}
+        </h1>
+      );
+    } finally {
+      setCouponLoading(false);
+    }
+  };
 
-  const subtotal = orderItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const tax = subtotal * 0.08;
-  const shipping = subtotal > 50 ? 0 : 4.99;
-  const total = subtotal + tax + shipping;
-  // orderItems.entities.reduce(
-  //     (sum, item) => sum + item.price * item.quantity,
-  //     0
-  //   );
+  const handleOrder = async (data) => {
+    if (!selectedPayment) {
+      toast.error(
+        <h1 className="text-center font-serif">
+          Please select the payment method
+        </h1>
+      );
+      return;
+    }
+    setPlacingOrder(true);
+    const orderPayload = {
+      user: user._id,
+      name: data.name,
+      phone: data.phone,
+      country: data.country,
+      address: data.streetAddress,
+      city: data.city,
+      couponCode: appliedCoupon?.code || "",
+      isCouponApplied: !!appliedCoupon,
+      items: orderItems.map((item) => ({
+        name: item.name,
+        qty: item.quantity,
+        price: item.price,
+        food: item.baseId,
+        addons:
+          item.addons?.map((addon) => ({
+            name: addon.label,
+            price: addon.price,
+            qty: item.quantity,
+          })) || [],
+      })),
+      totalPrice: total,
+      discountPrice: discount,
+      paymentMethod: selectedPayment,
+    };
+    try {
+      const result = await axiosInstance.post(
+        "/order/create-order",
+        orderPayload,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      if (result.status === 201) {
+        toast.success(
+          <h1 className="font-serif text-center">Order placed successfully!</h1>
+        );
+        dispatch(clearCart());
+        setAppliedCoupon(null);
+        setDiscount(0);
+        localStorage.removeItem("appliedCoupon");
+        localStorage.removeItem("discount");
+        reset();
+        setSelectedPayment("");
+      }
+    } catch (error) {
+      toast.error(
+        <h1 className="text-center font-serif">Failed to place order</h1>
+      );
+    } finally {
+      setPlacingOrder(false);
+    }
+  };
+
+  if (loading || isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="flex flex-col items-center gap-4">
+          <svg
+            className="animate-spin h-12 w-12 text-teal-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8z"
+            />
+          </svg>
+          <span className="text-teal-400 text-lg font-medium">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-bg-primary py-12 px-4 lg:pt-36">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-3 gap-12">
-          {/* Main Form Section */}
-          <div className="lg:col-span-2">
-            {/* Contact Information */}
-            <div className="bg-bg-secondary rounded-3xl shadow-sm border border-gray-100 p-8 mb-8">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-white">
-                  Contact Information
-                </h2>
-                <div className="flex items-center text-sm text-white">
-                  <Shield className="w-4 h-4 mr-1" />
-                  Secure checkout
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-2">
-                    First Name
-                  </label>
-                  <input
-                    {...register("firstName", {
-                      required: "First name is required",
-                    })}
-                    className="w-full px-4 py-3 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl focus:border-primary focus:outline-none transition-colors bg-bg-input focus:bg-bg-secondary"
-                    placeholder="John"
-                  />
-                  {errors.firstName && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.firstName.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-2">
-                    Last Name
-                  </label>
-                  <input
-                    {...register("lastName", {
-                      required: "Last name is required",
-                    })}
-                    className="w-full px-4 py-3 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl focus:border-primary focus:outline-none transition-colors bg-bg-input focus:bg-bg-secondary"
-                    placeholder="Doe"
-                  />
-                  {errors.lastName && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.lastName.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    {...register("phone", {
-                      required: "Phone number is required",
-                      pattern: {
-                        value: /^[0-9+\-\s()]+$/,
-                        message: "Please enter a valid phone number",
-                      },
-                    })}
-                    className="w-full px-4 py-3 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl focus:border-primary focus:outline-none transition-colors bg-bg-input focus:bg-bg-secondary"
-                    placeholder="+1 (555) 123-4567"
-                  />
-                  {errors.phone && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.phone.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-2">
-                    Country
-                  </label>
-                  <input
-                    {...register("country", {
-                      required: "Country is required",
-                    })}
-                    className="w-full px-4 py-3 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl focus:border-primary focus:outline-none transition-colors bg-bg-input focus:bg-bg-secondary"
-                    placeholder="United States"
-                  />
-                  {errors.country && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.country.message}
-                    </p>
-                  )}
-                </div>
+    <div className="min-h-screen bg-gray-900 py-12 px-4 lg:px-8 pt-40">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+          <section className="bg-gray-800 rounded-xl p-6 shadow-md">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-white">
+                Contact Information
+              </h2>
+              <div className="flex items-center text-sm text-gray-300">
+                <Shield className="w-4 h-4 mr-1" /> Secure checkout
               </div>
             </div>
-
-            {/* Shipping Address */}
-            <div className="bg-bg-secondary rounded-3xl shadow-sm border border-gray-100 p-8 mb-8">
-              <div className="flex items-center mb-8">
-                <Truck className="w-6 h-6 text-blue-600 mr-3" />
-                <h2 className="text-2xl font-bold text-white">
-                  Shipping Address
-                </h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Name
+                </label>
+                <input
+                  {...register("name", { required: "Name is required" })}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
+                  placeholder="Enter your name"
+                />
+                {errors.name && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
-
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-2">
-                    Street Address
-                  </label>
-                  <input
-                    {...register("streetAddress", {
-                      required: "Street address is required",
-                    })}
-                    className="w-full px-4 py-3 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl focus:border-primary focus:outline-none transition-colors bg-bg-input focus:bg-bg-secondary"
-                    placeholder="123 Main Street, Apt 4B"
-                  />
-                  {errors.streetAddress && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.streetAddress.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-2">
-                    City
-                  </label>
-                  <input
-                    {...register("townCity", { required: "City is required" })}
-                    className="w-full px-4 py-3 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl focus:border-primary focus:outline-none transition-colors bg-bg-input focus:bg-bg-secondary"
-                    placeholder="New York"
-                  />
-                  {errors.townCity && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.townCity.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-white mb-2">
-                    Special Instructions (Optional)
-                  </label>
-                  <textarea
-                    {...register("additionalInfo")}
-                    rows="3"
-                    className="w-full px-4 py-3 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl focus:border-primary focus:outline-none transition-colors bg-bg-input focus:bg-bg-secondary resize-none"
-                    placeholder="Leave at door, ring doorbell, etc."
-                  />
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Phone Number
+                </label>
+                <input
+                  {...register("phone", {
+                    required: "Phone number is required",
+                    pattern: {
+                      value: /^[0-9+\-\s()]+$/,
+                      message: "Invalid phone number",
+                    },
+                  })}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
+                  placeholder="+880 123 456 7890"
+                />
+                {errors.phone && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.phone.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Country
+                </label>
+                <input
+                  {...register("country", { required: "Country is required" })}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
+                  placeholder="Bangladesh"
+                />
+                {errors.country && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.country.message}
+                  </p>
+                )}
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* Order Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-bg-secondary rounded-3xl shadow-sm border border-gray-100 p-8 sticky top-8">
-              <div className="flex items-center mb-8">
-                <Package className="w-6 h-6 text-blue-600 mr-3" />
-                <h2 className="text-2xl font-bold text-white">Order Summary</h2>
+          <section className="bg-gray-800 rounded-xl p-6 shadow-md">
+            <div className="flex items-center mb-6">
+              <Truck className="w-5 h-5 text-teal-500 mr-2" />
+              <h2 className="text-xl font-semibold text-white">
+                Shipping Address
+              </h2>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Street Address
+                </label>
+                <input
+                  {...register("streetAddress", {
+                    required: "Street address is required",
+                  })}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg SIXTH AI INC. gray-700 text-white focus:outline-none focus:border-teal-500"
+                  placeholder="123 Main Street"
+                />
+                {errors.streetAddress && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.streetAddress.message}
+                  </p>
+                )}
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  City
+                </label>
+                <input
+                  {...register("city", { required: "City is required" })}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
+                  placeholder="Chattogram"
+                />
+                {errors.city && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.city.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Special Instructions (Optional)
+                </label>
+                <textarea
+                  {...register("additionalInfo")}
+                  rows="3"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500 resize-none"
+                  placeholder="Leave at door, ring bell, etc."
+                />
+              </div>
+            </div>
+          </section>
+        </div>
 
-              {/* Items */}
-              <div className="space-y-4 mb-8">
-                {orderItems.map((item, index) => (
+        <div className="lg:col-span-1">
+          <section className="bg-gray-800 rounded-xl p-6 shadow-md sticky top-4">
+            <div className="flex items-center mb-6">
+              <Package className="w-5 h-5 text-teal-500 mr-2" />
+              <h2 className="text-xl font-semibold text-white">
+                Order Summary
+              </h2>
+            </div>
+            <div className="space-y-4 mb-6">
+              {orderItems.map((item, index) => {
+                const addonsTotal =
+                  item.addons?.reduce(
+                    (acc, addon) => acc + (addon.price || 0),
+                    0
+                  ) || 0;
+                const totalForItem = (item.price + addonsTotal) * item.quantity;
+                return (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-4 bg-bg-input rounded-2xl"
+                    className="flex justify-between p-4 bg-gray-700 rounded-lg"
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center space-x-3">
                       <img
-                        className="w-12 h-12 bg-bg-secondary rounded-xl flex items-center justify-center text-2xl mr-4 shadow-sm"
+                        className="w-12 h-12 rounded-lg object-cover"
                         src={item.image}
-                        alt=""
+                        alt={item.name}
                       />
                       <div>
-                        <h3 className="font-semibold text-white text-sm">
+                        <h3 className="text-sm font-medium text-white">
                           {item.name}
                         </h3>
-                        <p className="text-white text-sm">
-                          {item.quantity} x {item.price}
+                        <p className="text-xs text-gray-300">{item.size}</p>
+                        <p className="text-xs text-gray-300">
+                          {item.quantity} x {item.price} Tk
                         </p>
-                        <p className="text-white text-sm">
-                          {item.addons.map((addon, idx) => (
-                            <span className="text-emerald-200 mt-2" key={idx}>
-                              {addon},
-                            </span>
-                          ))}{" "}
-                        </p>
+                        {item.addons?.map((addon, idx) => (
+                          <p key={idx} className="text-xs text-teal-400">
+                            {item.quantity} x {addon.label} {addon.price} Tk
+                          </p>
+                        ))}
                       </div>
                     </div>
-                    <span className="font-bold text-white">
-                      ${(item.price * item.quantity).toFixed(2)}
+                    <span className="font-medium text-white">
+                      {totalForItem.toFixed(2)} Tk
                     </span>
                   </div>
-                ))}
-              </div>
+                );
+              })}
+            </div>
 
-              {/* Promo Code */}
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-white mb-3">
-                  Promo Code
-                </label>
-                <div className="flex gap-3">
-                  <input
-                    {...register("couponCode")}
-                    className="flex-1 px-4 py-3 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl focus:border-primary focus:outline-none transition-colors bg-bg-input focus:bg-bg-secondary"
-                    placeholder="Enter code"
-                  />
-                  <button
-                    type="button"
-                    className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-2xl hover:bg-gray-800 transition-colors flex items-center gap-2"
-                  >
-                    <Tag className="w-4 h-4" />
-                    Apply
-                  </button>
-                </div>
-              </div>
-
-              {/* Totals */}
-              <div className="border-t border-bg-tertiary placeholder-white text-white pt-6 space-y-4">
-                <div className="flex justify-between text-white">
-                  <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-white">
-                  <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-white">
-                  <span>Shipping</span>
-                  <span>
-                    {shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}
-                  </span>
-                </div>
-                {shipping === 0 && (
-                  <div className="flex items-center text-green-600 text-sm">
-                    <CheckCircle className="w-4 h-4 mr-1" />
-                    Free shipping on orders over $50
-                  </div>
+            <div className="mb-6">
+              {!appliedCoupon && (
+                <>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Coupon Code
+                  </label>
+                  {coupons[0] && (
+                    <p className="text-xs text-teal-400 mb-2">
+                      Use {coupons[0].code} for {coupons[0].discountAmount}
+                      {coupons[0].type === "percentage" ? "%" : " Tk"} off
+                    </p>
+                  )}
+                </>
+              )}
+              <div className="flex gap-2">
+                {appliedCoupon ? (
+                  <p className="text-teal-400 text-sm">
+                    COUPON CODE ({appliedCoupon.code}) APPLIED:{" "}
+                    {appliedCoupon.discount.toFixed(2)} TK OFF
+                  </p>
+                ) : (
+                  <>
+                    <input
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      className="flex-1 px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
+                      placeholder="Enter code"
+                    />
+                    <button
+                      onClick={handleCouponApply}
+                      disabled={couponLoading}
+                      className="cursor-pointer px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 flex items-center gap-2"
+                    >
+                      <Tag className="w-4 h-4" />{" "}
+                      {couponLoading ? "Applying..." : "Apply"}
+                    </button>
+                  </>
                 )}
-                <div className="border-t border-bg-tertiary placeholder-white pt-4 flex justify-between text-xl font-bold text-white">
-                  <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
-                </div>
-              </div>
-              {/* Payment Method */}
-              <h2 className="text-2xl font-bold text-white my-8">
-                Payment Method
-              </h2>
-
-              <div className="space-y-4">
-                <label className="relative flex items-center p-6 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl cursor-pointer hover:border-blue-300 transition-colors">
-                  <input
-                    {...register("paymentMethod")}
-                    type="radio"
-                    value="cash"
-                    className="sr-only"
-                  />
-                  <div className="flex items-center w-full">
-                    <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mr-4">
-                      <DollarSign className="w-6 h-6 text-green-600" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-white">
-                        Cash on Delivery
-                      </h3>
-                      <p className="text-sm text-white">
-                        Pay when your order arrives
-                      </p>
-                    </div>
-                    <div className="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                      <div className="w-2.5 h-2.5 bg-blue-600 rounded-full opacity-0 peer-checked:opacity-100"></div>
-                    </div>
-                  </div>
-                </label>
-
-                <label className="relative flex items-center p-6 border-2 border-bg-tertiary placeholder-white text-white rounded-2xl cursor-pointer hover:border-blue-300 transition-colors">
-                  <input
-                    {...register("paymentMethod")}
-                    type="radio"
-                    value="credit"
-                    className="sr-only"
-                  />
-                  <div className="flex items-center w-full">
-                    <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mr-4">
-                      <CreditCard className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-white">Credit Card</h3>
-                      <p className="text-sm text-white">
-                        Visa, Mastercard, American Express
-                      </p>
-                    </div>
-                    <div className="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                      <div className="w-2.5 h-2.5 bg-blue-600 rounded-full opacity-0 peer-checked:opacity-100"></div>
-                    </div>
-                  </div>
-                </label>
-              </div>
-              {/* Place Order Button */}
-              <button
-                type="button"
-                disabled={isSubmitting}
-                onClick={handleSubmit(onSubmit)}
-                className="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <span className="text-lg">
-                  {isSubmitting ? "Processing..." : "Complete Order"}
-                </span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
-
-              {/* Security Note */}
-              <div className="mt-6 flex items-center justify-center text-sm text-white">
-                <Shield className="w-4 h-4 mr-2" />
-                SSL encrypted & secure checkout
               </div>
             </div>
-          </div>
+
+            <div className="border-t border-gray-600 pt-4 space-y-3">
+              <div className="flex justify-between text-gray-300">
+                <span>Subtotal</span>
+                <span>{subtotal.toFixed(2)} Tk</span>
+              </div>
+              <div className="flex justify-between text-gray-300">
+                <span>Discount</span>
+                <span>-{discount.toFixed(2)} Tk</span>
+              </div>
+              <div className="flex justify-between text-gray-300">
+                <span>Shipping</span>
+                <span>
+                  {shipping === 0 ? "FREE" : `${shipping.toFixed(2)} Tk`}
+                </span>
+              </div>
+              {shipping === 0 && (
+                <p className="text-xs text-teal-400 flex items-center">
+                  <CheckCircle className="w-4 h-4 mr-1" /> Free shipping on
+                  total over 1599 Tk
+                </p>
+              )}
+              <div className="flex justify-between text-lg font-semibold text-white">
+                <span>Total</span>
+                <span>{total.toFixed(2)} Tk</span>
+              </div>
+            </div>
+
+            <h2 className="text-xl font-semibold text-white mt-6 mb-4">
+              Payment Method
+            </h2>
+            <div className="space-y-3">
+              <label
+                className={`flex items-center p-4 border rounded-lg cursor-pointer ${
+                  selectedPayment === "cash"
+                    ? "border-teal-500 bg-teal-900/20"
+                    : "border-gray-600 hover:border-teal-500"
+                }`}
+                onClick={() => setSelectedPayment("cash")}
+              >
+                <input
+                  type="radio"
+                  value="cash"
+                  checked={selectedPayment === "cash"}
+                  onChange={() => setSelectedPayment("cash")}
+                  className="hidden"
+                />
+                <div className="flex items-center w-full">
+                  <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center mr-3">
+                    <DollarSign className="w-5 h-5 text-teal-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-medium text-white">Cash on Delivery</h3>
+                    <p className="text-xs text-gray-300">
+                      Pay when order arrives
+                    </p>
+                  </div>
+                </div>
+              </label>
+              <label
+                className="flex items-center p-4 border border-gray-600 rounded-lg opacity-50 cursor-not-allowed"
+                onClick={() => setSelectedPayment("credit")}
+              >
+                <input
+                  type="radio"
+                  value="credit"
+                  checked={selectedPayment === "credit"}
+                  onChange={() => setSelectedPayment("credit")}
+                  className="hidden"
+                  disabled
+                />
+                <div className="flex items-center w-full">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <CreditCard className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-medium text-white">Credit Card</h3>
+                    <p className="text-xs text-gray-300">
+                      Currently unavailable
+                    </p>
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <button
+              type="button"
+              disabled={isSubmitting || placingOrder}
+              onClick={handleSubmit(handleOrder)}
+              className="w-full mt-6 bg-teal-600 text-white font-semibold py-3 rounded-lg hover:bg-teal-700 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {placingOrder ? (
+                <svg
+                  className="animate-spin h-5 w-5 text-white mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
+                </svg>
+              ) : null}
+              {placingOrder ? "Placing Order..." : "Complete Order"}
+              <ArrowRight className="w-5 h-5" />
+            </button>
+            <p className="mt-4 text-sm text-gray-300 flex items-center justify-center">
+              <Shield className="w-4 h-4 mr-2" /> SSL encrypted & secure
+              checkout
+            </p>
+          </section>
         </div>
       </div>
     </div>
   );
 };
+
+export default CheckoutForm;
