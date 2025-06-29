@@ -11,19 +11,19 @@ export const DashStatics = () => {
       <AllTimeSellStat />
       <DailySellStat />
 
-      <div className="flex gap-4 my-5">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row gap-4 my-5">
+        <div className="w-full md:w-1/2">
           <RevenueChart />
         </div>
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <OrderMap />
         </div>
       </div>
-      <div className="flex gap-4 my-5">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row gap-4 my-5">
+        <div className="w-full md:w-1/2">
           <TrendingItems />
         </div>
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <GrowthStatPie />
         </div>
       </div>

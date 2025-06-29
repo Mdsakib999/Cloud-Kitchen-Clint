@@ -83,12 +83,12 @@ export const OrderList = () => {
                 className="border-t border-white/10 hover:bg-white/5 transition-colors"
               >
                 <td className="px-4 py-3">{order.oid}</td>
-                <td className="px-4 py-3">{order.name}</td>
+                <td className="px-4 py-3 whitespace-nowrap">{order.name}</td>
                 <td className="px-4 py-3">{order.address}</td>
                 <td className="px-4 py-3">৳{order.amount}</td>
                 <td className="px-4 py-3">
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${
                       order.status === "Completed"
                         ? "bg-green-600/20 text-green-400"
                         : order.status === "Pending"
@@ -105,7 +105,7 @@ export const OrderList = () => {
                   <Link to={`/admin/dashboard/order-details/${order.oid}`}>
                     <button
                       onClick={() => setSelectedOrder(order)}
-                      className="cursor-pointer transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md"
+                      className="cursor-pointer transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap"
                     >
                       View Details
                       <Eye size={18} />
