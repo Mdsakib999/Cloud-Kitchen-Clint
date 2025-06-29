@@ -4,8 +4,6 @@ import { formatDate } from "../../utils/formatDate";
 import { mockOrders } from "../../FakeDB/mockOrder";
 import { Loader } from "../SharedComponent/Loader";
 import { Link } from "react-router-dom";
-import { Cross } from "lucide-react";
-import { GrMultiple } from "react-icons/gr";
 import { MdOutlineClose } from "react-icons/md";
 
 const getStatusColor = (status) => {

@@ -61,17 +61,19 @@ const Banner = () => {
             <div className="absolute inset-0 bg-black/60"></div>
 
             <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-              <Slide direction="up" triggerOnce>
-                <p className="text-md text-white">{slide.pretitle}</p>
-                <h1 className="text-3xl md:text-5xl font-bold mb-4 max-w-4xl text-white">
-                  {slide.title}
-                </h1>
-                <p className="mb-6 text-lg md:text-2xl max-w-4xl text-white">
-                  {slide.description}
-                </p>
-                <button className="px-6 py-3 bg-primary hover:bg-primary/90 hover:shadow-2xl rounded-full text-bg-primary font-medium transition">
-                  Order Now
-                </button>
+              <Slide direction="up" triggerOnce className="">
+                <div className="mt-10">
+                  <p className="text-md text-white">{slide.pretitle}</p>
+                  <h1 className="text-3xl md:text-5xl font-bold mb-4 max-w-4xl text-white">
+                    {slide.title}
+                  </h1>
+                  <p className="mb-6 text-lg md:text-2xl max-w-4xl text-white">
+                    {slide.description}
+                  </p>
+                  <button className="px-6 py-3 bg-primary hover:bg-primary/90 hover:shadow-2xl rounded-full text-bg-primary font-medium transition">
+                    Order Now
+                  </button>
+                </div>
               </Slide>
             </div>
           </div>
@@ -79,32 +81,33 @@ const Banner = () => {
       </Carousel>
 
       {/* Extra Info Section */}
-      <div className="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 px-4 sm:px-6 py-4 max-w-7xl w-full mx-auto flex flex-col lg:flex-row justify-between items-center space-y-6 lg:space-y-0 lg:space-x-8 z-20">
+      <div className="absolute  -bottom-2 lg:bottom-6 left-1/2 transform -translate-x-1/2 px-4 lg:px-6 py-4 w-full max-w-7xl mx-auto flex flex-row justify-between md:items-center space-y-6 lg:space-y-0 lg:space-x-8 z-20">
         {/* Hours */}
-        <div className="flex items-start space-x-1 lg:space-x-3 text-left">
+        <div className="flex items-start space-x-1 lg:space-x-3 text-left whitespace-nowrap">
           <FaRegClock className="text-primary w-6 h-6" />
           <div>
-            <h3 className="font-semibold text-gray-200 text-sm sm:text-base">
+            <h3 className="font-semibold text-gray-200 text-sm lg:text-base">
               Operating Hours
             </h3>
-            <p className="text-gray-400 text-xs sm:text-sm">
+            <p className="text-gray-400 text-xs lg:text-sm">
               Mon-Fri: 11:00 AM - 10:00 PM
             </p>
-            <p className="text-gray-400 text-xs sm:text-sm">
+            <p className="text-gray-400 text-xs lg:text-sm">
               Sat-Sun: 10:00 AM - 11:00 PM
             </p>
           </div>
         </div>
 
         {/* Address */}
-        <div className="flex items-start space-x-1 lg:space-x-3 text-left">
+        <div className="flex items-start space-x-1 lg:space-x-3 text-left whitespace-nowrap">
           <IoLocationOutline className="text-primary w-6 h-6" />
           <div>
-            <h3 className="font-semibold text-gray-200 text-sm sm:text-base">
+            <h3 className="font-semibold text-gray-200 text-sm lg:text-base">
               Our Location
             </h3>
-            <p className="text-gray-400 text-xs sm:text-sm max-w-xs lg:max-w-none">
-              123 Food Street, Downtown District,
+            <p className="text-gray-400 text-xs lg:text-sm max-w-xs lg:max-w-none">
+              123 Food Street,
+              <p>Downtown District,</p>
               <p>Cityville, State 12345</p>
             </p>
           </div>
