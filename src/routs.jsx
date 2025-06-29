@@ -39,7 +39,7 @@ import ManageFood from "./Components/AdminDashBoardPageComponent/ManageFood/Mana
 import EditFoodForm from "./Components/AdminDashBoardPageComponent/ManageFood/EditFood";
 import { CreateBlog } from "./Components/AdminDashBoardPageComponent/Blogs/CreateBlog";
 import { ManageBlog } from "./Components/AdminDashBoardPageComponent/Blogs/ManageBlog";
-
+// routes
 export const router = createBrowserRouter([
   {
     path: "/",
