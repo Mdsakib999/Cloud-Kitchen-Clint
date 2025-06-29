@@ -218,7 +218,7 @@ export const FoodDetails = () => {
               </div>
               <button
                 onClick={handleAddToCart}
-                className="mt-4 w-full bg-primary text-bg-primary py-3 rounded-lg flex items-center justify-center gap-2"
+                className="cursor-pointer mt-4 w-full bg-primary text-bg-primary py-3 rounded-lg flex items-center justify-center gap-2"
               >
                 <ShoppingCart className="w-5 h-5" /> Add to Cart
               </button>
