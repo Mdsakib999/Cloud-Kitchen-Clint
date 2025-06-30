@@ -116,10 +116,7 @@ export const OrderList = () => {
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <Link
-                    to={`/admin/dashboard/order-details/${order._id}`}
-                    state={order}
-                  >
+                  <Link to={`/admin/dashboard/order-details/${order._id}`}>
                     <button
                       onClick={() => setSelectedOrder(order)}
                       className="cursor-pointer border border-amber-200 transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap"
