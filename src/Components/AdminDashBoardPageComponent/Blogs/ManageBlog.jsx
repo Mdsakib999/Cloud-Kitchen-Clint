@@ -139,8 +139,8 @@ export const ManageBlog = () => {
               setSelectedBlog(null);
               refetch();
             } catch (err) {
-              toast.error("Failed to update blog. Please try again.");
-              console.error("Error updating blog:", err);
+              console.error(err);
+              toast.error("Failed to update blog");
             }
           }}
           isSaving={isUpdating}
