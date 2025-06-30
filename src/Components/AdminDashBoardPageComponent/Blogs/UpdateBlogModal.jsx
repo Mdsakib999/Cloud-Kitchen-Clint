@@ -3,6 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ImageUploader } from "../../SharedComponent/ImageUploader";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function UpdateBlogModal({ onClose, data, onSave, isSaving }) {
   const navigate = useNavigate();
