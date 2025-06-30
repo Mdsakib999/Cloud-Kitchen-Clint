@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { Search } from "lucide-react";
-import { Link } from "react-router-dom";
 import {
   useGetAllProductsQuery,
   useGetMenuCategoriesQuery,
 } from "../../redux/apiSlice";
-
+import { Link } from "react-router-dom";
 export const OrderMenu = () => {
   const { data: products = [] } = useGetAllProductsQuery();
   const { data: categoriesData = [] } = useGetMenuCategoriesQuery();
 
-  // Local state
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -21,18 +19,28 @@ export const OrderMenu = () => {
     return acc;
   }, {});
 
+  // Static placeholder URLs for the big category circles
+  const staticCategoryImages = {
+    Burger: "https://via.placeholder.com/300?text=Burger",
+    Pizza: "https://via.placeholder.com/300?text=Pizza",
+    Coffee: "https://via.placeholder.com/300?text=Coffee",
+    Uncategorized: "https://via.placeholder.com/300?text=Other",
+  };
+
+  // Build our tabs list
   const categories = [
     { name: "All", image: null },
     ...categoriesData.map((cat) => ({
       name: cat.name,
-      image: cat.image?.[0]?.url ?? null,
+      // if your API doesn’t provide a thumbnail, fall back to our static map
+      image:
+        cat.image?.[0]?.url ||
+        staticCategoryImages[cat.name] ||
+        staticCategoryImages.Uncategorized,
     })),
   ];
 
-  const currentCategoryImage = categories.find(
-    (c) => c.name === activeCategory
-  )?.image;
-
+  // Filtered list of products by tab & search
   const filtered = products.filter((p) => {
     const inCat =
       activeCategory === "All" || p.category?.name === activeCategory;
@@ -40,17 +48,44 @@ export const OrderMenu = () => {
     return inCat && matches;
   });
 
+  // When “All,” group by category for sections
+  const grouped =
+    activeCategory === "All"
+      ? products.reduce((acc, item) => {
+          const key = item.category?.name || "Uncategorized";
+          if (!acc[key]) acc[key] = [];
+          if (item.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+            acc[key].push(item);
+          }
+          return acc;
+        }, {})
+      : { [activeCategory]: filtered };
+
   return (
     <div className="min-h-screen bg-bg-secondary p-6">
       <div className="max-w-7xl mx-auto">
-        {/* CATEGORY TABS */}
+        {/* Search */}
+        {/* <div className="relative w-full max-w-xl mx-auto mb-10">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <Search className="w-5 h-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search menu items..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full py-3 pl-12 pr-4 rounded-full bg-white shadow-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div> */}
+
+        {/* Tabs */}
         <nav className="flex flex-wrap justify-center gap-4 mb-8">
           {categories.map((cat) => (
             <button
               key={cat.name}
               onClick={() => setActiveCategory(cat.name)}
               className={`
-                flex items-center whitespace-nowrap px-6 py-3 rounded-full font-medium transition-all
+                flex items-center px-6 py-3 rounded-full font-medium transition-all
                 ${
                   activeCategory === cat.name
                     ? "bg-primary text-white shadow-lg"
@@ -62,7 +97,7 @@ export const OrderMenu = () => {
                 <img
                   src={cat.image}
                   alt={cat.name}
-                  className="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0"
+                  className="w-6 h-6 rounded-full object-cover mr-2"
                 />
               )}
               <span>
@@ -73,83 +108,85 @@ export const OrderMenu = () => {
           ))}
         </nav>
 
-        {/* MAIN LAYOUT - Large Category Image + Menu Items */}
-        <div className=" overflow-hidden">
-          <div className="flex">
-            {/* LEFT SIDE - Large Category Image */}
-            <div className="w-3/5 relative">
-              <div className="sticky top-0 h-screen flex items-center justify-center bg-bg-secondary p-8">
-                <div className="relative">
-                  {/* Decorative borders */}
-                  <div className="absolute inset-0 border-8 border-white rounded-full transform rotate-6"></div>
-                  <div className="absolute inset-0 border-4 border-red-300 rounded-full transform -rotate-3"></div>
+        {/* Sections */}
+        {Object.entries(grouped).map(([catName, items], idx) => {
+          if (!items || items.length === 0) return null;
+          const bigImage =
+            categories.find((c) => c.name === catName)?.image ||
+            staticCategoryImages.Uncategorized;
+          const reverse = idx % 2 === 1;
 
-                  {/* Main image */}
-                  <div className="relative w-80 h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl">
-                    <img
-                      src={
-                        currentCategoryImage ||
-                        "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=400&fit=crop&crop=center"
-                      }
-                      alt={activeCategory}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+          return (
+            <section
+              key={catName}
+              className={`flex flex-col lg:flex-row items-center mb-16 ${
+                reverse ? "lg:flex-row-reverse" : ""
+              }`}
+            >
+              {/* Big circle image */}
+              <div className="lg:w-1/2 flex justify-center py-8">
+                <div className="relative w-64 h-64 rounded-full overflow-hidden border-8 border-white shadow-2xl">
+                  <img
+                    src={bigImage}
+                    alt={catName}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 border-4 border-primary rounded-full transform -rotate-3"></div>
+                  <div className="absolute inset-0 border-4 border-bg-cart rounded-full transform rotate-6"></div>
                 </div>
               </div>
-            </div>
 
-            {/* RIGHT SIDE - Menu Items */}
-            <div className="w-3/5 p-8 bg-bg-secondary">
-              <div className="space-y-6">
-                {filtered.map((item, idx) => {
-                  const prices = item.sizes || [];
-                  const low = prices[0]?.price ?? 0;
-                  const high = prices[1]?.price ?? low;
-
-                  return (
-                    <div
-                      key={item._id}
-                      className="flex items-center justify-between py-6  border-b border-gray-200 hover:bg-bg-primary  transition-all"
-                    >
-                      {/* Item Image */}
-                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200 ">
-                        <img
-                          src={item.images[0].url}
-                          alt={item.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-
-                      {/* Item Details */}
-                      <div className="flex-1 ml-6 ">
-                        <h3 className="text-xl font-bold text-gray-300 mb-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-500 text-sm">
-                          {item.ingredients?.join(" / ")}
-                        </p>
-                      </div>
-
-                      {/* Dashed Line */}
-                      <div className="flex-1 mx-6 border-t-2 border-dashed border-gray-300"></div>
-
-                      {/* Prices */}
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-primary mb-1">
-                          ${low.toFixed(2)}
+              {/* Items list */}
+              <div className="lg:w-1/2 bg-bg-secondary p-6 rounded-xl shadow-lg">
+                <h2 className="text-3xl font-bold text-primary mb-6">
+                  {catName}
+                </h2>
+                <div className="space-y-6">
+                  {items.map((item) => {
+                    const [half, full] = item.sizes || [];
+                    return (
+                      <div
+                        key={item._id}
+                        className="flex items-center justify-between border-b border-gray-500 py-4 px-4 hover:bg-bg-primary hover:rounded-2xl transition-all "
+                      >
+                        <div className="flex items-center justify-center">
+                          <div className="w-15 h-15 rounded-full overflow-hidden border-2 border-gray-200">
+                            <img
+                              src={item.images[0]?.url || bigImage}
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="ml-4">
+                            <Link
+                              to={`/food-details/${item._id}`}
+                              state={{ item }}
+                            >
+                              <h3 className="text-lg font-semibold text-gray-300 hover:text-primary">
+                                {item.title}
+                              </h3>
+                            </Link>
+                            <p className="text-sm text-gray-500">
+                              {item.ingredients?.join(" / ")}
+                            </p>
+                          </div>
                         </div>
-                        <div className="text-xl font-bold text-primary">
-                          ${high.toFixed(2)}
+                        <div className="text-right">
+                          <div className="text-lg font-bold text-primary">
+                            ${half?.price?.toFixed(2) ?? "0.00"}
+                          </div>
+                          <div className="text-lg font-bold text-primary">
+                            ${full?.price?.toFixed(2) ?? "0.00"}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </section>
+          );
+        })}
       </div>
     </div>
   );
