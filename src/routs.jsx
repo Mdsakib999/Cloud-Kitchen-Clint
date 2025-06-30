@@ -87,7 +87,7 @@ export const router = createBrowserRouter([
         element: <ManageCategory />,
       },
       {
-        path: "/order-track",
+        path: "/order-track/:id",
         element: <TrackOrder />,
       },
       {
