@@ -62,61 +62,71 @@ export const OrderHistoryTimeline = ({
   orderTime,
   status,
   isPaid,
-  paymentTime,
-  deliveryTime,
-  cancelledTime,
 }) => {
   const steps = [];
+  // Always show order created
   steps.push({
     ...statusSteps[0],
     completed: true,
-    timestamp: orderTime,
-  });
-  // 2. Payment
-  steps.push({
-    ...statusSteps[1],
-    completed: isPaid,
-    timestamp: paymentTime || "-",
-    description: isPaid ? "Payment processed and confirmed" : "Payment pending",
+    timestamp: new Date(orderTime).toLocaleString("en-US", {
+      weekday: "long",
+      month: "numeric",
+      year: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+      timeZone: "Asia/Dhaka",
+    }),
   });
 
-  // 3. Status progression
-  const statusOrder = [
-    "pending",
-    "accepted",
-    "preparing",
-    "ready",
-    "delivering",
-    "delivered",
-    "cancelled",
-  ];
-  const currentStatusIdx = statusOrder.indexOf(status);
-
-  // Only show up to the current status (or all if delivered/cancelled)
-  for (let i = 1; i < statusOrder.length; i++) {
-    const s = statusOrder[i];
-    if (s === "cancelled" && status !== "cancelled") continue;
-    if (
-      s === "delivered" &&
-      status !== "delivered" &&
-      statusOrder.indexOf(status) < statusOrder.indexOf("delivering")
-    )
-      continue;
-    if (statusOrder.indexOf(s) > currentStatusIdx && status !== "cancelled")
-      break;
-    let completed =
-      statusOrder.indexOf(s) < currentStatusIdx ||
-      (status === s && s !== "cancelled");
-    let timestamp = "-";
-    if (s === "delivered" && deliveryTime) timestamp = deliveryTime;
-    if (s === "cancelled" && cancelledTime) timestamp = cancelledTime;
+  // If cancelled, only show cancelled step after created
+  if (status === "cancelled") {
     steps.push({
-      ...statusSteps.find((st) => st.key === s),
-      completed: completed,
-      timestamp,
+      ...statusSteps.find((st) => st.key === "cancelled"),
+      completed: true,
+      timestamp: "Cancelled",
     });
-    if (status === "cancelled" && s === "cancelled") break;
-    if (status === "delivered" && s === "delivered") break;
+  } else {
+    // Payment step: if delivered, always show as paid
+    const paymentCompleted = isPaid || status === "delivered";
+    steps.push({
+      ...statusSteps[1],
+      completed: paymentCompleted,
+      timestamp: paymentCompleted ? "Paid" : "Cash on Delivery (COD)",
+      description: paymentCompleted
+        ? "Payment processed and confirmed"
+        : "Payment will be collected on delivery (COD)",
+    });
+
+    // Status progression
+    const statusOrder = [
+      "pending",
+      "accepted",
+      "preparing",
+      "ready",
+      "delivering",
+      "delivered",
+    ];
+    const currentStatusIdx = statusOrder.indexOf(status);
+    for (let i = 1; i < statusOrder.length; i++) {
+      const s = statusOrder[i];
+      if (
+        s === "delivered" &&
+        status !== "delivered" &&
+        statusOrder.indexOf(status) < statusOrder.indexOf("delivering")
+      )
+        continue;
+      if (statusOrder.indexOf(s) > currentStatusIdx) break;
+      let completed =
+        statusOrder.indexOf(s) < currentStatusIdx || status === s;
+      steps.push({
+        ...statusSteps.find((st) => st.key === s),
+        completed: completed,
+        timestamp: completed ? "Done" : "-",
+      });
+      if (status === "delivered" && s === "delivered") break;
+    }
   }
 
   return (

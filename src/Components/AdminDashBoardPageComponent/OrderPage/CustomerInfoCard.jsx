@@ -12,10 +12,12 @@ export const CustomerInfoCard = ({ name, note, phone, address }) => {
         <h2 className="text-md font-semibold mb-2">{phone}</h2>
         <h2 className="text-md font-semibold mb-2"> {address}</h2>
       </div>
-      <h2 className="text-md mb-2 bg-bg-primary text-white py-3 px-5 rounded-b-2xl">
-        <span className="text-emerald-200 font-semibold">Instructions:</span>{" "}
-        {note}
-      </h2>
+      {note && (
+        <h2 className="text-md mb-2 bg-bg-primary text-white py-3 px-5 rounded-b-2xl">
+          <span className="text-emerald-200 font-semibold">Instructions:</span>{" "}
+          {note}
+        </h2>
+      )}
     </div>
   );
 };
