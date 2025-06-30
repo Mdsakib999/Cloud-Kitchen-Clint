@@ -20,9 +20,9 @@ export const orderApi = createApi({
       providesTags: (result) =>
         result && Array.isArray(result)
           ? [
-              { type: "Order", id: "LIST" },
-              ...result.map((order) => ({ type: "Order", id: order._id })),
-            ]
+            { type: "Order", id: "LIST" },
+            ...result.map((order) => ({ type: "Order", id: order._id })),
+          ]
           : [{ type: "Order", id: "LIST" }],
     }),
     getOrderById: builder.query({
@@ -31,6 +31,7 @@ export const orderApi = createApi({
         { type: "Order", id: orderId },
       ],
     }),
+
     createOrder: builder.mutation({
       query: (orderData) => ({
         url: "/order/create-order",
@@ -60,12 +61,24 @@ export const orderApi = createApi({
         { type: "Order", id: "LIST" },
       ],
     }),
+    getOrdersByUser: builder.query({
+      query: (userId) => `/order/user/${userId}`,
+      providesTags: (result) =>
+        result && Array.isArray(result)
+          ? [
+            { type: "Order", id: "USER_LIST" },
+            ...result.map((order) => ({ type: "Order", id: order._id })),
+          ]
+          : [{ type: "Order", id: "USER_LIST" }],
+    }),
+
   }),
 });
 
 export const {
   useGetOrdersQuery,
   useGetOrderByIdQuery,
+  useGetOrdersByUserQuery,
   useCreateOrderMutation,
   useUpdateOrderMutation,
   useDeleteOrderMutation,
