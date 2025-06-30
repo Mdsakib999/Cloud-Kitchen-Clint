@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ImageUploader } from "../../SharedComponent/ImageUploader";
+import { useCreateBlogMutation } from "../../../redux/apiSlice";
+import { toast } from "react-hot-toast";
+import { TagInput } from "../../SharedComponent/TagInput";
 
 export const CreateBlog = () => {
   const [title, setTitle] = useState("");
@@ -10,29 +13,38 @@ export const CreateBlog = () => {
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState([]);
   const [image, setImage] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
+  const [createBlog, { isLoading, isError, error }] = useCreateBlogMutation();
 
   const handleSubmit = async () => {
-    if (!title || !content) {
-      showToast("Error", "Title and content are required", "error");
+    if (!title.trim() || !content.trim()) {
+      toast.error("Title and content are required");
       return;
     }
-    setError(null);
-    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("category", category);
+    formData.append("tags", JSON.stringify(tags));
+    if (image) {
+      formData.append("image", image);
+    }
 
     try {
+      await createBlog(formData).unwrap();
+      toast.success("Blog created successfully!");
       setTitle("");
       setContent("");
+      setCategory("");
+      setTags([]);
       setImage(null);
-      showToast("Success", "Blog created successfully!", "success");
-      navigate("/");
-    } catch (error) {
-      setError(error.message || "Failed to create blog");
-      showToast("Error", error.message || "Failed to create blog", "error");
-    } finally {
-      setLoading(false);
+      navigate("/admin/dashboard/manage-blogs");
+    } catch (err) {
+      toast.error(
+        err?.data?.message || err?.message || "Failed to create blog"
+      );
     }
   };
 
@@ -43,7 +55,7 @@ export const CreateBlog = () => {
       </h1>
 
       {/* Title Input */}
-      <div className="space-y-2">
+      <div className="space-y-2 mt-6">
         <label className="text-lg font-semibold">Blog Title</label>
         <input
           type="text"
@@ -53,6 +65,7 @@ export const CreateBlog = () => {
           className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:outline-none"
         />
       </div>
+
       {/* Category Input */}
       <div className="space-y-2 mt-6">
         <label className="text-lg font-semibold">Category</label>
@@ -64,30 +77,23 @@ export const CreateBlog = () => {
           className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:outline-none"
         />
       </div>
+
       {/* Tags Input */}
       <div className="space-y-2 mt-6">
         <label className="text-lg font-semibold">Tags (comma separated)</label>
-        <input
-          type="text"
-          value={tags.join(", ")}
-          onChange={(e) =>
-            setTags(
-              e.target.value
-                .split(",")
-                .map((tag) => tag.trim())
-                .filter((tag) => tag.length > 0)
-            )
-          }
-          placeholder="e.g. Pizza, Italian, Recipe, Cooking"
-          className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:outline-none"
-        />
+        <TagInput tags={tags} setTags={setTags} />
       </div>
 
       {/* Image Uploader */}
-      <ImageUploader image={image} setImage={setImage} />
+      <div className="mt-6">
+        <label className="text-lg font-semibold block mb-2">
+          Featured Image
+        </label>
+        <ImageUploader image={image} setImage={setImage} />
+      </div>
 
       {/* Content Editor */}
-      <div className="space-y-2">
+      <div className="space-y-2 mt-6">
         <label className="text-lg font-semibold">Content</label>
         <ReactQuill
           theme="snow"
@@ -130,20 +136,24 @@ export const CreateBlog = () => {
       </div>
 
       {/* Error Message */}
-      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {isError && (
+        <p className="text-red-500 mt-4">
+          {error?.data?.message || error?.message}
+        </p>
+      )}
 
       {/* Publish Button */}
       <div className="flex justify-end mt-20">
         <button
           onClick={handleSubmit}
-          disabled={loading}
+          disabled={isLoading}
           className={`py-3 px-6 rounded-md text-lg font-semibold shadow-md transition-all duration-300 ${
-            loading
+            isLoading
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-primary text-white hover:bg-secondary"
           }`}
         >
-          {loading ? "Publishing..." : "Publish Blog"}
+          {isLoading ? "Publishing..." : "Publish Blog"}
         </button>
       </div>
     </div>
