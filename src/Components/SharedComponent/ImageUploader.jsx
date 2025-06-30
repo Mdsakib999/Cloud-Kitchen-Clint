@@ -27,7 +27,22 @@ export const ImageUploader = ({ image, setImage }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragOver(false);
-    handleImageChange(e);
+
+    const file = e.dataTransfer.files[0];
+    if (
+      file &&
+      ["image/jpeg", "image/png", "image/webp", "image/jpg"].includes(file.type)
+    ) {
+      setImage(file);
+      setUploadStatus("success");
+    } else {
+      showToast(
+        "Error",
+        "Please upload a valid image (JPEG/PNG/WEBP/JPG)",
+        "error"
+      );
+      setUploadStatus("idle");
+    }
   };
 
   const handleDragOver = (e) => {
