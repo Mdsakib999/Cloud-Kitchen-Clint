@@ -32,7 +32,6 @@ function UpdateBlogModal({ onClose, data, onSave, isSaving }) {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-
     const updatedData = new FormData();
     updatedData.append("title", formData.title);
     updatedData.append("content", formData.content);
@@ -44,9 +43,9 @@ function UpdateBlogModal({ onClose, data, onSave, isSaving }) {
     }
 
     try {
-      await updateBlog(data._id, updatedData);
-      await fetchBlogs();
-      showToast("Success", "Blog updated successfully!", "success");
+      // await updateBlog(data._id, updatedData);
+      // await fetchBlogs();
+      // showToast("Success", "Blog updated successfully!", "success");
       await onSave(updatedData);
       toast.success("Blog updated successfully!");
       onClose();
