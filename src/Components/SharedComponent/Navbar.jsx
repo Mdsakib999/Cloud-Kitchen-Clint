@@ -92,6 +92,7 @@ const Navbar = ({ offsetTop = 56 }) => {
     setShowUserDropdown(false);
     setIsMobileMenuOpen(false);
   };
+
   const menuItems = [
     { to: "/", label: "Home" },
     { to: "/menu", label: "Menu" },

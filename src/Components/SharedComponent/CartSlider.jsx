@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IoClose, IoTrashOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { updateQuantity, removeFromCart } from "../../redux/cartSlice";
-import { Minus, Plus } from "lucide-react";
 
 const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -15,7 +14,7 @@ const CartSlider = ({ isOpen, onClose }) => {
     if (currentQty > 1) {
       dispatch(updateQuantity({ id, quantity: currentQty - 1 }));
     } else {
-      setDeleteTarget(id); // open modal instead
+      setDeleteTarget(id);
     }
   };
 
@@ -31,7 +30,7 @@ const CartSlider = ({ isOpen, onClose }) => {
   return (
     <>
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-bg-primary text-gray-200 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-96 bg-bg-primary text-gray-200 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -39,14 +38,14 @@ const CartSlider = ({ isOpen, onClose }) => {
         <div className="flex justify-between items-center px-4 py-8 border-b border-gray-500 pt-16">
           <h2 className="text-2xl font-medium uppercase">Your Cart</h2>
           <button onClick={onClose}>
-            <IoClose className="text-2xl" />
+            <IoClose className="cursor-pointer text-2xl" />
           </button>
         </div>
 
         {/* Cart Items */}
-        <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(100%-160px)]">
+        <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(100vh-260px)]">
           {cartItems.ids.length === 0 ? (
-            <p>Your cart is empty.</p>
+            <p className="font-serif">Your cart is empty !</p>
           ) : (
             cartItems.ids.map((id) => {
               const item = cartItems.entities[id];
@@ -82,14 +81,14 @@ const CartSlider = ({ isOpen, onClose }) => {
                     <div className="flex items-center mt-1">
                       <button
                         onClick={() => handleDecrease(item._id, item.quantity)}
-                        className="px-2 py-1 text-sm bg-bg-secondary rounded"
+                        className="cursor-pointer px-2 py-1 text-sm bg-bg-secondary rounded"
                       >
                         -
                       </button>
                       <span className="px-3">{item.quantity}</span>
                       <button
                         onClick={() => handleIncrease(item._id, item.quantity)}
-                        className="px-2 py-1 text-sm bg-bg-secondary rounded"
+                        className="cursor-pointer px-2 py-1 text-sm bg-bg-secondary rounded"
                       >
                         +
                       </button>
@@ -100,7 +99,7 @@ const CartSlider = ({ isOpen, onClose }) => {
                   </div>
 
                   <button onClick={() => setDeleteTarget(item._id)}>
-                    <IoTrashOutline className="text-xl text-red-500 ml-2" />
+                    <IoTrashOutline className="cursor-pointer text-xl text-red-500 ml-2" />
                   </button>
                 </div>
               );
@@ -109,7 +108,7 @@ const CartSlider = ({ isOpen, onClose }) => {
           <div className="flex justify-between text-lg font-semibold text-white">
             <span>Total:</span>
             <span>
-              $
+              BDT{" "}
               {cartItems.ids
                 .reduce((total, id) => {
                   const item = cartItems.entities[id];
@@ -123,23 +122,12 @@ const CartSlider = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Footer buttons */}
-        {/* Footer with Total & Buttons */}
-        <div className="px-4 py-4 border-t border-gray-500 space-y-2">
-          {/* Total Price */}
-
-          {/* Buttons */}
-          <Link
-            to="/"
-            onClick={onClose}
-            className="block w-full text-center bg-primary text-bg-primary py-2 rounded"
-          >
-            View Cart
-          </Link>
+        {/* Footer with Total & Buttons - always visible */}
+        <div className="px-4 py-4 border-t border-gray-500 space-y-2 bg-bg-primary sticky bottom-0 z-10">
           <Link
             to="/checkout"
             onClick={onClose}
-            className="block w-full text-center bg-bg-secondary border border-primary text-white py-2 rounded"
+            className="font-inter tracking-wider block w-full text-center bg-bg-secondary border border-primary text-white py-2 rounded cursor-pointer"
           >
             Checkout
           </Link>
@@ -159,13 +147,13 @@ const CartSlider = ({ isOpen, onClose }) => {
             <div className="flex justify-between gap-4">
               <button
                 onClick={() => setDeleteTarget(null)}
-                className="flex-1 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-100"
+                className="cursor-pointer flex-1 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-100"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleRemove(deleteTarget)}
-                className="flex-1 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                className="cursor-pointer flex-1 py-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
                 Remove
               </button>

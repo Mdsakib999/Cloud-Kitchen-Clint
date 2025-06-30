@@ -15,6 +15,7 @@ import { useAuth } from "../../providers/AuthProvider";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../Utils/axios";
 import toast from "react-hot-toast";
+import { useCreateOrderMutation } from "../../redux/orderSlice";
 
 const CheckoutForm = () => {
   const { user, loading } = useAuth();
@@ -32,7 +33,6 @@ const CheckoutForm = () => {
   const [couponCode, setCouponCode] = useState("");
   const [placingOrder, setPlacingOrder] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
-  console.log("user", user);
 
   const dispatch = useDispatch();
 
@@ -56,6 +56,7 @@ const CheckoutForm = () => {
   });
 
   const orderItems = useSelector(selectAllCartItems);
+  const [createOrder, { isLoading: orderLoading }] = useCreateOrderMutation();
 
   const subtotal = orderItems.reduce((sum, item) => {
     const addonsTotal =
@@ -137,6 +138,7 @@ const CheckoutForm = () => {
       city: data.city,
       couponCode: appliedCoupon?.code || "",
       isCouponApplied: !!appliedCoupon,
+      additionalInfo: data.additionalInfo || "",
       items: orderItems.map((item) => ({
         name: item.name,
         qty: item.quantity,
@@ -154,28 +156,22 @@ const CheckoutForm = () => {
       paymentMethod: selectedPayment,
     };
     try {
-      const result = await axiosInstance.post(
-        "/order/create-order",
-        orderPayload,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+      const result = await createOrder(orderPayload).unwrap();
+      toast.success(
+        <h1 className="font-serif text-center">Order placed successfully!</h1>
       );
-      if (result.status === 201) {
-        toast.success(
-          <h1 className="font-serif text-center">Order placed successfully!</h1>
-        );
-        dispatch(clearCart());
-        setAppliedCoupon(null);
-        setDiscount(0);
-        localStorage.removeItem("appliedCoupon");
-        localStorage.removeItem("discount");
-        reset();
-        setSelectedPayment("");
-      }
+      dispatch(clearCart());
+      setAppliedCoupon(null);
+      setDiscount(0);
+      localStorage.removeItem("appliedCoupon");
+      localStorage.removeItem("discount");
+      reset();
+      setSelectedPayment("");
     } catch (error) {
       toast.error(
-        <h1 className="text-center font-serif">Failed to place order</h1>
+        <h1 className="text-center font-serif">
+          {error?.data || "Failed to place order"}
+        </h1>
       );
     } finally {
       setPlacingOrder(false);
@@ -213,15 +209,15 @@ const CheckoutForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 py-12 px-4 lg:px-8 pt-40">
+    <div className="min-h-screen bg-bg-secondary py-12 px-4 lg:px-8 pt-40">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          <section className="bg-gray-800 rounded-xl p-6 shadow-md">
+          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-6 shadow-md">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">
                 Contact Information
               </h2>
-              <div className="flex items-center text-sm text-gray-300">
+              <div className="flex items-center text-sm text-emerald-500">
                 <Shield className="w-4 h-4 mr-1" /> Secure checkout
               </div>
             </div>
@@ -232,7 +228,7 @@ const CheckoutForm = () => {
                 </label>
                 <input
                   {...register("name", { required: "Name is required" })}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-transparent text-white focus:outline-none focus:border-teal-500"
                   placeholder="Enter your name"
                 />
                 {errors.name && (
@@ -253,8 +249,8 @@ const CheckoutForm = () => {
                       message: "Invalid phone number",
                     },
                   })}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
-                  placeholder="+880 123 456 7890"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-transparent text-white focus:outline-none focus:border-teal-500"
+                  placeholder="Enter phone number"
                 />
                 {errors.phone && (
                   <p className="mt-1 text-sm text-red-500">
@@ -268,8 +264,8 @@ const CheckoutForm = () => {
                 </label>
                 <input
                   {...register("country", { required: "Country is required" })}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
-                  placeholder="Bangladesh"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-transparent text-white focus:outline-none focus:border-teal-500"
+                  placeholder="Enter country Name"
                 />
                 {errors.country && (
                   <p className="mt-1 text-sm text-red-500">
@@ -280,9 +276,9 @@ const CheckoutForm = () => {
             </div>
           </section>
 
-          <section className="bg-gray-800 rounded-xl p-6 shadow-md">
+          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-6 shadow-md">
             <div className="flex items-center mb-6">
-              <Truck className="w-5 h-5 text-teal-500 mr-2" />
+              <Truck className="w-5 h-5 text-emerald-600 mr-2" />
               <h2 className="text-xl font-semibold text-white">
                 Shipping Address
               </h2>
@@ -297,7 +293,7 @@ const CheckoutForm = () => {
                     required: "Street address is required",
                   })}
                   className="w-full px-3 py-2 border border-gray-600 rounded-lg bg SIXTH AI INC. gray-700 text-white focus:outline-none focus:border-teal-500"
-                  placeholder="123 Main Street"
+                  placeholder="Enter your Address"
                 />
                 {errors.streetAddress && (
                   <p className="mt-1 text-sm text-red-500">
@@ -311,8 +307,8 @@ const CheckoutForm = () => {
                 </label>
                 <input
                   {...register("city", { required: "City is required" })}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
-                  placeholder="Chattogram"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-transparent text-white focus:outline-none focus:border-teal-500"
+                  placeholder="Enter your city name"
                 />
                 {errors.city && (
                   <p className="mt-1 text-sm text-red-500">
@@ -327,8 +323,8 @@ const CheckoutForm = () => {
                 <textarea
                   {...register("additionalInfo")}
                   rows="3"
-                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500 resize-none"
-                  placeholder="Leave at door, ring bell, etc."
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-transparent text-white focus:outline-none focus:border-teal-500 resize-none"
+                  placeholder="Any instructions..."
                 />
               </div>
             </div>
@@ -336,9 +332,9 @@ const CheckoutForm = () => {
         </div>
 
         <div className="lg:col-span-1">
-          <section className="bg-gray-800 rounded-xl p-6 shadow-md sticky top-4">
+          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-6 shadow-md sticky top-4">
             <div className="flex items-center mb-6">
-              <Package className="w-5 h-5 text-teal-500 mr-2" />
+              <Package className="w-5 h-5 text-emerald-500 mr-2" />
               <h2 className="text-xl font-semibold text-white">
                 Order Summary
               </h2>
@@ -354,7 +350,7 @@ const CheckoutForm = () => {
                 return (
                   <div
                     key={index}
-                    className="flex justify-between p-4 bg-gray-700 rounded-lg"
+                    className="flex justify-between p-4 bg-transparent rounded-lg"
                   >
                     <div className="flex items-center space-x-3">
                       <img
@@ -392,16 +388,16 @@ const CheckoutForm = () => {
                     Coupon Code
                   </label>
                   {coupons[0] && (
-                    <p className="text-xs text-teal-400 mb-2">
-                      Use {coupons[0].code} for {coupons[0].discountAmount}
-                      {coupons[0].type === "percentage" ? "%" : " Tk"} off
+                    <p className="text-sm text-emerald-400 mb-2">
+                      USE {coupons[0].code} FOR {coupons[0].discountAmount}
+                      {coupons[0].type === "percentage" ? "%" : " Tk"} OFF
                     </p>
                   )}
                 </>
               )}
               <div className="flex gap-2">
                 {appliedCoupon ? (
-                  <p className="text-teal-400 text-sm">
+                  <p className="text-primary text-sm">
                     COUPON CODE ({appliedCoupon.code}) APPLIED:{" "}
                     {appliedCoupon.discount.toFixed(2)} TK OFF
                   </p>
@@ -410,13 +406,13 @@ const CheckoutForm = () => {
                     <input
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
-                      className="flex-1 px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:border-teal-500"
-                      placeholder="Enter code"
+                      className="flex-1 px-3 py-2 border border-gray-600 rounded-lg bg-transparent text-white focus:outline-none focus:border-teal-500"
+                      placeholder="Enter Coupon Code"
                     />
                     <button
                       onClick={handleCouponApply}
                       disabled={couponLoading}
-                      className="cursor-pointer px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 flex items-center gap-2"
+                      className="cursor-pointer px-4 py-2 bg-emerald-950 border border-emerald-700 text-white rounded-lg hover:bg-emerald-900 disabled:opacity-50 flex items-center gap-2"
                     >
                       <Tag className="w-4 h-4" />{" "}
                       {couponLoading ? "Applying..." : "Apply"}
@@ -460,7 +456,7 @@ const CheckoutForm = () => {
               <label
                 className={`flex items-center p-4 border rounded-lg cursor-pointer ${
                   selectedPayment === "cash"
-                    ? "border-teal-500 bg-teal-900/20"
+                    ? "border-teal-500 bg-teal-900/30"
                     : "border-gray-600 hover:border-teal-500"
                 }`}
                 onClick={() => setSelectedPayment("cash")}
@@ -512,11 +508,11 @@ const CheckoutForm = () => {
 
             <button
               type="button"
-              disabled={isSubmitting || placingOrder}
+              disabled={isSubmitting || placingOrder || orderLoading}
               onClick={handleSubmit(handleOrder)}
-              className="w-full mt-6 bg-teal-600 text-white font-semibold py-3 rounded-lg hover:bg-teal-700 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full mt-6 bg-emerald-950 border border-emerald-700 text-white font-semibold py-3 rounded-lg hover:bg-emerald-900 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
-              {placingOrder ? (
+              {placingOrder || orderLoading ? (
                 <svg
                   className="animate-spin h-5 w-5 text-white mr-2"
                   xmlns="http://www.w3.org/2000/svg"
@@ -538,7 +534,9 @@ const CheckoutForm = () => {
                   />
                 </svg>
               ) : null}
-              {placingOrder ? "Placing Order..." : "Complete Order"}
+              {placingOrder || orderLoading
+                ? "Placing Order..."
+                : "Complete Order"}
               <ArrowRight className="w-5 h-5" />
             </button>
             <p className="mt-4 text-sm text-gray-300 flex items-center justify-center">
