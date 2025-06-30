@@ -1,27 +1,16 @@
 import { Star, Clock, Award } from "lucide-react";
 import { chefSpecials } from "../../FakeDB/chefSpecial";
+import { SectionHeader } from "../SharedComponent/SectionHeader";
 export const ChefSpecial = () => {
   return (
     <div className="py-16 px-4 max-w-7xl mx-auto">
       {/* Header Section */}
-      {/* newndwd */}
-      <div className="text-center mb-16">
-        <div className="inline-flex items-center gap-2 mb-4">
-          <Award className="w-8 h-8 text-primary" />
-          <span className="text-primary text-sm font-medium tracking-wider uppercase">
-            Culinary Excellence
-          </span>
-        </div>
-        <h1 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-white via-amber-100 to-primary bg-clip-text text-transparent mb-6">
-          Chef's Signature Collection
-        </h1>
-        <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-          Handcrafted masterpieces from our executive chef, featuring premium
-          ingredients and innovative techniques that define fine dining
-          excellence.
-        </p>
-        <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto mt-8 rounded-full"></div>
-      </div>
+      <SectionHeader
+        icon={Award}
+        subtitle="Culinary Excellence"
+        title="Chef's Signature Collection"
+        description="Handcrafted masterpieces from our executive chef, featuring premium ingredients and innovative techniques that define fine dining excellence."
+      />
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
