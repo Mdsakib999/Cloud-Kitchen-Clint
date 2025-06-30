@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   IoCartOutline,
   IoMenuOutline,
@@ -93,6 +93,15 @@ const Navbar = ({ offsetTop = 56 }) => {
     setIsMobileMenuOpen(false);
   };
 
+  const menuItems = [
+    { to: "/", label: "Home" },
+    { to: "/menu", label: "Menu" },
+    { to: "/order", label: "Price List" },
+    { to: "/about", label: "About" },
+    { to: "/contact", label: "Contact" },
+    { to: "/blogs", label: "Blogs" },
+  ];
+
   return (
     <>
       <nav
@@ -116,41 +125,22 @@ const Navbar = ({ offsetTop = 56 }) => {
 
           {/* Desktop Menu */}
           <ul className="hidden lg:flex flex-1 justify-center space-x-6 text-lg xl:text-xl">
-            <li>
-              <Link to="/" className="hover:underline">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/menu" className="hover:underline">
-                Menu
-              </Link>
-            </li>
-            <li>
-              <Link to="/order" className="hover:underline">
-                Price List
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" className="hover:underline">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" className="hover:underline">
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link to="/blogs" className="hover:underline">
-                Blogs
-              </Link>
-            </li>
-            <li>
-              <Link to="/faq" className="hover:underline">
-                Faq
-              </Link>
-            </li>
+            {menuItems.map(({ to, label }) => (
+              <li key={label}>
+                <NavLink
+                  to={to}
+                  onClick={closeMobileMenu}
+                  className={({ isActive }) =>
+                    `group relative inline-block transition-colors duration-300 ${
+                      isActive ? "text-primary" : "text-white"
+                    }`
+                  }
+                >
+                  {label}
+                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-primary transition-all duration-500 group-hover:w-full"></span>
+                </NavLink>
+              </li>
+            ))}
           </ul>
 
           {/* Desktop Right Side */}
@@ -264,36 +254,49 @@ const Navbar = ({ offsetTop = 56 }) => {
 
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 w-full bg-bg-primary/95 backdrop-blur-sm shadow-lg">
+          <div className="lg:hidden absolute top-full left-0 w-full bg-bg-primary/95 backdrop-blur-sm shadow-lg z-70">
             <div className="px-4 py-6 space-y-4">
               <ul className="space-y-4 text-lg">
-                {[
-                  { to: "/", label: "Home" },
-                  { to: "/menu", label: "Menu" },
-                  { to: "/order", label: "Price List" },
-                  { to: "/about", label: "About" },
-                  { to: "/contact", label: "Contact" },
-                  { to: "/news", label: "News" },
-                  { to: "/faq", label: "Faq" },
-                  {
-                    to:
-                      user?.role === "admin"
-                        ? "/admin/dashboard"
-                        : "/dashboard",
-                    label: "Dashboard",
-                  },
-                ].map(({ to, label }) => (
+                {menuItems.map(({ to, label }) => (
                   <li key={label}>
-                    <Link
+                    <NavLink
                       to={to}
-                      className="block hover:text-primary transition-colors cursor-pointer"
                       onClick={closeMobileMenu}
+                      className={({ isActive }) =>
+                        `group relative inline-block px-2 py-1 transition-colors duration-300 ${
+                          isActive ? "text-primary" : "text-white"
+                        }`
+                      }
                     >
                       {label}
-                    </Link>
+                      <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
+                    </NavLink>
                   </li>
                 ))}
+
+                {/* Only visible in mobile */}
+                {user && (
+                  <li key="Dashboard">
+                    <NavLink
+                      to={
+                        user?.role === "admin"
+                          ? "/admin/dashboard"
+                          : "/dashboard"
+                      }
+                      onClick={closeMobileMenu}
+                      className={({ isActive }) =>
+                        `group relative inline-block px-2 py-1 transition-colors duration-300 ${
+                          isActive ? "text-primary" : "text-white"
+                        }`
+                      }
+                    >
+                      Dashboard
+                      <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
+                    </NavLink>
+                  </li>
+                )}
               </ul>
+
               <div className="pt-4 border-t border-white/20 space-y-3">
                 {user ? (
                   <div className="space-y-3">

@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Search, Eye, ChevronLeft, ChevronRight } from "lucide-react";
-import { orders } from "../../../FakeDB/mockOrders";
 import { Link } from "react-router-dom";
+import { useGetOrdersQuery } from "../../../redux/orderSlice";
 
 export const OrderList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  // Fetch orders using RTK Query
+  const { data: orders = [], isLoading: loading } = useGetOrdersQuery();
 
   const filteredOrders = orders.filter((order) =>
     order.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -40,6 +44,8 @@ export const OrderList = () => {
       setCurrentPage(page);
     }
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="p-6 min-h-screen text-white">
@@ -79,33 +85,44 @@ export const OrderList = () => {
           <tbody>
             {paginatedOrders.map((order) => (
               <tr
-                key={order.oid}
+                key={order._id}
                 className="border-t border-white/10 hover:bg-white/5 transition-colors"
               >
-                <td className="px-4 py-3">{order.oid}</td>
+                <td className="px-4 py-3">OID{order._id.slice(-4)}</td>
                 <td className="px-4 py-3 whitespace-nowrap">{order.name}</td>
                 <td className="px-4 py-3">{order.address}</td>
-                <td className="px-4 py-3">৳{order.amount}</td>
+                <td className="px-4 py-3">৳{order.totalPrice}</td>
                 <td className="px-4 py-3">
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${
-                      order.status === "Completed"
-                        ? "bg-green-600/20 text-green-400"
-                        : order.status === "Pending"
+                      order.order_status === "pending"
                         ? "bg-yellow-600/20 text-yellow-400"
-                        : order.status === "On Delivery"
+                        : order.order_status === "accepted"
+                        ? "bg-blue-600/20 text-blue-400"
+                        : order.order_status === "preparing"
+                        ? "bg-orange-600/20 text-orange-400"
+                        : order.order_status === "ready"
+                        ? "bg-teal-600/20 text-teal-400"
+                        : order.order_status === "delivering"
                         ? "bg-purple-600/20 text-purple-400"
-                        : "bg-red-600/20 text-red-400"
+                        : order.order_status === "delivered"
+                        ? "bg-green-600/20 text-green-400"
+                        : order.order_status === "cancelled"
+                        ? "bg-red-600/20 text-red-400"
+                        : "bg-gray-600/20 text-gray-400"
                     }`}
                   >
-                    {order.status}
+                    {order.order_status}
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <Link to={`/admin/dashboard/order-details/${order.oid}`}>
+                  <Link
+                    to={`/admin/dashboard/order-details/${order._id}`}
+                    state={order}
+                  >
                     <button
                       onClick={() => setSelectedOrder(order)}
-                      className="cursor-pointer transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap"
+                      className="cursor-pointer border border-amber-200 transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap"
                     >
                       View Details
                       <Eye size={18} />
