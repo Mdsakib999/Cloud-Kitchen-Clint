@@ -1,34 +1,52 @@
-import { blogPosts } from "../../FakeDB/mockBlogData";
 import { Link } from "react-router-dom";
+import { useGetAllBlogsQuery } from "../../redux/apiSlice";
+import { formatDate } from "../../utils/formatDate";
+import { SectionHeader } from "../../Components/SharedComponent/SectionHeader";
+import { Newspaper } from "lucide-react";
 
 export const AllBlogs = () => {
+  const { data: blogs = [], isLoading, isError, error } = useGetAllBlogsQuery();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-40">
+        <span className="text-xl font-medium">Loading blogs…</span>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center py-40">
+        <span className="text-xl font-medium text-red-500">
+          Error: {"message" in error ? error.message : "Failed to load"}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full mx-auto overflow-hidden py-40 bg-bg-primary">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-bg-secondary via-bg-tertiary to-bg-secondary opacity-60"></div>
 
       {/* Header */}
-      <div className="relative z-10 text-center mb-16 px-6">
-        <div className="inline-block">
-          <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent mb-4 tracking-tight">
-            FEATURED BLOGS
-          </h1>
-          <div className="h-1 bg-gradient-to-r from-primary to-tertiary rounded-full mx-auto"></div>
-        </div>
-        <p className="text-secondary mt-4 text-lg">
-          Stay updated with the latest stories
-        </p>
-      </div>
+      <SectionHeader
+        icon={Newspaper}
+        subtitle="Latest Insights"
+        title="FEATURED BLOGS"
+        description="Stay updated with the latest stories"
+      />
 
       {/* News Cards */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 space-y-20">
-        {blogPosts?.map((blog, index) => (
-          <div key={index} className="group relative">
+        {blogs.map((blog, index) => (
+          <div key={blog._id} className="group relative">
             {/* Card background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl "></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl"></div>
 
             <div
-              className={`relative flex flex-col lg:flex-row items-center md:gap-12 p-4 md:p-8  lg:p-12 ${
+              className={`relative flex flex-col lg:flex-row items-center md:gap-12 p-4 md:p-8 lg:p-12 ${
                 index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
               }`}
             >
@@ -36,9 +54,9 @@ export const AllBlogs = () => {
               <div className="w-full lg:w-1/2 relative">
                 <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                   <img
-                    src={blog.image}
+                    src={blog.image || "/fallback.jpg"}
                     alt={blog.title}
-                    className="w-full h-64 lg:h-80  object-contain transform group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-64 lg:h-80 object-fit transform group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
@@ -60,12 +78,14 @@ export const AllBlogs = () => {
                 <div className="flex items-center gap-2 text-primary">
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                   <span className="text-sm font-semibold uppercase tracking-wider">
-                    {blog.date}
+                    {formatDate(blog.createdAt)}
                   </span>
                 </div>
+
                 <h2 className="text-2xl md:text-4xl font-black text-white leading-tight group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-tertiary group-hover:bg-clip-text transition-all duration-500 my-3">
                   {blog.title}
                 </h2>
+
                 {/* Tags */}
                 <div className="flex flex-wrap gap-3">
                   {blog.tags?.map((tag, i) => (
@@ -78,18 +98,18 @@ export const AllBlogs = () => {
                   ))}
                 </div>
 
-                <p className="text-secondary text-lg leading-relaxed my-3">
-                  {blog.content}
+                <p className="text-secondary text-lg leading-relaxed my-3 line-clamp-3">
+                  {blog.content?.replace(/<[^>]+>/g, "").slice(0, 200)}...
                 </p>
 
                 {/* Read more button */}
                 <div
-                  className={`relative z-10 text-center flex md:${
+                  className={`relative z-10 text-center flex ${
                     index % 2 === 0 ? "justify-end" : "justify-start"
                   }`}
                 >
                   <Link
-                    to={`/blog-details/${blog.id}`}
+                    to={`/blog-details/${blog._id}`}
                     className="group inline-flex items-center gap-3 bg-bg-input/40 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-full hover:bg-bg-input/60 transition-all duration-500 shadow-2xl"
                   >
                     <span className="text-xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">

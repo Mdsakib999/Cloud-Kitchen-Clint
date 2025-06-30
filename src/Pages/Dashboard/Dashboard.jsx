@@ -28,7 +28,7 @@ export const Dashboard = () => {
         <div className="flex min-h-screen relative">
           {/* Mobile Sidebar Toggle */}
           <button
-            className={`fixed top-28 left-4 z-50 lg:hidden bg-primary text-white px-4 py-2 rounded text-sm font-medium shadow-lg transition-all duration-300 ${
+            className={`fixed top-28 left-4 z-20 lg:hidden bg-primary text-white px-4 py-2 rounded text-sm font-medium shadow-lg transition-all duration-300 ${
               sidebarOpen ? "opacity-0 pointer-events-none" : "opacity-100"
             }`}
             onClick={() => setSidebarOpen(true)}
