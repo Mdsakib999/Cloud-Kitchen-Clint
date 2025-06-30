@@ -26,8 +26,10 @@ export const orderApi = createApi({
           : [{ type: "Order", id: "LIST" }],
     }),
     getOrderById: builder.query({
-      query: (id) => `/order/${id}`,
-      providesTags: (result, error, id) => [{ type: "Order", id }],
+      query: (orderId) => `/order/${orderId}`,
+      providesTags: (result, error, orderId) => [
+        { type: "Order", id: orderId },
+      ],
     }),
     createOrder: builder.mutation({
       query: (orderData) => ({
