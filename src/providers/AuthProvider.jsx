@@ -78,6 +78,7 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("token");
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -160,7 +161,6 @@ const AuthProvider = ({ children }) => {
       } else {
         setRole(null);
         setIsEmailVerified(false);
-        localStorage.removeItem("token");
       }
       setLoading(false);
     });
