@@ -160,6 +160,7 @@ const AuthProvider = ({ children }) => {
       } else {
         setRole(null);
         setIsEmailVerified(false);
+        localStorage.removeItem("token");
       }
       setLoading(false);
     });
