@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Search, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGetOrdersQuery } from "../../../redux/orderSlice";
+import { GetStatusColor } from "../../SharedComponent/GetStatusColor";
 
 export const OrderList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -9,12 +10,21 @@ export const OrderList = () => {
   const [itemsPerPage] = useState(10);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  // Fetch orders using RTK Query
-  const { data: orders = [], isLoading: loading } = useGetOrdersQuery();
+  // Fetch orders
+  const { data: orders = [], isLoading } = useGetOrdersQuery();
 
-  const filteredOrders = orders.filter((order) =>
-    order.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Sort orders by newest first
+  const sortedOrders = [...orders].sort(
+    (a, b) => new Date(b.createdAt || b._id) - new Date(a.createdAt || a._id)
   );
+
+  // Search filter by name or OID (last 4 of _id)
+  const lowerSearch = searchTerm.toLowerCase();
+  const filteredOrders = sortedOrders.filter((order) => {
+    const nameMatch = order.name?.toLowerCase().includes(lowerSearch);
+    const oidMatch = `oid${order._id.slice(-4)}`.includes(lowerSearch);
+    return nameMatch || oidMatch;
+  });
 
   // Pagination
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
@@ -39,18 +49,19 @@ export const OrderList = () => {
     }
     return pages;
   };
+
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="p-6 min-h-screen text-white">
       <h2 className="text-2xl font-bold mb-1 text-black">All Orders</h2>
-      <p className="mb-4 text-black ">Showing {filteredOrders.length} orders</p>
+      <p className="mb-4 text-black">Showing {filteredOrders.length} orders</p>
 
       {/* Search Bar */}
       <div className="mb-6 bg-bg-secondary rounded-lg p-4">
@@ -61,9 +72,12 @@ export const OrderList = () => {
           />
           <input
             type="text"
-            placeholder="Search orders..."
+            placeholder="Search by name or OID..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1); // reset to first page on new search
+            }}
             className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -94,23 +108,9 @@ export const OrderList = () => {
                 <td className="px-4 py-3">৳{order.totalPrice}</td>
                 <td className="px-4 py-3">
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${
-                      order.order_status === "pending"
-                        ? "bg-yellow-600/20 text-yellow-400"
-                        : order.order_status === "accepted"
-                        ? "bg-blue-600/20 text-blue-400"
-                        : order.order_status === "preparing"
-                        ? "bg-orange-600/20 text-orange-400"
-                        : order.order_status === "ready"
-                        ? "bg-teal-600/20 text-teal-400"
-                        : order.order_status === "delivering"
-                        ? "bg-purple-600/20 text-purple-400"
-                        : order.order_status === "delivered"
-                        ? "bg-green-600/20 text-green-400"
-                        : order.order_status === "cancelled"
-                        ? "bg-red-600/20 text-red-400"
-                        : "bg-gray-600/20 text-gray-400"
-                    }`}
+                    className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${GetStatusColor(
+                      order.order_status
+                    )}`}
                   >
                     {order.order_status}
                   </span>
@@ -131,9 +131,10 @@ export const OrderList = () => {
           </tbody>
         </table>
       </div>
+
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-6 ">
+        <div className="flex items-center justify-between mt-6">
           <div className="text-sm text-gray-400">
             Showing {startIndex + 1} to{" "}
             {Math.min(startIndex + itemsPerPage, filteredOrders.length)} of{" "}
