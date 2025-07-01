@@ -1,5 +1,5 @@
 import { CheckCircle, Clock, Truck, Home, X } from "lucide-react";
-import { formatDate } from "../../../utils/formatDate";
+import { formatDate } from "../../utils/formatDate";
 
 const StatusSteps = ({ status, orderId, createdAt }) => {
   const getStatusSteps = (status) => {

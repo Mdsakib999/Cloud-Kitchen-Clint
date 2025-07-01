@@ -1,22 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGetOrdersQuery } from "../../../redux/orderSlice";
+import { GetStatusColor } from "../../SharedComponent/GetStatusColor";
+import FilterControls from "../../UserDashBoardPageComponents/FilterControls";
+import showToast from "../../../utils/ShowToast";
 
-export const OrderList = () => {
+export const ManageOrders = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [paymentFilter, setPaymentFilter] = useState("all");
 
-  // Fetch orders using RTK Query
-  const { data: orders = [], isLoading: loading } = useGetOrdersQuery();
+  const { data: orders = [], isLoading, isError, error } = useGetOrdersQuery();
 
-  const filteredOrders = orders.filter((order) =>
-    order.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    if (isError) {
+      showToast({
+        title: error?.data?.message || "Failed to load orders",
+        icon: "error",
+      });
+    }
+  }, [isError, error]);
 
-  // Pagination
+  const filteredOrders = useMemo(() => {
+    let sorted = [...orders].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
+    if (statusFilter !== "all") {
+      sorted = sorted.filter(
+        (o) => (o.status || o.order_status) === statusFilter
+      );
+    }
+
+    if (paymentFilter !== "all") {
+      sorted = sorted.filter(
+        (o) =>
+          (o.paymentStatus || (o.isPaid ? "paid" : "pending")) === paymentFilter
+      );
+    }
+
+    if (searchTerm.trim()) {
+      const lowerSearch = searchTerm.toLowerCase();
+      sorted = sorted.filter((order) => {
+        const nameMatch = order.name?.toLowerCase().includes(lowerSearch);
+        const oidMatch = `oid${order._id.slice(-4)}`.includes(lowerSearch);
+        return nameMatch || oidMatch;
+      });
+    }
+
+    return sorted;
+  }, [orders, statusFilter, paymentFilter, searchTerm]);
+
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedOrders = filteredOrders.slice(
@@ -39,37 +76,59 @@ export const OrderList = () => {
     }
     return pages;
   };
+
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  const handleClearFilters = () => {
+    setStatusFilter("all");
+    setPaymentFilter("all");
+    setSearchTerm("");
+  };
+
+  if (isLoading) return <div className="text-white p-6">Loading...</div>;
 
   return (
     <div className="p-6 min-h-screen text-white">
       <h2 className="text-2xl font-bold mb-1 text-black">All Orders</h2>
-      <p className="mb-4 text-black ">Showing {filteredOrders.length} orders</p>
+      <p className="mb-4 text-black">Showing {filteredOrders.length} orders</p>
 
-      {/* Search Bar */}
-      <div className="mb-6 bg-bg-secondary rounded-lg p-4">
-        <div className="relative max-w-md">
+      {/* Search & Filters */}
+      <div className="mb-6 bg-bg-secondary rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        {/* Search Input */}
+        <div className="relative w-full md:max-w-md">
           <Search
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
           />
           <input
             type="text"
-            placeholder="Search orders..."
+            placeholder="Search by name or OID..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
             className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        {/* Filters */}
+        <div className="flex-1">
+          <FilterControls
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            paymentFilter={paymentFilter}
+            setPaymentFilter={setPaymentFilter}
+            handleClearFilters={handleClearFilters}
           />
         </div>
       </div>
 
-      {/* Table */}
+      {/* Orders Table */}
       <div className="overflow-x-auto rounded-xl shadow-lg">
         <table className="min-w-full bg-bg-secondary text-left rounded-md">
           <thead className="bg-white/10 text-sm uppercase tracking-wider">
@@ -94,33 +153,16 @@ export const OrderList = () => {
                 <td className="px-4 py-3">৳{order.totalPrice}</td>
                 <td className="px-4 py-3">
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${
-                      order.order_status === "pending"
-                        ? "bg-yellow-600/20 text-yellow-400"
-                        : order.order_status === "accepted"
-                        ? "bg-blue-600/20 text-blue-400"
-                        : order.order_status === "preparing"
-                        ? "bg-orange-600/20 text-orange-400"
-                        : order.order_status === "ready"
-                        ? "bg-teal-600/20 text-teal-400"
-                        : order.order_status === "delivering"
-                        ? "bg-purple-600/20 text-purple-400"
-                        : order.order_status === "delivered"
-                        ? "bg-green-600/20 text-green-400"
-                        : order.order_status === "cancelled"
-                        ? "bg-red-600/20 text-red-400"
-                        : "bg-gray-600/20 text-gray-400"
-                    }`}
+                    className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${GetStatusColor(
+                      order.order_status
+                    )}`}
                   >
                     {order.order_status}
                   </span>
                 </td>
                 <td className="px-4 py-3">
                   <Link to={`/admin/dashboard/order-details/${order._id}`}>
-                    <button
-                      onClick={() => setSelectedOrder(order)}
-                      className="cursor-pointer border border-amber-200 transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap"
-                    >
+                    <button className="cursor-pointer border border-amber-200 transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap">
                       View Details
                       <Eye size={18} />
                     </button>
@@ -131,9 +173,10 @@ export const OrderList = () => {
           </tbody>
         </table>
       </div>
+
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-6 ">
+        <div className="flex items-center justify-between mt-6">
           <div className="text-sm text-gray-400">
             Showing {startIndex + 1} to{" "}
             {Math.min(startIndex + itemsPerPage, filteredOrders.length)} of{" "}
