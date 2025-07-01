@@ -7,6 +7,8 @@ import {
   FiMessageSquare,
   FiChevronDown,
 } from "react-icons/fi";
+import { SectionHeader } from "../SharedComponent/SectionHeader";
+import { PhoneCall } from "lucide-react";
 
 export const Booking = () => {
   const {
@@ -37,19 +39,15 @@ export const Booking = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Info */}
           <div className="space-y-8">
-            <div className="font-playfair-display">
-              <h1 className="text-4xl font-bold mb-6">
-                Get In Touch For Booking
-              </h1>
-              <p className="text-slate-300 leading-relaxed">
-                Ullamcorper ullamcorper tempor vulputate primus feugibus
-                suspendisse feugiat ac. Mauris tellus convallis laceret quam,
-                maximus mille ut porttitor ipsum fusce tempus pulvinar primis
-                faucibus suspendisse
-              </p>
-            </div>
+            <SectionHeader
+              icon={PhoneCall}
+              subtitle="Let's Talk"
+              title="Get In Touch For Booking"
+              description="Ullamcorper ullamcorper tempor vulputate primus feugibus suspendisse feugiat ac. Mauris tellus convallis laceret quam, maximus mille ut porttitor ipsum fusce tempus pulvinar primis faucibus suspendisse"
+              className="text-left"
+            />
 
-            <div className="border-t border-slate-600 pt-8 font-inknut">
+            <div className="border-t border-slate-600 pt-8">
               <h2 className="text-2xl font-semibold mb-6">Available Hours</h2>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">

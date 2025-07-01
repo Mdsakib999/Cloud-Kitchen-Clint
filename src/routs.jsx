@@ -17,7 +17,7 @@ import TrackOrder from "./Pages/TrackOrder/TrackOrder";
 import { DashStatics } from "./Components/AdminDashBoardPageComponent/StaticsPage/DashStatics";
 import { AllCustomer } from "./Components/AdminDashBoardPageComponent/CustomerPage.jsx/AllCustomer";
 import { OrderDetails } from "./Components/AdminDashBoardPageComponent/OrderPage/OrderDetails";
-import { OrderList } from "./Components/AdminDashBoardPageComponent/OrderPage/OrderList";
+import { ManageOrders } from "./Components/AdminDashBoardPageComponent/OrderPage/ManageOrders";
 import PrivateRoute from "./router/PrivateRoute";
 import AdminRoute from "./router/AdminRoute";
 import ErrorPage from "./Pages/Error/ErrorPage";
@@ -163,7 +163,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "orders",
-        element: <OrderList />,
+        element: <ManageOrders />,
       },
       {
         path: "order-details/:id",
