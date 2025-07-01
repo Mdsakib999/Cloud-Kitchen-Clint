@@ -38,22 +38,27 @@ export const OrderHistory = () => {
   const filteredOrders = useMemo(() => {
     if (!Array.isArray(orders)) return [];
 
-    let filtered = [...orders];
+    // Sort by newest first
+    let sorted = [...orders].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
 
+    // Apply status filter
     if (statusFilter !== "all") {
-      filtered = filtered.filter(
+      sorted = sorted.filter(
         (o) => (o.status || o.order_status) === statusFilter
       );
     }
 
+    // Apply payment filter
     if (paymentFilter !== "all") {
-      filtered = filtered.filter(
+      sorted = sorted.filter(
         (o) =>
           (o.paymentStatus || (o.isPaid ? "paid" : "pending")) === paymentFilter
       );
     }
 
-    return filtered;
+    return sorted;
   }, [orders, statusFilter, paymentFilter]);
 
   const handleViewOrder = (id) => {
