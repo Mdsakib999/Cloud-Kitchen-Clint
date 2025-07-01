@@ -24,11 +24,12 @@ export default function AddFood() {
   } = useForm({
     defaultValues: {
       title: "",
+      description: "",
       category: "",
       cookTime: "",
       servings: 1,
       ingredients: [""],
-      sizes: [{ label: "", price: 0 }],
+      sizes: [{ label: "", price: 0, discountPrice: 0 }],
       addons: [],
       options: [],
       images: [],
@@ -43,6 +44,7 @@ export default function AddFood() {
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
+    formData.append("description", data.description);
     formData.append("category", data.category);
     formData.append("cookTime", data.cookTime);
     formData.append("servings", data.servings.toString());
@@ -80,6 +82,7 @@ export default function AddFood() {
 
         {/* Basic Info Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Title */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Food Title *
@@ -96,6 +99,7 @@ export default function AddFood() {
             )}
           </div>
 
+          {/* Category */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Category *
@@ -125,7 +129,61 @@ export default function AddFood() {
               </p>
             )}
           </div>
+
+          {/* Description */}
+          <div className="lg:col-span-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Description
+            </label>
+            <textarea
+              rows={4}
+              className="w-full border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors resize-none"
+              placeholder="Enter a brief description of the food"
+              {...register("description")}
+            />
+          </div>
         </div>
+        {/* Ingredients */}
+        <fieldset className="mb-8">
+          <legend className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-800">Ingredients</h3>
+            <button
+              type="button"
+              onClick={() => ingredientsArray.append("")}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+            >
+              <Plus className="w-4 h-4" /> Add Ingredient
+            </button>
+          </legend>
+
+          <div className="space-y-3">
+            {ingredientsArray.fields.map((field, idx) => (
+              <div key={field.id} className="flex gap-3">
+                <input
+                  type="text"
+                  placeholder="Ingredient"
+                  className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 transition-colors"
+                  {...register(`ingredients.${idx}`, {
+                    required: "Ingredient is required",
+                  })}
+                />
+                <button
+                  type="button"
+                  onClick={() => ingredientsArray.remove(idx)}
+                  className="px-4 py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {errors.ingredients && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.ingredients.message}
+            </p>
+          )}
+        </fieldset>
         {/* Size & Price */}
         <DynamicFieldArray
           name="sizes"
@@ -134,8 +192,13 @@ export default function AddFood() {
           register={register}
           errors={errors}
           fieldDefs={[
-            { name: "label", type: "text", placeholder: "e.g. Small" },
-            { name: "price", type: "number", placeholder: "e.g. 5.99" },
+            { name: "label", type: "text", placeholder: "Size" },
+            { name: "price", type: "number", placeholder: "Price" },
+            {
+              name: "discount price",
+              type: "number",
+              placeholder: "Discount Price",
+            },
           ]}
         />
 
@@ -179,48 +242,6 @@ export default function AddFood() {
             )}
           </div>
         </div>
-
-        {/* Ingredients */}
-        <fieldset className="mb-8">
-          <legend className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Ingredients</h3>
-            <button
-              type="button"
-              onClick={() => ingredientsArray.append("")}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-            >
-              <Plus className="w-4 h-4" /> Add Ingredient
-            </button>
-          </legend>
-
-          <div className="space-y-3">
-            {ingredientsArray.fields.map((field, idx) => (
-              <div key={field.id} className="flex gap-3">
-                <input
-                  type="text"
-                  placeholder="Ingredient"
-                  className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 transition-colors"
-                  {...register(`ingredients.${idx}`, {
-                    required: "Ingredient is required",
-                  })}
-                />
-                <button
-                  type="button"
-                  onClick={() => ingredientsArray.remove(idx)}
-                  className="px-4 py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {errors.ingredients && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.ingredients.message}
-            </p>
-          )}
-        </fieldset>
 
         {/* Add-ons */}
         <DynamicFieldArray
