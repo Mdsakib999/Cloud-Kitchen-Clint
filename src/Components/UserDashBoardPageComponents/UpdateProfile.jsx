@@ -139,7 +139,7 @@ export const UpdateProfile = () => {
     if (result.isConfirmed) {
       setIsSubmitting(true);
       try {
-        const result = await axiosInstance.delete(`/auth/${user?._id}`, {
+        const result = await axiosInstance.delete(`/user/${user?._id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -245,7 +245,7 @@ export const UpdateProfile = () => {
           <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent mb-4">
             User Profile
           </h1>
-          <p className="text-slate-300 text-lg">
+          <p className="text-emerald-300 text-lg">
             Manage your account information and settings
           </p>
         </div>
@@ -384,14 +384,14 @@ export const UpdateProfile = () => {
                             <p className="text-white text-lg font-semibold font-sans">
                               {user?.phone || (
                                 <span className="italic text-slate-400 text-base">
-                                  No phone added
+                                  No phone number added
                                 </span>
                               )}
                             </p>
                           </div>
                           {!user?.phone && (
                             <button
-                              className="text-blue-400 hover:text-blue-300 font-medium text-sm transition-colors"
+                              className="cursor-pointer text-blue-400 hover:text-blue-300 font-medium text-sm transition-colors"
                               onClick={() => setShowUpdateModal(true)}
                             >
                               Add Number
@@ -433,7 +433,7 @@ export const UpdateProfile = () => {
                         </div>
                         {!user?.address && (
                           <button
-                            className="text-blue-400 hover:text-blue-300 font-medium text-sm transition-colors ml-4"
+                            className="cursor-pointer text-blue-400 hover:text-blue-300 font-medium text-sm transition-colors ml-4"
                             onClick={() => setShowUpdateModal(true)}
                           >
                             Add Address
