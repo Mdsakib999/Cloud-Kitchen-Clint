@@ -90,7 +90,7 @@ const ClientTestimonials = () => {
       <div className="container mx-auto px-6 py-20 relative z-10">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="flex items-center justify-center gap-3 mb-4">
             <LuQuote className="w-8 h-8 text-primary" />
             <span className="text-primary font-medium tracking-wider uppercase text-sm">
               Client Testimonials
@@ -107,16 +107,16 @@ const ClientTestimonials = () => {
           {/* Navigation Arrows */}
           <button
             onClick={prevTestimonial}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 bg-bg-primary rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-secondary"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 bg-bg-primary rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-secondary hover:border-primary"
           >
-            <LuArrowLeft className="w-6 h-6 text-secondary" />
+            <LuArrowLeft className="w-6 h-6 text-secondary hover:text-primary" />
           </button>
 
           <button
             onClick={nextTestimonial}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 bg-bg-primary rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-secondary"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 bg-bg-primary rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-secondary hover:border-primary"
           >
-            <LuArrowRight className="w-6 h-6 text-secondary" />
+            <LuArrowRight className="w-6 h-6 text-secondary hover:text-primary" />
           </button>
 
           {/* Testimonials Grid */}
@@ -205,21 +205,15 @@ const ClientTestimonials = () => {
                 }}
               />
             </div>
-            <div className="flex justify-between text-sm text-slate-400 mt-2">
+            <div className="flex justify-center text-sm text-slate-400 mt-2">
               <span>
                 {currentTestimonial + 1} of {testimonials.length}
               </span>
-              <span>{isAutoPlaying ? "Auto-playing" : "Paused"}</span>
             </div>
           </div>
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <button className="bg-primary text-bg-primary font-bold py-4 px-8 rounded-full transition-all duration-300 transform  hover:shadow-lg ">
-            Share Your Experience
-          </button>
-        </div>
+
       </div>
     </div>
   );
