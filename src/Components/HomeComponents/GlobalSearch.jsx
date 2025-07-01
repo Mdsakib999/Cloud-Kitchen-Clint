@@ -44,7 +44,7 @@ const GlobalSearch = () => {
     <>
       {isFocused && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300 opacity-100 pointer-events-auto"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300 opacity-100 pointer-events-auto w-full"
           onClick={() => {
             setIsFocused(false);
             setSuggestions([]);
@@ -56,20 +56,25 @@ const GlobalSearch = () => {
       <div
         className={`${
           isFocused
-            ? "fixed top-[22%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[95vw] max-w-md sm:max-w-lg scale-100 opacity-100"
+            ? "fixed top-[22%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[75vw] max-w-md lg:max-w-lg scale-100 opacity-100"
             : "relative w-full max-w-xs md:max-w-md scale-95 opacity-80"
         } font-serif transition-all duration-300 ease-in-out`}
       >
-        <div className="relative flex items-center">
-          <FiSearch className="absolute left-4 text-primary text-xl pointer-events-none" />
+        <div className="relative flex items-center justify-end w-fit md:w-full">
+          {/* Icon: always visible, position adjusted based on screen size */}
+          <FiSearch className="absolute left-16 md:left-4 text-primary text-xl pointer-events-none" />
+
+          {/* Search input: hidden on mobile, shown on md+ */}
           <input
             type="search"
             placeholder="Search your favorite food..."
-            className={`w-64 ${
-              isFocused && "w-full"
-            } pr-5 pl-10 py-2.5 md:py-3 rounded-2xl bg-white/20 border border-primary/30 text-white placeholder:text-gray-300 shadow-lg backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-primary/60 focus:bg-white/20 transition-all duration-200 ${
-              isFocused ? "ring-2 ring-primary/60 scale-105" : ""
-            }`}
+            className={`
+     w-3/4 md:w-full pr-5 pl-10 py-2.5 md:py-3 rounded-2xl
+      bg-white/20 border border-primary/30 text-white placeholder:text-gray-300
+      shadow-lg backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-primary/60
+      focus:bg-white/20 transition-all duration-200
+      ${isFocused ? "ring-2 ring-primary/60 scale-105" : ""}
+    `}
             value={searchText}
             onChange={handleChange}
             onFocus={() => setIsFocused(true)}
@@ -113,7 +118,7 @@ const GlobalSearch = () => {
                   </div>
                   <span className="text-primary font-semibold text-base whitespace-nowrap ml-2 md:ml-4">
                     <span className="font-sans">{item.price}</span>{" "}
-                    <span className="hidden sm:inline">Taka</span>
+                    <span className="hidden lg:inline">Taka</span>
                   </span>
                 </li>
               );

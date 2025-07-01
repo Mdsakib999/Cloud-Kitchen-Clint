@@ -13,16 +13,16 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Category", "Product"],
+  tagTypes: ["Category", "Product", "Blog"],
   endpoints: (builder) => ({
     getCategories: builder.query({
       query: () => "/admin/categories",
       providesTags: (result, error) =>
         result && Array.isArray(result)
           ? [
-            { type: "Category", id: "LIST" },
-            ...result.map((cat) => ({ type: "Category", id: cat._id })),
-          ]
+              { type: "Category", id: "LIST" },
+              ...result.map((cat) => ({ type: "Category", id: cat._id })),
+            ]
           : [{ type: "Category", id: "LIST" }],
     }),
 
@@ -77,20 +77,89 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
+    editProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/admin/products/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `/admin/products/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "Product", id }],
+    }),
+
     // Public
     getAllProducts: builder.query({
       query: () => "/user/products",
       providesTags: (result) =>
         result
           ? [
-            { type: "Product", id: "LIST" },
-            ...result.map(({ _id }) => ({ type: "Product", id: _id })),
-          ]
+              { type: "Product", id: "LIST" },
+              ...result.map(({ _id }) => ({ type: "Product", id: _id })),
+            ]
           : [{ type: "Product", id: "LIST" }],
     }),
     getProductById: builder.query({
       query: (id) => `/user/products/${id}`,
       providesTags: (result, error, id) => [{ type: "Products", id }],
+    }),
+    getMenuCategories: builder.query({
+      query: () => "/user/get-categories",
+      providesTags: (result, error) =>
+        result && Array.isArray(result)
+          ? [
+              { type: "Category", id: "LIST" },
+              ...result.map((cat) => ({ type: "Category", id: cat._id })),
+            ]
+          : [{ type: "Category", id: "LIST" }],
+    }),
+
+    // Blogs
+    getAllBlogs: builder.query({
+      query: () => "/admin/all-blogs",
+      transformResponse: (response) => response.blogs,
+      providesTags: (blogs = []) => [
+        { type: "Blog", id: "LIST" },
+        ...blogs.map((b) => ({ type: "Blog", id: b._id })),
+      ],
+    }),
+    getBlogById: builder.query({
+      query: (id) => `/admin/blog/${id}`,
+      providesTags: (result, error, id) => [{ type: "Blog", id }],
+    }),
+    createBlog: builder.mutation({
+      query: (formData) => ({
+        url: "/admin/create-blog",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: [{ type: "Blog", id: "LIST" }],
+    }),
+    updateBlog: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: `/admin/blog/${id}`,
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Blog", id },
+        { type: "Blog", id: "LIST" },
+      ],
+    }),
+    deleteBlog: builder.mutation({
+      query: (id) => ({
+        url: `/admin/blog/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Blog", id },
+        { type: "Blog", id: "LIST" },
+      ],
     }),
   }),
 });
@@ -101,6 +170,15 @@ export const {
   useEditCategoryMutation,
   useDeleteCategoryMutation,
   useAddProductMutation,
+  useEditProductMutation,
+  useDeleteProductMutation,
   useGetAllProductsQuery,
   useGetProductByIdQuery,
+  useGetMenuCategoriesQuery,
+  // Blogs
+  useGetAllBlogsQuery,
+  useGetBlogByIdQuery,
+  useCreateBlogMutation,
+  useUpdateBlogMutation,
+  useDeleteBlogMutation,
 } = apiSlice;
