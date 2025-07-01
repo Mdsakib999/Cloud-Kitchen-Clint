@@ -13,17 +13,20 @@ import toast from "react-hot-toast";
 import { PreviousReviews } from "./PreviousReviews";
 import { ReviewForm } from "./ReviewForm";
 import { addToCart } from "../../redux/cartSlice";
-
+//
 export const FoodDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const food = state?.item;
+  console.log(state);
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [mainImage, setMainImage] = useState("");
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedAddons, setSelectedAddons] = useState([]);
+
+  const [activeTab, setActiveTab] = useState("Details");
 
   // quantity state for add to cart
   const [qty, setQty] = useState(1);
@@ -243,11 +246,50 @@ export const FoodDetails = () => {
       </div>
 
       {/* Add Review field */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <ReviewForm />
+      <div className="mt-8">
+        <div className="flex justify-center border-b border-gray-200 text-2xl">
+          {["Details", "Reviews"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-2 -mb-px font-medium ${
+                activeTab === tab
+                  ? "border-b-2 border-primary text-primary"
+                  : "text-gray-600"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+        <div className="pt-6 px-6">
+          {activeTab === "Details" ? (
+            <>
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-primary mb-2">
+                  Description
+                </h3>
+                <p className="text-gray-200">{food.description}</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">
+                  Ingredients
+                </h3>
+                <ul className="list-inside text-gray-200">
+                  {food.ingredients.map((ing, i) => (
+                    <li key={i}>{ing}</li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          ) : (
+            <>
+              <ReviewForm />
+              <PreviousReviews foodTitle={food.title} />
+            </>
+          )}
+        </div>
       </div>
-      {/* Previous Reviews */}
-      <PreviousReviews foodTitle={food.title} />
     </div>
   );
 };
