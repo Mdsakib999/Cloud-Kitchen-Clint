@@ -20,7 +20,7 @@ export const ContactHero = () => {
             Meet. Celebrate. Gather
           </p>
 
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-4 font-inknut">
             Join Us For A Culinary Adventure!
           </h2>
 

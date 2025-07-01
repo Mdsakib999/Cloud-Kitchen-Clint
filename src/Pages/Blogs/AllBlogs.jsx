@@ -27,16 +27,19 @@ export const AllBlogs = () => {
 
   return (
     <div className="relative w-full mx-auto overflow-hidden py-40 bg-bg-primary">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-bg-secondary via-bg-tertiary to-bg-secondary opacity-60"></div>
+      {/* Background gradient - z-0 to stay behind */}
+      <div className="absolute inset-0 bg-gradient-to-br from-bg-secondary via-bg-tertiary to-bg-secondary opacity-60 z-0"></div>
 
-      {/* Header */}
-      <SectionHeader
-        icon={Newspaper}
-        subtitle="Latest Insights"
-        title="FEATURED BLOGS"
-        description="Stay updated with the latest stories"
-      />
+      {/* Foreground content with higher z-index */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        {/* Header */}
+        <SectionHeader
+          icon={Newspaper}
+          subtitle="Latest Insights"
+          title="FEATURED BLOGS"
+          description="Stay updated with the latest stories"
+        />
+      </div>
 
       {/* News Cards */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 space-y-20">
@@ -74,7 +77,10 @@ export const AllBlogs = () => {
               </div>
 
               {/* Content */}
-              <div className="w-full lg:w-1/2 md:space-y-6">
+              <Link
+                to={`/blog-details/${blog._id}`}
+                className="w-full lg:w-1/2 md:space-y-6"
+              >
                 <div className="flex items-center gap-2 text-primary">
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                   <span className="text-sm font-semibold uppercase tracking-wider">
@@ -108,10 +114,7 @@ export const AllBlogs = () => {
                     index % 2 === 0 ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <Link
-                    to={`/blog-details/${blog._id}`}
-                    className="group inline-flex items-center gap-3 bg-bg-input/40 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-full hover:bg-bg-input/60 transition-all duration-500 shadow-2xl"
-                  >
+                  <div className="group inline-flex items-center gap-3 bg-bg-input/40 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-full hover:bg-bg-input/60 transition-all duration-500 shadow-2xl">
                     <span className="text-xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">
                       View More
                     </span>
@@ -120,9 +123,9 @@ export const AllBlogs = () => {
                       <div className="w-2 h-2 bg-primary rounded-full opacity-75"></div>
                       <div className="w-2 h-2 bg-primary rounded-full opacity-50"></div>
                     </div>
-                  </Link>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         ))}

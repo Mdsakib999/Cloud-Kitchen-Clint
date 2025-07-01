@@ -105,7 +105,7 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
           {status === "delivered" && (
             <button
               onClick={() => onReorder(order)}
-              className="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:bg-opacity-90"
+              className="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-opacity-90"
             >
               Reorder
             </button>

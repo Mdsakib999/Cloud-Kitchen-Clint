@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import FoodCard from "../SharedComponent/FoodCard";
 import { useGetAllProductsQuery } from "../../redux/apiSlice";
-
+import { Utensils } from "lucide-react";
+import { SectionHeader } from "../SharedComponent/SectionHeader";
 const HomeMenu = () => {
   const {
     data: menuItems = [],
@@ -44,12 +45,13 @@ const HomeMenu = () => {
     <section className="py-12 px-4 bg-bg-secondary text-white min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <p className="text-xs text-primary uppercase mb-2 tracking-wide">
-            Taste the Best, Enjoy the Rest
-          </p>
-          <h2 className="text-3xl font-semibold mb-6">Explore Our Menu</h2>
-        </div>
+        <SectionHeader
+          icon={Utensils}
+          subtitle="Taste the Best, Enjoy the Rest"
+          title="Explore Our Menu"
+          description="Dive into our curated selection of delicious meals crafted by top chefs using the freshest ingredients. Something for every craving!"
+          className="mb-8"
+        />
 
         {/* Category Tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-8">
