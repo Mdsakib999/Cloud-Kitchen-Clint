@@ -1,178 +1,106 @@
 import React from "react";
-
-import { FiFacebook, FiInstagram } from "react-icons/fi";
+import { FiFacebook, FiInstagram, FiTwitter, FiYoutube } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-bg-footer text-white py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
-              FOODIE
-            </h2>
-            <p className="text-sm text-gray-300 mb-6 leading-relaxed">
-              Serving fresh, flavorful meals straight from our cloud kitchen to
-              your doorstep. Quality, taste, and convenience – every single
-              time.
-            </p>
-            <div className="mb-6">
-              <p className="text-sm font-semibold mb-2">South Khulshi,</p>
-              <p className="text-sm text-gray-300">Namdabad properties ltd.</p>
-            </div>
-            <div className="text-sm">
-              <p className="font-semibold">+880 1885 877 771</p>
-              <p className="text-gray-300">support@bytebites.com.bd</p>
-            </div>
-          </div>
+    <footer className="bg-bg-footer text-gray-200 py-12">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        {/* Brand & About */}
+        <div className="col-span-1">
+          <h2 className="text-2xl md:text-4xl font-bold pb-3">BiteBytes</h2>
+          <p className="text-sm leading-relaxed mb-4">
+            Fresh flavors delivered fast. Experience gourmet meals from our
+            cloud kitchen to your home.
+          </p>
+        </div>
 
-          {/* Useful Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Useful Links</h3>
-            <ul className="space-y-2 text-sm">
-              <Link to="/">
-                <li className="text-gray-300 hover:text-white transition-colors">
-                  Home
-                </li>
+        {/* Quick Links */}
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
+          <ul className="space-y-2 text-sm">
+            {[
+              { to: "/", label: "Home" },
+              { to: "/menu", label: "Menu" },
+              { to: "/about", label: "About" },
+              { to: "/contact", label: "Contact" },
+              { to: "/blogs", label: "Blogs" },
+            ].map((link) => (
+              <li key={link.label}>
+                <Link
+                  to={link.to}
+                  className="hover:text-white transition-colors"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Legal */}
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-4">Legal</h3>
+          <ul className="space-y-2 text-sm">
+            {[
+              { to: "/privacy", label: "Privacy Policy" },
+              { to: "/terms", label: "Terms of Service" },
+              { to: "/refund", label: "Refund Policy" },
+              { to: "/faq", label: "FAQ" },
+            ].map((link) => (
+              <li key={link.label}>
+                <Link
+                  to={link.to}
+                  className="hover:text-white transition-colors"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Contact Info */}
+        <div className="md:col-span-2 lg:col-span-1">
+          <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
+          <p className="text-sm mb-2">
+            South Khulshi, Namdabad Properties Ltd.
+          </p>
+          <p className="text-sm mb-2">+880 1885 877 771</p>
+          <p className="text-sm mb-4">support@bytebites.com.bd</p>
+          <div className="flex space-x-3 py-2">
+            {[
+              { Icon: FiFacebook, to: "/facebook" },
+              { Icon: FiInstagram, to: "/instagram" },
+              { Icon: FiTwitter, to: "/twitter" },
+              { Icon: FiYoutube, to: "/youtube" },
+            ].map(({ Icon, to }, idx) => (
+              <Link
+                key={idx}
+                to={to}
+                className="p-2 bg-primary rounded-full hover:bg-primary-dark transition"
+              >
+                <Icon className="w-5 h-5 text-gray-900" />
               </Link>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Menu
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Price List
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Blog
-                </a>
-              </li>
-            </ul>
+            ))}
           </div>
 
-          {/* Legal */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Return Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Refund Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Track Your Order
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Let's Keep In Touch */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Let's Keep In Touch</h3>
-            <div className="flex items-center space-x-4 mb-4 md:mb-0">
-              <span className="text-sm font-semibold">Social Media:</span>
-              <div className="flex space-x-3">
-                <a
-                  href="#"
-                  className="w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
-                >
-                  <FiFacebook size={16} className="text-bg-primary" />
-                </a>
-                <a
-                  href="#"
-                  className="w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
-                >
-                  <FiInstagram size={16} className="text-bg-primary" />
-                </a>
-              </div>
-            </div>
-            <div className="mb-6">
-              <p className="text-sm text-gray-300 mb-3">
-                Get Recommendations, Tips, Updates and more
-              </p>
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Enter Email Address"
-                  className="px-3 py-2 text-sm bg-white text-gray-900 rounded sm:rounded-l sm:rounded-r-none focus:outline-none focus:ring-2 focus:ring-orange-400"
-                />
-                <button className="px-4 py-2 bg-primary text-white rounded sm:rounded-r sm:rounded-l-none hover:bg-orange-400 transition-colors">
-                  Subscribe
-                </button>
-              </div>
-            </div>
+          <h3 className="text-lg font-semibold text-white mb-2">Subscribe</h3>
+          <div className="flex rounded-lg overflow-hidden px-2 w-xs">
+            <input
+              type="email"
+              placeholder="Your email"
+              className="w-full px-4 py-2 text-gray-200  border border-gray-700 focus:outline-none"
+            />
+            <button className="bg-primary  px-4 py-2 font-semibold hover:bg-primary-dark">
+              Subscribe
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Social Media & Copyright */}
-        <div className="mt-12 pt-8 border-t border-emerald-800">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-300">
-              All Right Reserved © 2025 Byte Bites
-            </p>
-          </div>
-        </div>
+      <div className="mt-12 border-t border-gray-500 pt-6 text-center text-sm text-gray-500">
+        © 2025 Byte Bites. All rights reserved.
       </div>
     </footer>
   );
