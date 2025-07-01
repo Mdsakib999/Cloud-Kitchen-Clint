@@ -9,6 +9,7 @@ import {
   ArrowRight,
   CreditCard,
 } from "lucide-react";
+import { TbCurrencyTaka } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, selectAllCartItems } from "../../redux/cartSlice";
 import { useAuth } from "../../providers/AuthProvider";
@@ -16,6 +17,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../Utils/axios";
 import toast from "react-hot-toast";
 import { useCreateOrderMutation } from "../../redux/orderSlice";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = () => {
   const { user, loading } = useAuth();
@@ -33,6 +35,7 @@ const CheckoutForm = () => {
   const [couponCode, setCouponCode] = useState("");
   const [placingOrder, setPlacingOrder] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -157,9 +160,13 @@ const CheckoutForm = () => {
     };
     try {
       const result = await createOrder(orderPayload).unwrap();
-      toast.success(
-        <h1 className="font-serif text-center">Order placed successfully!</h1>
-      );
+      if (result.message === "Order created successfully") {
+        toast.success(
+          <h1 className="font-serif text-center">Order placed successfully!</h1>
+        );
+        navigate("/dashboard/order");
+      }
+      console.log(result);
       dispatch(clearCart());
       setAppliedCoupon(null);
       setDiscount(0);
@@ -470,7 +477,7 @@ const CheckoutForm = () => {
                 />
                 <div className="flex items-center w-full">
                   <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center mr-3">
-                    <DollarSign className="w-5 h-5 text-teal-600" />
+                    <TbCurrencyTaka className="w-5 h-5 text-teal-600" />
                   </div>
                   <div>
                     <h3 className="text-medium text-white">Cash on Delivery</h3>
