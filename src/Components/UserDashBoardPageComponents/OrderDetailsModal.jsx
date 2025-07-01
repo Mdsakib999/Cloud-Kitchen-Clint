@@ -104,7 +104,7 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
             <div>
               <h2 className="text-2xl font-bold text-primary">Order Details</h2>
               <p className="text-sm text-secondary mt-1">
-                #OID{order.orderNumber || order._id?.slice(-4)}
+                OID{order.orderNumber || order._id?.slice(-4)}
               </p>
             </div>
             <button
