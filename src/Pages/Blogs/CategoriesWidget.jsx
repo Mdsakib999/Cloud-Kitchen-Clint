@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 export const CategoriesWidget = ({ categories }) => {
   return (
     <div className="bg-bg-secondary rounded-lg shadow-lg p-6 mb-6">
@@ -6,8 +7,8 @@ export const CategoriesWidget = ({ categories }) => {
       <ul className="space-y-2">
         {categories.map((category, index) => (
           <li key={index}>
-            <a
-              href="#"
+            <Link
+              to="/order"
               className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors group"
             >
               <span className="text-white group-hover:text-orange-600">
@@ -15,7 +16,7 @@ export const CategoriesWidget = ({ categories }) => {
                 {category.name}
               </span>
               <span className="text-gray-500 text-sm">({category.count})</span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

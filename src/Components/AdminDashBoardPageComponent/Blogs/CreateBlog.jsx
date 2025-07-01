@@ -5,6 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { ImageUploader } from "../../SharedComponent/ImageUploader";
 import { useCreateBlogMutation } from "../../../redux/apiSlice";
 import { toast } from "react-hot-toast";
+import { TagInput } from "../../SharedComponent/TagInput";
 
 export const CreateBlog = () => {
   const [title, setTitle] = useState("");
@@ -26,7 +27,7 @@ export const CreateBlog = () => {
     formData.append("title", title);
     formData.append("content", content);
     formData.append("category", category);
-    tags.forEach((tag) => formData.append("tags", tag));
+    formData.append("tags", JSON.stringify(tags));
     if (image) {
       formData.append("image", image);
     }
@@ -39,7 +40,7 @@ export const CreateBlog = () => {
       setCategory("");
       setTags([]);
       setImage(null);
-      navigate("/");
+      navigate("/admin/dashboard/manage-blogs");
     } catch (err) {
       toast.error(
         err?.data?.message || err?.message || "Failed to create blog"
@@ -80,20 +81,7 @@ export const CreateBlog = () => {
       {/* Tags Input */}
       <div className="space-y-2 mt-6">
         <label className="text-lg font-semibold">Tags (comma separated)</label>
-        <input
-          type="text"
-          value={tags.join(", ")}
-          onChange={(e) =>
-            setTags(
-              e.target.value
-                .split(",")
-                .map((tag) => tag.trim())
-                .filter((tag) => tag.length > 0)
-            )
-          }
-          placeholder="e.g. Pizza, Italian, Recipe, Cooking"
-          className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:outline-none"
-        />
+        <TagInput tags={tags} setTags={setTags} />
       </div>
 
       {/* Image Uploader */}

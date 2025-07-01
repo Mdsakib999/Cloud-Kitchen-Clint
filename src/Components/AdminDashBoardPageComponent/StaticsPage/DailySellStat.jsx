@@ -70,9 +70,9 @@ export const DailySellStat = () => {
                   className="w-12 h-12 object-contain"
                 />
               </div>
-              <div className="text-left whitespace-nowrap">
+              <div className="text-left ">
                 <div className="flex flex-col">
-                  <div className="text-2xl font-bold text-gray-800 mb-1">
+                  <div className="text-2xl font-bold text-gray-800 mb-1 whitespace-nowrap">
                     {stat.value}
                   </div>
                   {/* Title */}

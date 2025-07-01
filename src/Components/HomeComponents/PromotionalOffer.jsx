@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../../Utils/axios";
-import { SiV } from "react-icons/si";
 
 const PromotionalOffer = () => {
   const [images, setImages] = useState([]);

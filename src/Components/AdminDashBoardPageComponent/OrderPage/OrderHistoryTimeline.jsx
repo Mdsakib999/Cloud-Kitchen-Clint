@@ -1,39 +1,136 @@
-import { Package, CreditCard, Truck, CheckCircle, Clock } from "lucide-react";
+import {
+  Package,
+  CreditCard,
+  Truck,
+  CheckCircle,
+  Clock,
+  XCircle,
+} from "lucide-react";
 
-const history = [
+const statusSteps = [
   {
+    key: "created",
     title: "Order Created",
-    timestamp: "Sat, May 17 2025, 12:20 PM",
-    completed: true,
     icon: Package,
     description: "Your order has been placed successfully",
   },
   {
-    title: "Payment Success",
-    timestamp: "Sat, May 17 2025, 12:27 PM",
-    completed: true,
+    key: "payment",
+    title: "Payment",
     icon: CreditCard,
-    description: "Payment processed and confirmed",
+    // description set dynamically
   },
   {
+    key: "accepted",
+    title: "Order Accepted",
+    icon: CheckCircle,
+    description: "Restaurant has accepted your order",
+  },
+  {
+    key: "preparing",
+    title: "Preparing",
+    icon: Truck,
+    description: "Your food is being prepared",
+  },
+  {
+    key: "ready",
+    title: "Ready for Delivery",
+    icon: Truck,
+    description: "Order is ready for delivery",
+  },
+  {
+    key: "delivering",
     title: "On Delivery",
-    timestamp: "Sat, May 17 2025, 01:24 PM",
-    completed: true,
     icon: Truck,
     description: "Your order is on the way",
   },
   {
+    key: "delivered",
     title: "Order Delivered",
-    timestamp: "Sat, May 17 2025, 01:24 PM",
-    completed: false,
     icon: CheckCircle,
-    description: "Package will be delivered soon",
+    description: "Package delivered successfully",
+  },
+  {
+    key: "cancelled",
+    title: "Order Cancelled",
+    icon: XCircle,
+    description: "Order was cancelled",
   },
 ];
 
-export const OrderHistoryTimeline = () => {
+export const OrderHistoryTimeline = ({
+  orderTime,
+  status,
+  isPaid,
+}) => {
+  const steps = [];
+  // Always show order created
+  steps.push({
+    ...statusSteps[0],
+    completed: true,
+    timestamp: new Date(orderTime).toLocaleString("en-US", {
+      weekday: "long",
+      month: "numeric",
+      year: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+      timeZone: "Asia/Dhaka",
+    }),
+  });
+
+  // If cancelled, only show cancelled step after created
+  if (status === "cancelled") {
+    steps.push({
+      ...statusSteps.find((st) => st.key === "cancelled"),
+      completed: true,
+      timestamp: "Cancelled",
+    });
+  } else {
+    // Payment step: if delivered, always show as paid
+    const paymentCompleted = isPaid || status === "delivered";
+    steps.push({
+      ...statusSteps[1],
+      completed: paymentCompleted,
+      timestamp: paymentCompleted ? "Paid" : "Cash on Delivery (COD)",
+      description: paymentCompleted
+        ? "Payment processed and confirmed"
+        : "Payment will be collected on delivery (COD)",
+    });
+
+    // Status progression
+    const statusOrder = [
+      "pending",
+      "accepted",
+      "preparing",
+      "ready",
+      "delivering",
+      "delivered",
+    ];
+    const currentStatusIdx = statusOrder.indexOf(status);
+    for (let i = 1; i < statusOrder.length; i++) {
+      const s = statusOrder[i];
+      if (
+        s === "delivered" &&
+        status !== "delivered" &&
+        statusOrder.indexOf(status) < statusOrder.indexOf("delivering")
+      )
+        continue;
+      if (statusOrder.indexOf(s) > currentStatusIdx) break;
+      let completed =
+        statusOrder.indexOf(s) < currentStatusIdx || status === s;
+      steps.push({
+        ...statusSteps.find((st) => st.key === s),
+        completed: completed,
+        timestamp: completed ? "Done" : "-",
+      });
+      if (status === "delivered" && s === "delivered") break;
+    }
+  }
+
   return (
-    <div className="rounded-lg shadow-sm border border-gray-200 overflow-hidden mt-6 lg:w-96 h-fit">
+    <div className="rounded-lg shadow-sm border border-gray-200 overflow-hidden mt-6 lg:w-96 h-fit bg-white">
       {/* Header */}
       <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex items-center gap-2">
         <Clock className="w-4 h-4 text-gray-600" />
@@ -42,10 +139,9 @@ export const OrderHistoryTimeline = () => {
 
       {/* Timeline */}
       <div className="p-4 space-y-4">
-        {history.map((step, idx) => {
+        {steps.map((step, idx) => {
           const Icon = step.icon;
-          const isLast = idx === history.length - 1;
-
+          const isLast = idx === steps.length - 1;
           return (
             <div key={idx} className="relative flex items-start gap-3">
               {/* Line */}
@@ -55,9 +151,11 @@ export const OrderHistoryTimeline = () => {
 
               {/* Icon */}
               <div
-                className={`z-10 flex items-center justify-center w-9 h-9 rounded-full border-2 text-sm ${
+                className={`z-10 flex items-center justify-center w-9 h-9 rounded-full border-2 text-sm transition-all duration-200 ${
                   step.completed
-                    ? "bg-gray-800 border-gray-800 text-white"
+                    ? step.key === "cancelled"
+                      ? "bg-red-100 border-red-400 text-red-600"
+                      : "bg-gray-800 border-gray-800 text-white"
                     : "bg-gray-100 border-gray-300 text-gray-400"
                 }`}
               >
@@ -69,14 +167,23 @@ export const OrderHistoryTimeline = () => {
                 <div className="flex justify-between items-center mb-0.5">
                   <h3
                     className={`text-sm font-medium ${
-                      step.completed ? "text-gray-800" : "text-gray-500"
+                      step.completed
+                        ? step.key === "cancelled"
+                          ? "text-red-600"
+                          : "text-gray-800"
+                        : "text-gray-500"
                     }`}
                   >
                     {step.title}
                   </h3>
-                  {step.completed && (
+                  {step.completed && step.key !== "cancelled" && (
                     <span className="text-[10px] px-1.5 py-0.5 bg-green-100 text-green-600 rounded">
                       Done
+                    </span>
+                  )}
+                  {step.key === "cancelled" && step.completed && (
+                    <span className="text-[10px] px-1.5 py-0.5 bg-red-100 text-red-600 rounded">
+                      Cancelled
                     </span>
                   )}
                 </div>
@@ -103,6 +210,10 @@ export const OrderHistoryTimeline = () => {
           <span className="flex items-center gap-1">
             <span className="w-2 h-2 bg-gray-300 rounded-full inline-block"></span>
             Pending
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 bg-red-400 rounded-full inline-block"></span>
+            Cancelled
           </span>
         </div>
       </div>

@@ -78,6 +78,7 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("token");
+      setUser(null);
     } finally {
       setLoading(false);
     }
