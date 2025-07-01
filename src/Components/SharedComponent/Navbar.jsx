@@ -144,7 +144,7 @@ const Navbar = ({ offsetTop = 56 }) => {
           </ul>
 
           {/* Desktop Right Side */}
-          <div className="hidden md:flex space-x-4 items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             {/* TODO "Search" */}
             <GlobalSearch />
             <button onClick={openCart} className="relative cursor-pointer">
@@ -180,23 +180,6 @@ const Navbar = ({ offsetTop = 56 }) => {
                       </button>
                     </div>
                     <div className="p-4 space-y-5">
-                      <div className="w-full">
-                        {user?.role === "admin" ? (
-                          <Link
-                            className="text-sm text-emerald-100 bg-emerald-900 py-2 w-full px-5 my-3 rounded"
-                            to="/admin/dashboard"
-                          >
-                            Dashboard
-                          </Link>
-                        ) : (
-                          <Link
-                            className="text-sm text-emerald-100 bg-emerald-900 py-2 w-full px-5 my-3 rounded"
-                            to="/dashboard"
-                          >
-                            Dashboard
-                          </Link>
-                        )}
-                      </div>
                       <div>
                         <p className="text-sm text-gray-300">Name</p>
                         <p className="font-medium">{user.name}</p>
@@ -205,12 +188,24 @@ const Navbar = ({ offsetTop = 56 }) => {
                         <p className="text-sm text-gray-300">Email</p>
                         <p className="font-medium">{user.email}</p>
                       </div>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
-                      >
-                        Logout
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <Link
+                          to={
+                            user?.role === "admin"
+                              ? "/admin/dashboard"
+                              : "/dashboard"
+                          }
+                          className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors cursor-pointer text-center text-sm"
+                        >
+                          Dashboard
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors cursor-pointer text-center text-sm"
+                        >
+                          Logout
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -273,28 +268,6 @@ const Navbar = ({ offsetTop = 56 }) => {
                     </NavLink>
                   </li>
                 ))}
-
-                {/* Only visible in mobile */}
-                {user && (
-                  <li key="Dashboard">
-                    <NavLink
-                      to={
-                        user?.role === "admin"
-                          ? "/admin/dashboard"
-                          : "/dashboard"
-                      }
-                      onClick={closeMobileMenu}
-                      className={({ isActive }) =>
-                        `group relative inline-block px-2 py-1 transition-colors duration-300 ${
-                          isActive ? "text-primary" : "text-white"
-                        }`
-                      }
-                    >
-                      Dashboard
-                      <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-                    </NavLink>
-                  </li>
-                )}
               </ul>
 
               <div className="pt-4 border-t border-white/20 space-y-3">
@@ -308,12 +281,24 @@ const Navbar = ({ offsetTop = 56 }) => {
                       <p className="text-sm text-gray-300">Email</p>
                       <p className="font-medium">{user.email}</p>
                     </div>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
-                    >
-                      Logout
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <Link
+                        to={
+                          user?.role === "admin"
+                            ? "/admin/dashboard"
+                            : "/dashboard"
+                        }
+                        className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors cursor-pointer text-center text-sm"
+                      >
+                        Dashboard
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors cursor-pointer text-center text-sm"
+                      >
+                        Logout
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <div className="flex flex-col space-y-3">
