@@ -130,48 +130,54 @@ export const ManageOrders = () => {
 
       {/* Orders Table */}
       <div className="overflow-x-auto rounded-xl shadow-lg">
-        <table className="min-w-full bg-bg-secondary text-left rounded-md">
-          <thead className="bg-white/10 text-sm uppercase tracking-wider">
-            <tr>
-              <th className="px-4 py-3">OID</th>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Location</th>
-              <th className="px-4 py-3">Amount</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedOrders.map((order) => (
-              <tr
-                key={order._id}
-                className="border-t border-white/10 hover:bg-white/5 transition-colors"
-              >
-                <td className="px-4 py-3">OID{order._id.slice(-4)}</td>
-                <td className="px-4 py-3 whitespace-nowrap">{order.name}</td>
-                <td className="px-4 py-3">{order.address}</td>
-                <td className="px-4 py-3">৳{order.totalPrice}</td>
-                <td className="px-4 py-3">
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${GetStatusColor(
-                      order.order_status
-                    )}`}
-                  >
-                    {order.order_status}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <Link to={`/admin/dashboard/order-details/${order._id}`}>
-                    <button className="cursor-pointer border border-amber-200 transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap">
-                      View Details
-                      <Eye size={18} />
-                    </button>
-                  </Link>
-                </td>
+        {paginatedOrders.length === 0 ? (
+          <div className="text-center text-gray-400 py-12 text-lg">
+            No orders found matching your filters.
+          </div>
+        ) : (
+          <table className="min-w-full bg-bg-secondary text-left rounded-md">
+            <thead className="bg-white/10 text-sm uppercase tracking-wider">
+              <tr>
+                <th className="px-4 py-3">OID</th>
+                <th className="px-4 py-3">Name</th>
+                <th className="px-4 py-3">Location</th>
+                <th className="px-4 py-3">Amount</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {paginatedOrders.map((order) => (
+                <tr
+                  key={order._id}
+                  className="border-t border-white/10 hover:bg-white/5 transition-colors"
+                >
+                  <td className="px-4 py-3">OID{order._id.slice(-4)}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">{order.name}</td>
+                  <td className="px-4 py-3">{order.address}</td>
+                  <td className="px-4 py-3">৳{order.totalPrice}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${GetStatusColor(
+                        order.order_status
+                      )}`}
+                    >
+                      {order.order_status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <Link to={`/admin/dashboard/order-details/${order._id}`}>
+                      <button className="cursor-pointer border border-amber-200 transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap">
+                        View Details
+                        <Eye size={18} />
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* Pagination */}

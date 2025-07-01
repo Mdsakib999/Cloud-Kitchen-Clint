@@ -19,7 +19,7 @@ export const HomeBlog = () => {
       <SectionHeader
         icon={Newspaper}
         subtitle="Latest Insights"
-        title="FEATURED BLOGS"
+        title="Featured Blogs"
         description="Stay updated with the latest stories"
       />
 
