@@ -1,27 +1,7 @@
 import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
-
-const getStatusColor = (status) => {
-  const colors = {
-    pending: "bg-yellow-100 text-yellow-800",
-    confirmed: "bg-blue-100 text-blue-800",
-    preparing: "bg-orange-100 text-orange-800",
-    out_for_delivery: "bg-purple-100 text-purple-800",
-    delivered: "bg-green-100 text-green-800",
-    cancelled: "bg-red-100 text-red-800",
-  };
-  return colors[status] || "bg-gray-100 text-gray-800";
-};
-
-const getPaymentStatusColor = (status) => {
-  const colors = {
-    paid: "bg-green-100 text-green-800",
-    pending: "bg-yellow-100 text-yellow-800",
-    failed: "bg-red-100 text-red-800",
-    refunded: "bg-gray-100 text-gray-800",
-  };
-  return colors[status] || "bg-gray-100 text-gray-800";
-};
+import { GetStatusColor } from "../SharedComponent/GetStatusColor";
+import { GetPaymentStatusColor } from "../SharedComponent/GetPaymentStatusColor";
 
 const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
   const status = order.status || order.order_status || "unknown";
@@ -37,14 +17,14 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
               OID{order.orderNumber || order._id?.slice(-4)}
             </h3>
             <span
-              className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+              className={`px-3 py-1 rounded-full text-xs font-semibold ${GetStatusColor(
                 status
               )}`}
             >
               Status: {status.replace("_", " ").toUpperCase()}
             </span>
             <span
-              className={`px-3 py-1 rounded-full text-xs font-semibold ${getPaymentStatusColor(
+              className={`px-3 py-1 rounded-full text-xs font-semibold ${GetPaymentStatusColor(
                 isPaid
               )}`}
             >
@@ -112,9 +92,7 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
           >
             View Details
           </button>
-          {["accepted", "preparing", "delivering", "delivered"].includes(
-            status
-          ) && (
+          {["accepted", "preparing", "delivering"].includes(status) && (
             <Link
               to={`/order-track/${order._id}`}
               onClick={() => onTrack(order)}
