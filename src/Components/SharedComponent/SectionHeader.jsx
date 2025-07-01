@@ -6,9 +6,9 @@ export const SectionHeader = ({
   className = "",
 }) => {
   return (
-    <div className={`text-center mb-16 ${className}`}>
+    <div className={`text-center mb-12 ${className}`}>
       {/* Icon + Subtitle */}
-      <div className="inline-flex items-center gap-2 mb-4">
+      <div className="inline-flex items-center gap-2">
         {Icon && <Icon className="w-8 h-8 text-primary" />}
         <span className="text-primary text-sm font-medium tracking-wider uppercase">
           {subtitle}
@@ -16,7 +16,7 @@ export const SectionHeader = ({
       </div>
 
       {/* Title */}
-      <h1 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-white via-amber-100 to-primary bg-clip-text text-transparent mb-6">
+      <h1 className="text-xl md:text-3xl lg:text-5xl font-bold font-inknut leading-tight bg-gradient-to-r from-white via-amber-100 to-primary bg-clip-text text-transparent">
         {title}
       </h1>
 
@@ -26,7 +26,7 @@ export const SectionHeader = ({
       </p>
 
       {/* Underline */}
-      <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto mt-8 rounded-full"></div>
+      <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto mt-3 rounded-full"></div>
     </div>
   );
 };

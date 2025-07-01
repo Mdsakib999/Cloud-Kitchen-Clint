@@ -109,7 +109,8 @@ export const OrderDetails = () => {
           status={orderStatus}
           isPaid={currentOrder?.isPaid}
         />
-        <DeliveryTracker />
+        {/* !!! TODO: IN FUTURE */}
+        {/* <DeliveryTracker /> */}
       </div>
     </div>
   );

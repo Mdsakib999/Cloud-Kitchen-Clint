@@ -1,7 +1,7 @@
 import { Package } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { useGetOrderByIdQuery } from "../../../redux/orderSlice";
-import { formatDate } from "../../../utils/formatDate";
+import { useGetOrderByIdQuery } from "../../redux/orderSlice";
+import { formatDate } from "../../utils/formatDate";
 
 import StatusSteps from "./StatusSteps";
 import BillingInfo from "./BillingInfo";
