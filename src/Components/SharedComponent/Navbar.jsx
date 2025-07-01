@@ -218,7 +218,7 @@ const Navbar = ({ offsetTop = 56 }) => {
             ) : (
               <Link
                 to="/signin"
-                className="w-32 bg-primary text-bg-secondary hover:bg-white hover:text-bg-primary rounded-full transition cursor-pointer px-2 py-1 md:px-4 md:py-2 font-serif text-center"
+                className="w-32 bg-primary text-white lg:text-lg hover:bg-white hover:text-bg-primary rounded-full transition cursor-pointer px-2 py-1 md:px-4 md:py-2 font-serif text-center"
               >
                 Log in
               </Link>
