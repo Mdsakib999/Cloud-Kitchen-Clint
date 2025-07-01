@@ -25,7 +25,6 @@ export const AllCustomer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const { user } = useAuth();
-  console.log("user", user);
 
   const fetchUsers = async () => {
     try {
@@ -57,7 +56,7 @@ export const AllCustomer = () => {
       (customer.email?.toLowerCase() || "").includes(
         searchTerm.toLowerCase()
       ) ||
-      (customer.id?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (customer._id?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
       (customer.phone || "").includes(searchTerm)
   );
 
@@ -267,6 +266,9 @@ export const AllCustomer = () => {
               <th className="px-4 py-3">
                 <div className="flex items-center justify-between">Number</div>
               </th>
+              <th className="px-4 py-3">
+                <div className="flex items-center justify-between">Role</div>
+              </th>
               <th className="px-4 py-3">Action</th>
             </tr>
           </thead>
@@ -291,6 +293,17 @@ export const AllCustomer = () => {
                     <td className="px-4 py-3">{customer.name}</td>
                     <td className="px-4 py-3">{customer.email}</td>
                     <td className="px-4 py-3">{customer.phone}</td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                          customer.role === "admin"
+                            ? "bg-red-100 text-red-600"
+                            : "bg-green-100 text-green-600"
+                        }`}
+                      >
+                        {customer.role === "admin" ? "Admin" : "User"}
+                      </span>
+                    </td>
                     <td className=" py-3 flex gap-5">
                       <button
                         onClick={() => setSelectedCustomer(customer)}

@@ -25,6 +25,7 @@ export const orderApi = createApi({
           ]
           : [{ type: "Order", id: "LIST" }],
     }),
+
     getOrderById: builder.query({
       query: (orderId) => `/order/${orderId}`,
       providesTags: (result, error, orderId) => [
@@ -38,8 +39,13 @@ export const orderApi = createApi({
         method: "POST",
         body: orderData,
       }),
-      invalidatesTags: [{ type: "Order", id: "LIST" }],
+      // Invalidate both general list and user-specific list
+      invalidatesTags: [
+        { type: "Order", id: "LIST" },
+        { type: "Order", id: "USER_LIST" }
+      ],
     }),
+
     updateOrder: builder.mutation({
       query: ({ id, orderData }) => ({
         url: `/order/${id}`,
@@ -49,8 +55,10 @@ export const orderApi = createApi({
       invalidatesTags: (result, error, { id }) => [
         { type: "Order", id },
         { type: "Order", id: "LIST" },
+        { type: "Order", id: "USER_LIST" }
       ],
     }),
+
     deleteOrder: builder.mutation({
       query: (id) => ({
         url: `/order/${id}`,
@@ -59,19 +67,51 @@ export const orderApi = createApi({
       invalidatesTags: (result, error, id) => [
         { type: "Order", id },
         { type: "Order", id: "LIST" },
+        { type: "Order", id: "USER_LIST" }
       ],
     }),
+
     getOrdersByUser: builder.query({
       query: (userId) => `/order/user/${userId}`,
-      providesTags: (result) =>
+      providesTags: (result, error, userId) =>
         result && Array.isArray(result)
           ? [
             { type: "Order", id: "USER_LIST" },
+            { type: "Order", id: `USER_LIST_${userId}` },
             ...result.map((order) => ({ type: "Order", id: order._id })),
           ]
-          : [{ type: "Order", id: "USER_LIST" }],
+          : [
+            { type: "Order", id: "USER_LIST" },
+            { type: "Order", id: `USER_LIST_${userId}` }
+          ],
     }),
 
+    // Additional mutations that might affect orders
+    updateOrderStatus: builder.mutation({
+      query: ({ orderId, status }) => ({
+        url: `/order/${orderId}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (result, error, { orderId }) => [
+        { type: "Order", id: orderId },
+        { type: "Order", id: "LIST" },
+        { type: "Order", id: "USER_LIST" }
+      ],
+    }),
+
+    updatePaymentStatus: builder.mutation({
+      query: ({ orderId, paymentStatus }) => ({
+        url: `/order/${orderId}/payment-status`,
+        method: "PATCH",
+        body: { paymentStatus },
+      }),
+      invalidatesTags: (result, error, { orderId }) => [
+        { type: "Order", id: orderId },
+        { type: "Order", id: "LIST" },
+        { type: "Order", id: "USER_LIST" }
+      ],
+    }),
   }),
 });
 
@@ -82,4 +122,6 @@ export const {
   useCreateOrderMutation,
   useUpdateOrderMutation,
   useDeleteOrderMutation,
+  useUpdateOrderStatusMutation,
+  useUpdatePaymentStatusMutation,
 } = orderApi;

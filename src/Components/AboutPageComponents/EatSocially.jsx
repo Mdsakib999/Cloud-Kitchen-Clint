@@ -1,23 +1,20 @@
+import { SectionHeader } from "../SharedComponent/SectionHeader";
 import Chef1 from "/assets/Chef/chef1.jpg";
 import Chef2 from "/assets/Chef/chef2.jpg";
 import Chef3 from "/assets/Chef/chef3.jpg";
 import Chef4 from "/assets/Chef/chef4.jpg";
 import Chef5 from "/assets/Chef/chef5.jpg";
-
+import { Users } from "lucide-react";
 export const EatSocially = () => {
   return (
     <div className="bg-bg-secondary py-16 px-4">
       {/* Header Text */}
-      <div className="text-center mb-16">
-        <p className="text-white font-inter text-lg mb-3">
-          <span className="text-primary">Follow Us @</span>{" "}
-          <span className="text-white">Flavour</span>
-          <span className="text-primary">Verse</span>
-        </p>
-        <h1 className="text-4xl md:text-6xl font-bold text-white font-inknut">
-          Eat Socially
-        </h1>
-      </div>
+      <SectionHeader
+        icon={Users}
+        subtitle="Follow Us @"
+        title="FlavourVerse"
+        description="Eat Socially"
+      />
 
       {/* Image Collage */}
       <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-6 flex-wrap md:flex-nowrap px-2 md:px-0 md:py-10">
