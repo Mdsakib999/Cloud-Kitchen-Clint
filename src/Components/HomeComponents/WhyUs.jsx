@@ -42,32 +42,38 @@ const WhyUs = () => {
     <section className="bg-bg-primary text-white py-16 px-6">
       <div className="max-w-6xl mx-auto md:flex md:space-x-12">
         <div className="md:w-1/2 mb-12 md:mb-0">
-          <p className="text-sm text-primary uppercase mb-2">
+          <p className="text-sm  text-primary uppercase mb-2 tracking-[.3em]">
             Experience the Best
           </p>
-          <h2 className="text-4xl font-semibold mb-4">Why People Love Us</h2>
-          <p className=" text-gray-200 mb-6 leading-relaxed">
+          <h2 className="text-4xl font-semibold mb-4">Why People Love Us?</h2>
+          <p className=" text-gray-300 mb-6 leading-relaxed">
             From fresh ingredients to fast delivery, we’re all about quality,
             convenience, and taste. Our customers keep coming back for the
             flavors they love and the service they trust.
           </p>
           <ul className="space-y-3 text-lg">
-            <li className="flex items-center">
-              <PiCarrot className="text-2xl mr-3" /> Vegetarian Delights
+            <li className="flex items-center text-gray-200">
+              <PiCarrot className="text-2xl mr-3 text-primary" /> Vegetarian
+              Delights
             </li>
-            <li className="flex items-center">
-              <IoEarthOutline className="text-2xl mr-3" /> International Flavors
+            <li className="flex items-center text-gray-200">
+              <IoEarthOutline className="text-2xl mr-3 text-primary" />{" "}
+              International Flavors
             </li>
-            <li className="flex items-center">
-              <CiApple className="text-2xl mr-3" /> Healthy Eats
+            <li className="flex items-center text-gray-200">
+              <CiApple className="text-2xl mr-3 text-primary" /> Healthy Eats
             </li>
-            <li className="flex items-center">
-              <CiClock1 className="text-2xl mr-3" /> Quick & Easy Supper
+            <li className="flex items-center text-gray-200">
+              <CiClock1 className="text-2xl mr-3 text-primary" /> Quick & Easy
+              Supper
             </li>
           </ul>
+
           <Link
             to="/menu"
-            className="inline-block mt-8 bg-primary text-[#0f2f2f] px-6 py-3 rounded-full font-medium hover:opacity-90 transition"
+            className="inline-block mt-8 bg-primary text-white px-6 py-3 rounded-full font-medium 
+             transition-all duration-300 
+             hover:bg-white hover:text-[#0f2f2f] hover:opacity-90 hover:scale-"
           >
             View Entire Menu
           </Link>
