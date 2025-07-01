@@ -62,7 +62,7 @@ const TrackOrder = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 py-8 text-white">
+      <div className="max-w-4xl mx-auto px-4 py-8 text-white pt-36">
         {/* Header */}
         <div className="text-center mb-5">
           <div className="flex gap-4 items-center justify-center">
