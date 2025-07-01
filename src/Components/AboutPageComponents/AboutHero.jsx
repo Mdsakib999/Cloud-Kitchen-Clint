@@ -1,3 +1,5 @@
+import { useInView } from "react-intersection-observer";
+import CountUp from "react-countup";
 import ChefWork from "/assets/Chef/ChefWork.jpg";
 import ChefTeam from "/assets/Chef/ChefTeam.jpg";
 import {
@@ -17,11 +19,13 @@ import {
 import React from "react";
 
 export const AboutHero = () => {
+  const { ref, inView } = useInView({ triggerOnce: false });
+
   const stats = [
-    { icon: <ChefHat />, number: "300+", label: "Culinary Expert" },
-    { icon: <Star />, number: "270+", label: "Five-Star Dining" },
-    { icon: <Utensils />, number: "1K", label: "Food Offerings" },
-    { icon: <Users />, number: "25K", label: "Happy Clients" },
+    { icon: <ChefHat />, number: 300, suffix: "+", label: "Culinary Expert" },
+    { icon: <Star />, number: 270, suffix: "+", label: "Five-Star Dining" },
+    { icon: <Utensils />, number: 1000, suffix: "+", label: "Food Offerings" },
+    { icon: <Users />, number: 25, suffix: "K+", label: "Happy Clients" },
   ];
 
   const features = [
@@ -37,16 +41,16 @@ export const AboutHero = () => {
 
   return (
     <div className="text-white font-inter px-6 py-16 md:px-12 lg:px-20 my-20">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center">
         {/* Left Content */}
-        <div className="w-full md:w-1/2 lg:w-full">
+        <div className="w-full md:w-1/2 lg:w-full mx-auto">
           <p className="text-primary uppercase tracking-widest text-sm mb-2">
             Simple. Classic. Delicious
           </p>
-          <h2 className="text-3xl md:text-5xl font-bold font-inknut leading-tight mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold font-inknut leading-tight mb-4">
             A taste of sophistication in the heart of the city
           </h2>
-          <p className="text-secondary mb-10 max-w-4xl text-justify font-inknut">
+          <p className="text-secondary mb-10 max-w-2xl text-justify">
             Est curabitur ridiculus nibh mattis vitae. Lacinia iaculis aenean
             lobortis mattis taciti neque ultricies habitant nisl. Montes finibus
             viverra per Interdum ultricies sociosqu mattis sed diam placerat.
@@ -93,16 +97,26 @@ export const AboutHero = () => {
         </div>
       </div>
 
-      <div className="w-full mt-5 md:mt-32 lg:mt-0 lg:w-4/5 lg:ml-5">
+      <div className="w-full mt-5 md:mt-32 lg:mt-0">
         {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 ">
+        <div
+          ref={ref}
+          className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-16 max-w-7xl mx-auto"
+        >
           {stats.map((stat, index) => (
             <div key={index} className="text-start">
               <div className="flex justify-start mb-4 text-primary">
                 {React.cloneElement(stat.icon, { className: "w-12 h-12" })}
               </div>
               <div className="text-4xl font-bold text-white mb-2">
-                {stat.number}
+                {inView && (
+                  <CountUp
+                    start={0}
+                    end={stat.number}
+                    duration={2}
+                    suffix={stat.suffix}
+                  />
+                )}
               </div>
               <div className="text-slate-300 text-sm font-medium">
                 {stat.label}
@@ -112,7 +126,7 @@ export const AboutHero = () => {
         </div>
 
         {/* Features Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {features.map((feature, index) => (
             <div key={index} className="flex items-center space-x-4">
               <div className="flex-shrink-0 w-8 h-8 text-primary">

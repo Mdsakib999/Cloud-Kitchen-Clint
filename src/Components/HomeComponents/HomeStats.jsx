@@ -46,7 +46,7 @@ const HomeStats = () => {
           <p className="text-xs sm:text-sm text-primary uppercase tracking-wide">
             Bringing Flavor to Life
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight font-inknut">
             Creating Memorable <br className="hidden sm:block" />
             Meals for <br className="hidden sm:block" />
             Every Occasion
@@ -86,7 +86,7 @@ const HomeStats = () => {
 
           {/* Button */}
           <div className="pt-4">
-            <button className="inline-block bg-primary text-bg-primary px-6 py-3 sm:px-8 sm:py-4 rounded-full font-medium text-sm sm:text-base hover:opacity-90 hover:transform hover:scale-105 transition-all duration-300">
+            <button className="inline-block bg-primary text-white hover:bg-white hover:text-black px-6 py-3 sm:px-8 sm:py-4 rounded-full font-medium text-sm sm:text-base hover:opacity-90 hover:transform hover:scale-105 transition-all duration-300">
               Book Now
             </button>
           </div>

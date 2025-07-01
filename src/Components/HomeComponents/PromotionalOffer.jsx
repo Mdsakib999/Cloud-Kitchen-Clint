@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../../Utils/axios";
+import { BadgePercent } from "lucide-react";
+import { SectionHeader } from "../SharedComponent/SectionHeader";
 
 const PromotionalOffer = () => {
   const [images, setImages] = useState([]);
@@ -88,6 +90,13 @@ const PromotionalOffer = () => {
 
     return (
       <div className="w-full bg-bg-secondary pt-10 pb-24 ">
+        <SectionHeader
+          icon={BadgePercent}
+          subtitle="Limited Time Deal"
+          title="Exclusive Promotional Offer"
+          description="Enjoy up to 30% off on selected dishes! Satisfy your cravings without stretching your budget. Order now before the offer ends!"
+          className="mb-12"
+        />
         <div className="max-w-7xl mx-auto px-2 sm:px-4 ">
           <div
             className={`grid ${getGridConfig(

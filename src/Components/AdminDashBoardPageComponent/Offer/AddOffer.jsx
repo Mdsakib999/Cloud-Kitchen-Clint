@@ -238,9 +238,9 @@ const AddOffer = () => {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <div className="flex flex-col justify-center items-center p-8 mb-8">
           <h1 className="text-center text-xl md:text-3xl lg:text-4xl font-black text-gray-800 mb-4 flex items-center gap-x-2">
-            <div className="hidden md:block p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
+            <div className="hidden md:block p-2 bg-gradient-to-tl from-emerald-500 to-green-200 rounded-xl">
               <Plus className="w-8 h-8 text-white" />
             </div>
             Add Promotional Offers

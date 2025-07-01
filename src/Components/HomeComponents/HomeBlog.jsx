@@ -19,7 +19,7 @@ export const HomeBlog = () => {
       <SectionHeader
         icon={Newspaper}
         subtitle="Latest Insights"
-        title="FEATURED BLOGS"
+        title="Featured Blogs"
         description="Stay updated with the latest stories"
       />
 
@@ -27,7 +27,7 @@ export const HomeBlog = () => {
         {blogs.slice(0, 4).map((post) => (
           <div
             key={post._id}
-            className="bg-bg-secondary rounded-md text-white flex flex-col h-[500px]"
+            className="bg-bg-secondary rounded-md text-white flex flex-col h-[480px]"
           >
             <figure className="h-64 w-full p-2">
               <img
@@ -45,9 +45,10 @@ export const HomeBlog = () => {
                 <div>
                   <div className="flex justify-between items-center mb-2 text-white/70 text-sm">
                     <p className="flex gap-2 items-center">
-                      <FaCalendar /> {formatDate(post.createdAt)}
+                      <FaCalendar className="text-primary w-4 h-4" />{" "}
+                      {formatDate(post.createdAt)}
                     </p>
-                    <p className="bg-amber-400/50 px-2 py-1 rounded-full text-black">
+                    <p className="bg-primary px-2 py-1 rounded-full text-white">
                       {post.category}
                     </p>
                   </div>
@@ -56,7 +57,7 @@ export const HomeBlog = () => {
                     {post.title}
                   </h1>
 
-                  <p className="text-sm mt-2 line-clamp-3">
+                  <p className="text-sm mt-2 line-clamp-3 text-secondary">
                     {DOMPurify.sanitize(post.content)
                       .replace(/<[^>]+>/g, "")
                       .slice(0, 100)}
@@ -64,7 +65,7 @@ export const HomeBlog = () => {
                   </p>
                 </div>
 
-                <div className="text-sm hover:text-primary font-normal flex items-center mt-4">
+                <div className="text-sm hover:text-primary font-normal flex items-center">
                   Read More
                   <ChevronRight className="ml-1" />
                 </div>

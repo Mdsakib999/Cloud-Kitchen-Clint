@@ -5,6 +5,7 @@ import { EditIcon } from "lucide-react";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import CouponEditModal from "./CouponEditModal";
+import { formatDate } from "../../../utils/formatDate";
 
 const ManageCoupon = () => {
   const [loading, setLoading] = useState(false);
@@ -197,25 +198,31 @@ const ManageCoupon = () => {
                   </td>
                   <td className="py-3 px-4 capitalize">{coupon.type}</td>
                   <td className="py-3 px-4 capitalize">
-                    {new Date(coupon.startDate).toLocaleDateString()} -{" "}
-                    {new Date(coupon.endDate).toLocaleDateString()}
+                    {formatDate(coupon.startDate)} -{" "}
+                    {formatDate(coupon.endDate)}
                   </td>
                   <td className="py-3 px-4 tracking-wider text-sm">
-                    <p className="flex flex-col">
-                      {/* <Countdown
+                    <p className="flex flex-col items-center">
+                      <Countdown
                         date={new Date(coupon.endDate)}
-                        renderer={renderer}
-                      /> */}
-                      <span>until</span>
-                      <span>
-                        {new Date(coupon.endDate).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                          minute: "numeric",
-                          second: "numeric",
-                        })}
-                      </span>
+                        renderer={({
+                          days,
+                          hours,
+                          minutes,
+                          seconds,
+                          completed,
+                        }) =>
+                          completed ? (
+                            <span className="text-red-500 font-semibold">
+                              Expired
+                            </span>
+                          ) : (
+                            <span className="text-emerald-600 font-semibold">
+                              {days}d : {hours}h : {minutes}m : {seconds}s
+                            </span>
+                          )
+                        }
+                      />
                     </p>
                   </td>
                   <td className="py-3 px-4 flex items-center justify-center gap-4">
