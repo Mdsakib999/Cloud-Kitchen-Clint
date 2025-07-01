@@ -369,38 +369,24 @@ export const UpdateProfile = () => {
                     </div>
                   </div>
 
-                  {/* Phone */}
-                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
-                        <Phone size={20} className="text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-slate-400 text-sm font-medium">
-                              Phone Number
-                            </p>
-                            <p className="text-white text-lg font-semibold font-sans">
-                              {user?.phone || (
-                                <span className="italic text-slate-400 text-base">
-                                  No phone number added
-                                </span>
-                              )}
-                            </p>
-                          </div>
-                          {!user?.phone && (
-                            <button
-                              className="cursor-pointer text-blue-400 hover:text-blue-300 font-medium text-sm transition-colors"
-                              onClick={() => setShowUpdateModal(true)}
-                            >
-                              Add Number
-                            </button>
-                          )}
-                        </div>
-                      </div>
+                  {/* Change Password */}
+                  {user?.provider === "password" && (
+                    <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 backdrop-blur-sm rounded-2xl p-6 border border-indigo-500/20">
+                      <h4 className="text-white font-semibold mb-2">
+                        Security Settings
+                      </h4>
+                      <p className="text-slate-300 text-sm mb-4">
+                        Keep your account secure by updating your password
+                        regularly.
+                      </p>
+                      <button
+                        className="text-emerald-200 hover:text-emerald-300 font-medium text-sm transition-colors cursor-pointer"
+                        onClick={() => handlePasswordChange(user?.email)}
+                      >
+                        Change Password →
+                      </button>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
@@ -412,7 +398,7 @@ export const UpdateProfile = () => {
                 </h3>
 
                 {/* Address */}
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300">
+                <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-all duration-300">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
                       <MapPin size={20} className="text-white" />
@@ -444,24 +430,38 @@ export const UpdateProfile = () => {
                   </div>
                 </div>
 
-                {/* Change Password */}
-                {user?.provider === "password" && (
-                  <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 backdrop-blur-sm rounded-2xl p-6 border border-indigo-500/20">
-                    <h4 className="text-white font-semibold mb-2">
-                      Security Settings
-                    </h4>
-                    <p className="text-slate-300 text-sm mb-4">
-                      Keep your account secure by updating your password
-                      regularly.
-                    </p>
-                    <button
-                      className="text-emerald-200 hover:text-emerald-300 font-medium text-sm transition-colors cursor-pointer"
-                      onClick={() => handlePasswordChange(user?.email)}
-                    >
-                      Change Password →
-                    </button>
+                {/* Phone */}
+                <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-all duration-300">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+                      <Phone size={20} className="text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-slate-400 text-sm font-medium">
+                            Phone Number
+                          </p>
+                          <p className="text-white text-lg font-semibold font-sans">
+                            {user?.phone || (
+                              <span className="italic text-slate-400 text-base">
+                                No phone number added
+                              </span>
+                            )}
+                          </p>
+                        </div>
+                        {!user?.phone && (
+                          <button
+                            className="cursor-pointer text-blue-400 hover:text-blue-300 font-medium text-sm transition-colors"
+                            onClick={() => setShowUpdateModal(true)}
+                          >
+                            Add Number
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
