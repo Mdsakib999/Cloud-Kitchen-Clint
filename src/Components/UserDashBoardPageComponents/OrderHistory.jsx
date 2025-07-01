@@ -38,22 +38,27 @@ export const OrderHistory = () => {
   const filteredOrders = useMemo(() => {
     if (!Array.isArray(orders)) return [];
 
-    let filtered = [...orders];
+    // Sort by newest first
+    let sorted = [...orders].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
 
+    // Apply status filter
     if (statusFilter !== "all") {
-      filtered = filtered.filter(
+      sorted = sorted.filter(
         (o) => (o.status || o.order_status) === statusFilter
       );
     }
 
+    // Apply payment filter
     if (paymentFilter !== "all") {
-      filtered = filtered.filter(
+      sorted = sorted.filter(
         (o) =>
           (o.paymentStatus || (o.isPaid ? "paid" : "pending")) === paymentFilter
       );
     }
 
-    return filtered;
+    return sorted;
   }, [orders, statusFilter, paymentFilter]);
 
   const handleViewOrder = (id) => {
@@ -71,13 +76,15 @@ export const OrderHistory = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <div className="min-h-screen py-8 px-4 mt-16 md:mt-0">
+    <div className="min-h-screen py-8 px-4 mt-16 md:mt-5">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-200 mb-2">
             Order History
           </h1>
-          <p className="text-gray-600">Track and manage your food orders</p>
+          <p className="text-emerald-100 mt-3">
+            Track and manage your food orders
+          </p>
         </div>
 
         {/* Filter Controls */}
