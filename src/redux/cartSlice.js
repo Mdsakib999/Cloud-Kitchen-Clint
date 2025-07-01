@@ -17,10 +17,10 @@ const cartSlice = createSlice({
       if (existing) {
         cartAdapter.updateOne(state, {
           id: product._id,
-          changes: { quantity: existing.quantity + 1 },
+          changes: { quantity: existing.quantity + product.quantity },
         });
       } else {
-        cartAdapter.addOne(state, { ...product, quantity: 1 });
+        cartAdapter.addOne(state, product);
       }
     },
     removeFromCart: (state, action) => {
