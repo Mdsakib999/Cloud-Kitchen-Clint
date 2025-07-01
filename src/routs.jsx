@@ -29,7 +29,7 @@ import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent"
 import { AllBlogs } from "./Pages/Blogs/AllBlogs";
 import AddCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/AddCoupon";
 import { ManageCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/ManageCategory";
-import { BlogDetails } from "./Pages/Blogs/BlogDetails";
+import { BlogDetailPage } from "./Pages/Blogs/BlogDetailPage";
 import ManageCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/ManageCoupon";
 import AddOffer from "./Components/AdminDashBoardPageComponent/Offer/AddOffer";
 import AddFood from "./Components/AdminDashBoardPageComponent/AddFood/AddFood";
@@ -72,7 +72,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/blog-details/:id",
-        element: <BlogDetails />,
+        element: <BlogDetailPage />,
       },
       {
         path: "/food-details/:id",
@@ -87,7 +87,7 @@ export const router = createBrowserRouter([
         element: <ManageCategory />,
       },
       {
-        path: "/order-track",
+        path: "/order-track/:id",
         element: <TrackOrder />,
       },
       {
