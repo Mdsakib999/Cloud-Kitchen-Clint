@@ -11,7 +11,7 @@ export const StatHeader = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+    <div className="flex flex-col md:flex-row items-center justify-between px-6 py-4 border-b border-gray-100">
       {/* Search Bar */}
       <div className="relative flex-1 max-w-md">
         <input
@@ -27,7 +27,7 @@ export const StatHeader = () => {
       </div>
 
       {/* Action Icons */}
-      <div className="flex items-center space-x-4 ml-6">
+      <div className="flex flex-wrap items-center space-x-4 ml-6">
         {/* Bell Icon with Badge */}
         <div className="relative">
           <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
