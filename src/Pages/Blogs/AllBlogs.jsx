@@ -36,7 +36,7 @@ export const AllBlogs = () => {
         <SectionHeader
           icon={Newspaper}
           subtitle="Latest Insights"
-          title="FEATURED BLOGS"
+          title="Featured Blogs"
           description="Stay updated with the latest stories"
         />
       </div>
