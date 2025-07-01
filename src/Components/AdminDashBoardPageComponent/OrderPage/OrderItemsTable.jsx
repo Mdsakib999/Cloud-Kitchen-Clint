@@ -103,45 +103,47 @@ export const OrderItemsTable = ({ items, discountPrice }) => {
           })}
       </div>
       {/* Totals Section */}
-      <div className="bg-gradient-to-r from-bg-secondary to-emerald-700 text-white px-4 py-3 md:px-6 md:py-4 border-t border-gray-200">
-        <div className="flex flex-col md:flex-row md:justify-between gap-2 items-center w-full">
-          <div className="flex flex-col md:flex-row gap-1 md:gap-6 text-xs md:text-sm w-full md:w-auto">
-            <span className="border-b-2 border-emerald-400 pb-0.5 px-1">
-              Base Total:{" "}
-              <span className="font-semibold">
-                Tk {grandBaseTotal.toFixed(2)}
-              </span>
+      <div className="font-serif px-4 py-3 md:px-6 md:py-4 bg-emerald-950 text-white border-t border-gray-200">
+        <div className="grid grid-cols-1 gap-2 text-sm md:text-base">
+          <div className="flex justify-between">
+            <span className="font-medium">Base Total:</span>
+            <span className="font-semibold font-inter">
+              Tk {grandBaseTotal.toFixed(2)}
             </span>
-            <span className="border-b-2 border-emerald-400 pb-0.5 px-1">
-              Addons Total:{" "}
-              <span className="font-semibold">
-                Tk {grandAddonsTotal.toFixed(2)}
-              </span>
-            </span>
-            <span className="border-b-2 border-emerald-400 pb-0.5 px-1">
-              Gross Total:{" "}
-              <span className="font-semibold">Tk {grandTotal.toFixed(2)}</span>
-            </span>
-            {discountPrice > 0 && (
-              <span className="border-b-2 border-red-400 pb-0.5 px-1 text-red-200">
-                Discount:{" "}
-                <span className="font-semibold">
-                  -Tk {discountPrice.toFixed(2)}
-                </span>
-              </span>
-            )}
-            {needsShipping && (
-              <span className="border-b-2 border-yellow-400 pb-0.5 px-1 text-yellow-200">
-                Shipping:{" "}
-                <span className="font-semibold">
-                  Tk {shippingFee.toFixed(2)}
-                </span>
-              </span>
-            )}
           </div>
-          <div className="text-lg md:text-2xl font-bold text-right mt-2 md:mt-0 w-full md:w-auto border-t-2 md:border-t-0 border-emerald-400 pt-2 md:pt-0">
-            Final Total:{" "}
-            <span className="text-emerald-200">Tk {finalTotal.toFixed(2)}</span>
+          <div className="flex justify-between">
+            <span className="font-medium">Addons Total:</span>
+            <span className="font-semibold font-inter">
+              Tk {grandAddonsTotal.toFixed(2)}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-medium">Gross Total:</span>
+            <span className="font-semibold font-inter">
+              Tk {grandTotal.toFixed(2)}
+            </span>
+          </div>
+          {discountPrice > 0 && (
+            <div className="flex justify-between text-primary">
+              <span className="font-medium">Discount:</span>
+              <span className="font-semibold font-inter">
+                -Tk {discountPrice.toFixed(2)}
+              </span>
+            </div>
+          )}
+          {needsShipping && (
+            <div className="flex justify-between text-yellow-600">
+              <span className="font-medium">Shipping:</span>
+              <span className="font-semibold font-inter">
+                Tk {shippingFee.toFixed(2)}
+              </span>
+            </div>
+          )}
+          <div className="flex justify-between border-t border-gray-300 pt-2 mt-2">
+            <span className="font-bold text-lg">Final Total:</span>
+            <span className="font-bold text-lg font-inter">
+              Tk {finalTotal.toFixed(2)}
+            </span>
           </div>
         </div>
       </div>
