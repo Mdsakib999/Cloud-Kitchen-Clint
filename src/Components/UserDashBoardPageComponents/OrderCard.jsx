@@ -34,7 +34,7 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
         <div className="flex-1">
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <h3 className="text-xl font-bold text-primary">
-              #OID{order.orderNumber || order._id?.slice(-4)}
+              OID{order.orderNumber || order._id?.slice(-4)}
             </h3>
             <span
               className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
@@ -112,7 +112,9 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
           >
             View Details
           </button>
-          {status === "delivering" && (
+          {["accepted", "preparing", "delivering", "delivered"].includes(
+            status
+          ) && (
             <Link
               to={`/order-track/${order._id}`}
               onClick={() => onTrack(order)}
@@ -121,6 +123,7 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
               Track order
             </Link>
           )}
+
           {status === "delivered" && (
             <button
               onClick={() => onReorder(order)}
