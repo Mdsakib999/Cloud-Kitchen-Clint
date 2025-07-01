@@ -67,7 +67,7 @@ export const Dashboard = () => {
               <div className="p-4 lg:p-6">
                 {isAdmin ? (
                   <div className="flex flex-col min-h-full gap-4 mt-4">
-                    <StatHeader />
+                    {/* <StatHeader /> */}
                     <div className="flex-1">
                       <Outlet />
                     </div>

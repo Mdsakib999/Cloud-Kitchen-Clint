@@ -6,7 +6,6 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ShieldCheck,
   Trash2,
 } from "lucide-react";
 import { formatDate } from "../../../utils/formatDate";
@@ -15,6 +14,7 @@ import { useAuth } from "../../../providers/AuthProvider";
 import { MdRemoveModerator } from "react-icons/md";
 import { FaUserShield } from "react-icons/fa";
 import Swal from "sweetalert2";
+import showToast from "../../../utils/ShowToast";
 
 export const AllCustomer = () => {
   const [customers, setCustomers] = useState([]);
@@ -25,6 +25,7 @@ export const AllCustomer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const { user } = useAuth();
+  console.log("user", user);
 
   const fetchUsers = async () => {
     try {
@@ -189,11 +190,21 @@ export const AllCustomer = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axiosInstance.delete(`auth/${id}`);
-        Swal.fire("Deleted!", "User has been deleted.", "success");
+        const result = await axiosInstance.delete(`/user/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        console.log("result in delete", result);
+        if (result?.data?.success) {
+          showToast({
+            title: "Account deleted successfully!",
+            icon: "success",
+          });
+        }
         fetchUsers();
       } catch (error) {
-        Swal.fire("Error", "Failed to delete user", "error");
+        Swal.fire("Error", "Failed to delete user", error);
       }
     }
   };
@@ -283,7 +294,7 @@ export const AllCustomer = () => {
                     <td className=" py-3 flex gap-5">
                       <button
                         onClick={() => setSelectedCustomer(customer)}
-                        className="transition-colors flex items-center justify-center gap-2 px-2 py-2 bg-blue-500/50 text-white font-medium rounded-xl hover:bg-primary"
+                        className="cursor-pointer transition-colors flex items-center justify-center gap-2 px-2 py-2 bg-blue-500/50 text-white font-medium rounded-xl hover:bg-primary"
                       >
                         <Eye size={18} />
                       </button>
@@ -309,7 +320,7 @@ export const AllCustomer = () => {
                       <button
                         onClick={() => deleteUser(customer._id)}
                         disabled={isCurrentUser}
-                        className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="cursor-pointer flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <Trash2 size={18} />
                       </button>
