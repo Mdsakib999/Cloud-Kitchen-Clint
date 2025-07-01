@@ -1,6 +1,7 @@
 import React from "react";
 
 import { FiFacebook, FiInstagram } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -31,12 +32,17 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Useful Links</h3>
             <ul className="space-y-2 text-sm">
+              <Link to="/">
+                <li className="text-gray-300 hover:text-white transition-colors">
+                  Home
+                </li>
+              </Link>
               <li>
                 <a
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Sitemap
+                  Menu
                 </a>
               </li>
               <li>
@@ -44,7 +50,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Partners
+                  Price List
                 </a>
               </li>
               <li>
@@ -52,7 +58,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Events
+                  About
                 </a>
               </li>
               <li>
@@ -60,7 +66,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Gift Cards
+                  Contact
                 </a>
               </li>
               <li>
@@ -68,7 +74,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Gallery
+                  Blog
                 </a>
               </li>
             </ul>
@@ -83,7 +89,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Room Reservations
+                  Privacy Policy
                 </a>
               </li>
               <li>
@@ -91,7 +97,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Hotel Policies
+                  Return Policy
                 </a>
               </li>
               <li>
@@ -99,7 +105,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Partners
+                  Refund Policy
                 </a>
               </li>
               <li>
@@ -115,7 +121,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Testimonials
+                  FAQ
                 </a>
               </li>
             </ul>
@@ -124,6 +130,23 @@ const Footer = () => {
           {/* Let's Keep In Touch */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Let's Keep In Touch</h3>
+            <div className="flex items-center space-x-4 mb-4 md:mb-0">
+              <span className="text-sm font-semibold">Social Media:</span>
+              <div className="flex space-x-3">
+                <a
+                  href="#"
+                  className="w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
+                >
+                  <FiFacebook size={16} className="text-bg-primary" />
+                </a>
+                <a
+                  href="#"
+                  className="w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
+                >
+                  <FiInstagram size={16} className="text-bg-primary" />
+                </a>
+              </div>
+            </div>
             <div className="mb-6">
               <p className="text-sm text-gray-300 mb-3">
                 Get Recommendations, Tips, Updates and more
@@ -145,23 +168,6 @@ const Footer = () => {
         {/* Social Media & Copyright */}
         <div className="mt-12 pt-8 border-t border-emerald-800">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex space-x-4 mb-4 md:mb-0">
-              <span className="text-sm font-semibold">Social Media:</span>
-              <div className="flex space-x-3">
-                <a
-                  href="#"
-                  className="w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
-                >
-                  <FiFacebook size={16} className="text-bg-primary" />
-                </a>
-                <a
-                  href="#"
-                  className="w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors"
-                >
-                  <FiInstagram size={16} className="text-bg-primary" />
-                </a>
-              </div>
-            </div>
             <p className="text-sm text-gray-300">
               All Right Reserved © 2025 Byte Bites
             </p>
