@@ -39,7 +39,6 @@ export default function DynamicFieldArray({
         {fields.map((item, index) => (
           <div key={item.id} className="flex gap-3">
             {fieldDefs.map((def) => {
-              // build validation rules
               const rules = {};
               if (!noRequired) {
                 rules.required = `${def.name} is required`;
@@ -48,25 +47,33 @@ export default function DynamicFieldArray({
                 rules.valueAsNumber = true;
                 rules.min = { value: 0, message: `${def.name} must be >= 0` };
               }
-              // allow overriding via def.validate
+
               if (def.validate) {
                 Object.assign(rules, def.validate);
               }
 
               return (
-                <input
-                  key={def.name}
-                  type={def.type}
-                  placeholder={def.placeholder || def.name}
-                  className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
-                  {...register(`${name}.${index}.${def.name}`, rules)}
-                />
+                <div className="flex flex-col mb-4">
+                  <label
+                    className="block text-sm font-semibold text-gray-700 mb-1"
+                    htmlFor={`${name}.${index}.${def.name}`}
+                  >
+                    {def.name}
+                  </label>
+                  <input
+                    id={`${name}.${index}.${def.name}`}
+                    type={def.type}
+                    placeholder={def.placeholder || def.name}
+                    className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
+                    {...register(`${name}.${index}.${def.name}`, rules)}
+                  />
+                </div>
               );
             })}
             <button
               type="button"
               onClick={() => remove(index)}
-              className="px-4 py-3 text-red-600 hover:text-red-700 border-2 border-red-200 hover:border-red-300 rounded-lg transition-colors"
+              className="block border py-2 px-4 text-red-600 hover:text-red-700  transition-colors "
             >
               <Trash2 className="w-4 h-4" />
             </button>
