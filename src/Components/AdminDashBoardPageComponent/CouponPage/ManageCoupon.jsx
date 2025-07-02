@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import CouponEditModal from "./CouponEditModal";
 import { formatDate } from "../../../utils/formatDate";
+import { Loader } from "../../SharedComponent/Loader";
 
 const ManageCoupon = () => {
   const [loading, setLoading] = useState(false);
@@ -118,40 +119,12 @@ const ManageCoupon = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <svg
-            className="animate-spin h-12 w-12 text-emerald-500"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8z"
-            ></path>
-          </svg>
-          <span className="text-emerald-500 text-lg font-semibold font-serif">
-            Loading coupons...
-          </span>
-        </div>
-      </div>
-    );
+    return <Loader comp_Name={"coupons"} />;
   }
 
   return (
-    <div className="max-w-6xl p-6 w-full mx-auto bg-white rounded-2xl shadow-lg mt-10 font-inter">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">
+    <div className="p-6 w-full mx-auto bg-white rounded-2xl shadow-lg mt-10 font-inter">
+      <h2 className="text-3xl font-bold text-gray-800 border-b pb-2 font-inknut mb-6">
         Manage Existing Coupons
       </h2>
       <div className="overflow-x-auto flex flex-col items-center justify-center">

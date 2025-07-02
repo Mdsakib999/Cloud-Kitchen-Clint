@@ -117,7 +117,7 @@ const ErrorPage = () => {
           {/* Action buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/"
+              to="/menu"
               className="cursor-pointer group bg-gradient-to-r from-emerald-500 to-green-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
             >
               <Home className="w-5 h-5 group-hover:rotate-12 transition-transform" />
