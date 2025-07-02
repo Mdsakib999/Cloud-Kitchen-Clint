@@ -3,7 +3,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import { DashBoardLeftNav } from "./DasboardLeftNav";
 import { ScrollToTop } from "../../utils/ScrollToTop";
 import Navbar from "../../Components/SharedComponent/Navbar";
-import { StatHeader } from "../../Components/SharedComponent/StatHeader";
 
 export const Dashboard = () => {
   const { pathname } = useLocation();

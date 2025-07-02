@@ -5,6 +5,7 @@ import { useGetOrdersQuery } from "../../../redux/orderSlice";
 import { GetStatusColor } from "../../SharedComponent/GetStatusColor";
 import FilterControls from "../../UserDashBoardPageComponents/FilterControls";
 import showToast from "../../../utils/ShowToast";
+import { Loader } from "../../SharedComponent/Loader";
 
 export const ManageOrders = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -89,10 +90,12 @@ export const ManageOrders = () => {
     setSearchTerm("");
   };
 
-  if (isLoading) return <div className="text-white p-6">Loading...</div>;
+  if (isLoading) {
+    return <Loader comp_Name={"orders"} />;
+  }
 
   return (
-    <div className="p-6 min-h-screen text-white">
+    <div className="p-6 min-h-screen text-white font-serif">
       <h2 className="text-2xl font-bold mb-1 text-black">All Orders</h2>
       <p className="mb-4 text-black">Showing {filteredOrders.length} orders</p>
 
@@ -155,7 +158,9 @@ export const ManageOrders = () => {
                   <td className="px-4 py-3">OID{order._id.slice(-4)}</td>
                   <td className="px-4 py-3 whitespace-nowrap">{order.name}</td>
                   <td className="px-4 py-3">{order.address}</td>
-                  <td className="px-4 py-3">৳{order.totalPrice}</td>
+                  <td className="px-4 py-3 font-inter">
+                    ৳ {order.totalPrice.toFixed(2)}
+                  </td>
                   <td className="px-4 py-3">
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${GetStatusColor(
@@ -167,7 +172,7 @@ export const ManageOrders = () => {
                   </td>
                   <td className="px-4 py-3">
                     <Link to={`/admin/dashboard/order-details/${order._id}`}>
-                      <button className="cursor-pointer border border-amber-200 transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-4 rounded-md whitespace-nowrap">
+                      <button className="cursor-pointer shadow shadow-emerald-300 transition-colors inline-flex items-center gap-2 bg-bg-primary text-white py-2 px-5 rounded-full whitespace-nowrap">
                         View Details
                         <Eye size={18} />
                       </button>
