@@ -121,16 +121,22 @@ const CartSlider = ({ isOpen, onClose }) => {
             </span>
           </div>
         </div>
-
+        {console.log(cartItems)}
         {/* Footer with Total & Buttons - always visible */}
-        <div className="px-4 py-4 border-t border-gray-500 space-y-2 bg-bg-primary sticky bottom-0 z-10">
-          <Link
-            to="/checkout"
-            onClick={onClose}
-            className="font-inter tracking-wider block w-full text-center bg-primary hover:bg-white hover:text-black duration-500 border border-primary text-white py-2 rounded cursor-pointer"
-          >
-            Checkout
-          </Link>
+        <div className="w-full px-4 py-4 border-t border-gray-500 space-y-2 bg-bg-primary sticky bottom-0 z-10">
+          {cartItems.ids.length === 0 ? (
+            <span className="font-inter tracking-wider block w-full text-center bg-[#ddb275] text-white py-2 rounded cursor-not-allowed border border-gray-400">
+              Checkout
+            </span>
+          ) : (
+            <Link
+              to="/checkout"
+              onClick={onClose}
+              className="font-inter tracking-wider block w-full text-center bg-primary hover:bg-white hover:text-black duration-500 border border-primary text-white py-2 rounded cursor-pointer"
+            >
+              Checkout
+            </Link>
+          )}
         </div>
       </div>
 
