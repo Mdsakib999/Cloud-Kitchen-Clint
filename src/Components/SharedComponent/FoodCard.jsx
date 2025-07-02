@@ -42,14 +42,17 @@ const FoodCard = ({ item }) => {
       </p>
 
       <div className="flex justify-center items-center gap-3 ">
-        <div className="relative inline-block mt-4" ref={dropdownRef}>
+        <div
+          className="relative inline-block mt-4 text-white"
+          ref={dropdownRef}
+        >
           <button
             onClick={() => setOpen((prev) => !prev)}
-            className="w-full bg-primary text-bg-primary py-2 px-4 rounded-full border border-primary flex justify-between items-center min-w-[140px]"
+            className="w-full bg-primary py-2 px-4 rounded-full border border-primary flex justify-between items-center min-w-[140px]"
           >
             <span>{selectedSize.label}</span>
             <svg
-              className={`w-5 h-5 text-bg-primary transition-transform duration-200 ${
+              className={`w-5 h-5 text-white transition-transform duration-200 ${
                 open ? "rotate-180" : ""
               }`}
               fill="currentColor"
@@ -71,7 +74,7 @@ const FoodCard = ({ item }) => {
                     setSelectedSize(s);
                     setOpen(false);
                   }}
-                  className="px-4 py-2 hover:bg-bg-cart cursor-pointer text-bg-primary hover:text-gray-300 first:rounded-t-lg last:rounded-b-lg"
+                  className="px-4 py-2 hover:bg-bg-cart cursor-pointer text-white hover:text-gray-300 first:rounded-t-lg last:rounded-b-lg"
                 >
                   {s.label} (${s.price.toFixed(2)})
                 </li>

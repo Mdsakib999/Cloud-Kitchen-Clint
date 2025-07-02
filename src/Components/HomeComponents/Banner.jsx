@@ -64,7 +64,7 @@ const Banner = () => {
             <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
               <Slide direction="up" triggerOnce className="">
                 <div className="mt-10 space-y-5">
-                  <p className="text-lg text-white font-serif">
+                  <p className="text-2xl text-primary font-serif">
                     {slide.preTitle}
                   </p>
                   <h1 className="text-3xl md:text-5xl font-bold mb-4 max-w-4xl text-white font-inknut">
