@@ -21,11 +21,7 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
 
   // Show loader while loading or if orderId is not available
   if (isLoading || !orderId) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/30 backdrop-blur-2xl p-4">
-        <Loader />
-      </div>
-    );
+    return <Loader comp_Name={"Order Details"} />;
   }
 
   // Handle error state
@@ -58,11 +54,7 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
 
   // Show loader if no order data yet
   if (!order) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/30 backdrop-blur-2xl p-4">
-        <Loader />
-      </div>
-    );
+    return <Loader comp_Name={"Order Details"} />;
   }
 
   const status = order?.order_status || "unknown";
@@ -209,7 +201,7 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
                         </div>
                         <div className="text-right">
                           <p className="text-sm text-gray-300">Subtotal</p>
-                          <p className="text-lg font-semibold text-tertiary">
+                          <p className="text-lg font-semibold text-primary">
                             ৳{item.price * item.qty}
                           </p>
                         </div>
@@ -241,7 +233,7 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
                       <div className="border-t border-white/10 mt-4 pt-4 flex justify-end">
                         <p className="text-sm text-white font-medium">
                           Item Total:{" "}
-                          <span className="text-tertiary font-bold">
+                          <span className="text-primary font-bold">
                             ৳{itemTotal}
                           </span>
                         </p>
@@ -295,7 +287,7 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
               {/* Final Total */}
               <div className="flex items-center justify-between border-t border-white/10 pt-4 mt-4">
                 <p className="text-lg font-bold text-white">Total Amount</p>
-                <p className="text-lg font-bold text-tertiary">
+                <p className="text-lg font-bold text-primary">
                   ৳{order.totalPrice}
                 </p>
               </div>

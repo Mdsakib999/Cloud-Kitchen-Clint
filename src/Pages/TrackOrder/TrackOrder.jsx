@@ -1,12 +1,11 @@
 import { Package } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../../redux/orderSlice";
-import { formatDate } from "../../utils/formatDate";
-
 import StatusSteps from "./StatusSteps";
 import BillingInfo from "./BillingInfo";
 import OrderSummary from "./OrderSummary";
 import RiderInfo from "./RiderInfo";
+import { Loader } from "../../Components/SharedComponent/Loader";
 
 const TrackOrder = () => {
   const { id } = useParams();
@@ -19,8 +18,7 @@ const TrackOrder = () => {
     skip: !id,
   });
 
-  if (isLoading)
-    return <div className="pt-36 text-center text-white">Loading...</div>;
+  if (isLoading) return <Loader comp_Name="Track Order" />;
   if (isError)
     return (
       <div className="pt-36 text-center text-red-500">
