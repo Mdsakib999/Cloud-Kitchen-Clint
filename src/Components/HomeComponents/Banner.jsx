@@ -94,10 +94,10 @@ const Banner = () => {
             <h3 className="font-semibold text-gray-200 text-sm lg:text-lg font-serif">
               Operating Hours
             </h3>
-            <p className="text-emerald-100 text-xs lg:text-sm font-inter">
+            <p className="text-white text-xs lg:text-sm font-inter">
               Mon-Fri: 11:00 AM - 10:00 PM
             </p>
-            <p className="text-emerald-100 text-xs lg:text-sm font-inter">
+            <p className="text-white text-xs lg:text-sm font-inter">
               Sat-Sun: 10:00 AM - 11:00 PM
             </p>
           </div>
@@ -110,10 +110,10 @@ const Banner = () => {
             <h3 className="font-semibold text-gray-200 text-sm lg:text-lg font-serif">
               Our Location
             </h3>
-            <p className="text-emerald-100 text-xs lg:text-sm max-w-xs lg:max-w-none font-inter">
-              123 Food Street,
-              <p>Downtown District,</p>
-              <p>Cityville, State 12345</p>
+            <p className="text-white text-xs lg:text-sm max-w-xs lg:max-w-none font-inter">
+              South Khulsi,
+              <p>Nasirabad Properties LTD,</p>
+              <p>Chottogram, Bangladesh</p>
             </p>
           </div>
         </div>

@@ -24,6 +24,7 @@ const CheckoutForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [coupons, setCoupons] = useState([]);
   const [couponLoading, setCouponLoading] = useState(false);
+  const [showError, setShowError] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(() => {
     const stored = localStorage.getItem("appliedCoupon");
     return stored ? JSON.parse(stored) : null;
@@ -111,12 +112,15 @@ const CheckoutForm = () => {
       toast.success(
         <h1 className="text-center font-serif">Coupon applied successfully</h1>
       );
+      setShowError("");
     } catch (error) {
-      toast.error(
-        <h1 className="text-center font-serif">
-          {error.response?.data?.error || "Invalid coupon"}
-        </h1>
-      );
+      console.log("error in coupon handling", error);
+      setShowError(error.response?.data?.error);
+      // toast.error(
+      //   <h1 className="text-center font-serif">
+      //     {error.response?.data?.error || "Invalid coupon"}
+      //   </h1>
+      // );
     } finally {
       setCouponLoading(false);
     }
@@ -427,6 +431,9 @@ const CheckoutForm = () => {
                   </>
                 )}
               </div>
+              <p className="text-red-500 font-inter text-sm my-1.5">
+                {showError}
+              </p>
             </div>
 
             <div className="border-t border-gray-600 pt-4 space-y-3">

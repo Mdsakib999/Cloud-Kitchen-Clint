@@ -1,43 +1,37 @@
-import img1 from "../../assets/foodBanner.jpg";
-import img2 from "../../assets/foodBanner.jpg";
-import img3 from "../../assets/foodBanner.jpg";
+import img1 from "/assets/Food/ramen.png";
+import img2 from "/assets/Food/Chicken-Fry.jpg";
+import img3 from "/assets/Food/ChickenKebabbgremove.png";
+import CountUp from "react-countup";
+import { useInView } from "react-intersection-observer";
 
 const HomeStats = () => {
+  const { ref, inView } = useInView({ triggerOnce: false });
+
   return (
     <section className="bg-bg-secondary py-12 sm:py-16 lg:py-20 px-4 sm:px-6 text-white">
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-28 lg:gap-12 items-center">
         {/* Left: Images and vertical text */}
-        <div className="flex items-center justify-center lg:justify-start space-x-4 sm:space-x-6 order-2 lg:order-1">
-          {/* Overlapping images */}
-          <div className="flex -space-x-4 sm:-space-x-6 z-10">
-            <figure className="w-32 h-40 sm:w-44 sm:h-56 md:w-52 md:h-64 lg:w-58 lg:h-74 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg">
-              <img
-                src={img1}
-                alt="Delicious dish 1"
-                className="w-full h-full object-cover"
-              />
-            </figure>
-            <figure className="w-32 h-40 sm:w-44 sm:h-56 md:w-52 md:h-64 lg:w-58 lg:h-74 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl transform translate-y-8 sm:translate-y-12 lg:translate-y-16">
-              <img
-                src={img2}
-                alt="Delicious dish 2"
-                className="w-full h-full object-cover"
-              />
-            </figure>
+        <div className="relative w-fit mx-auto md:bottom-8 lg:bottom-20 right-10 md:right-0">
+          <div className="w-64 h-80 md:w-72 md:h-96 lg:w-80 lg:h-[28rem] rounded-xl overflow-hidden shadow-lg">
+            <img
+              src={img1}
+              alt="Noodles Dish"
+              className="w-full h-full object-cover"
+            />
           </div>
 
-          {/* Vertical title - Hidden on mobile, visible on larger screens */}
-          <div className=" block transform -translate-y-6 lg:-translate-y-10 -translate-x-12 lg:-translate-x-20 z-30">
-            <span
-              className="text-3xl lg:text-4xl xl:text-6xl font-bold whitespace-nowrap"
-              style={{
-                writingMode: "vertical-rl",
-                textOrientation: "mixed",
-                transform: "rotate(180deg)",
-              }}
-            >
+          <div className="absolute bottom-[-6rem] right-[-4rem] md:bottom-[-8rem] md:right-[-6rem] lg:bottom-[-10rem] lg:right-[-7rem] w-48 h-64 md:w-56 md:h-72 lg:w-64 lg:h-80 rounded-xl overflow-hidden shadow-md">
+            <img
+              src={img2}
+              alt="Fried Chicken"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <div className="hidden lg:block absolute top-1/2 right-[-20rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap">
+            <h1 className="text-5xl font-semibold text-white font-inknut">
               Taste Bliss
-            </span>
+            </h1>
           </div>
         </div>
 
@@ -61,10 +55,13 @@ const HomeStats = () => {
           </p>
 
           {/* Stats row */}
-          <div className="grid grid-cols-3 sm:flex sm:flex-row sm:justify-center lg:justify-start sm:space-x-6 lg:space-x-8 gap-4 sm:gap-0 text-gray-200 pt-4">
+          <div
+            ref={ref}
+            className="grid grid-cols-3 sm:flex sm:flex-row sm:justify-center lg:justify-start sm:space-x-6 lg:space-x-8 gap-4 sm:gap-0 text-gray-200 pt-4"
+          >
             <div className="text-center sm:text-left">
               <div className="font-bold text-white text-lg sm:text-xl lg:text-2xl">
-                100+
+                <CountUp end={inView ? 100 : 0} duration={2} />+
               </div>
               <p className="text-xs sm:text-sm lg:text-base">
                 Five-Star Dining
@@ -72,13 +69,14 @@ const HomeStats = () => {
             </div>
             <div className="text-center sm:text-left">
               <div className="font-bold text-white text-lg sm:text-xl lg:text-2xl">
-                250k
+                <CountUp end={inView ? 25 : 0} duration={2.5} separator="," />
+                K+
               </div>
               <p className="text-xs sm:text-sm lg:text-base">Happy Clients</p>
             </div>
             <div className="text-center sm:text-left">
               <div className="font-bold text-white text-lg sm:text-xl lg:text-2xl">
-                100+
+                <CountUp end={inView ? 100 : 0} duration={2} />+
               </div>
               <p className="text-xs sm:text-sm lg:text-base">Elite Chef</p>
             </div>

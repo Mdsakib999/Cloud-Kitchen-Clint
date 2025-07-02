@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Search } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useGetAllProductsQuery } from "../../redux/apiSlice";
+import React, { useState, useMemo } from "react";
+import {
+  useGetAllProductsQuery,
+  useGetMenuCategoriesQuery,
+} from "../../redux/apiSlice";
 import FoodCard from "../SharedComponent/FoodCard";
+import { Loader } from "../SharedComponent/Loader";
 
 export const AllFoodCard = () => {
   const {
@@ -12,30 +13,48 @@ export const AllFoodCard = () => {
     isError,
     error,
   } = useGetAllProductsQuery();
+
+  const { data: categoriesData = [], isLoading: isCategoriesLoading } =
+    useGetMenuCategoriesQuery();
+
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  // derive unique categories
-  const sidebarCategories = React.useMemo(() => {
+  // Count products per category
+  const categoryCounts = useMemo(() => {
     const counts = {};
-    foodItems.forEach((fi) => {
-      const cat = fi.category?.name || "Uncategorized";
-      counts[cat] = (counts[cat] || 0) + 1;
+    foodItems.forEach((item) => {
+      const name = item.category?.name || "Uncategorized";
+      counts[name] = (counts[name] || 0) + 1;
     });
-    return Object.entries(counts).map(([label, count]) => ({ label, count }));
+    return counts;
   }, [foodItems]);
 
-  if (isLoading) return <p className="text-center mt-12">Loading...</p>;
-  if (isError)
+  // Merge fetched categories with counts
+  const sidebarCategories = useMemo(() => {
+    if (isCategoriesLoading) return [];
+    return [
+      { label: "All", count: foodItems.length },
+      ...categoriesData.map((cat) => ({
+        label: cat.name || "Uncategorized",
+        count: categoryCounts[cat.name] || 0,
+      })),
+    ];
+  }, [categoriesData, foodItems.length, categoryCounts, isCategoriesLoading]);
+
+  if (isLoading || isCategoriesLoading) {
+    return <Loader comp_Name="AllFoodCard" />;
+  }
+
+  if (isError) {
     return (
       <p className="text-center mt-12 text-red-500">
         Error: {error?.data?.message || error.error}
       </p>
     );
+  }
 
-  // filter items
+  // Filter food items
   const filtered = foodItems.filter(
     (item) =>
       (activeCategory === "All" || item.category?.name === activeCategory) &&
@@ -43,55 +62,44 @@ export const AllFoodCard = () => {
   );
 
   return (
-    <div className="px-4 py-8 pt-36">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <p className="text-primary text-lg font-medium mb-2">
-            Your meal, your way
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-8">
-            Choose your <span className="text-primary">Food</span>
-          </h1>
-        </div>
-
-        {filtered.length === 0 && (
-          <p className="text-center text-gray-400">No food items available.</p>
-        )}
-
-        <div className="flex">
-          {/* Sidebar */}
-          <aside className="w-1/3 pr-6 border-r border-gray-700 space-y-2 mt-20">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:flex-row gap-6 mt-10 min-h-screen">
+        {/* Sidebar / Filter Bar */}
+        <aside className="w-full lg:w-1/4">
+          <div className="flex flex-wrap lg:flex-col gap-3 lg:gap-4 lg:space-y-2 lg:h-full justify-start">
             {sidebarCategories.map((cat) => (
               <button
                 key={cat.label}
                 onClick={() => setActiveCategory(cat.label)}
-                className={`w-full text-left px-8 py-4 mb-5 rounded-bl-4xl rounded-tr-4xl font-mono transition-all ${
+                className={`px-4 py-2 sm:px-6 sm:py-3 rounded-bl-3xl rounded-tr-3xl font-mono text-sm sm:text-base whitespace-nowrap transition-all ${
                   activeCategory === cat.label
-                    ? "bg-primary text-white text-xl"
+                    ? "bg-primary text-white"
                     : "bg-bg-secondary text-gray-300 hover:bg-gray-700"
                 }`}
+                style={{
+                  minWidth: "fit-content",
+                }}
               >
                 {cat.label} ({cat.count})
               </button>
             ))}
-          </aside>
+          </div>
+        </aside>
 
-          {/* Main Content */}
-          <main className="px-8 w-full">
-            {/* Header & Search */}
-            {/* <div className="flex justify-between items-center py-4 my-10 ">
-              <h2 className="text-2xl font-semibold text-white">
-                {activeCategory}
-              </h2>
-            </div> */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-20 mb-36">
+        {/* Main Content */}
+        <main className="flex-1">
+          {filtered.length === 0 ? (
+            <p className="text-center text-gray-400 mt-6">
+              No food items available.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-36">
               {filtered.map((item) => (
                 <FoodCard key={item._id} item={item} />
               ))}
             </div>
-          </main>
-        </div>
+          )}
+        </main>
       </div>
     </div>
   );

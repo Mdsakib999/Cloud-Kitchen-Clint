@@ -95,7 +95,7 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
   return (
     <aside
       className={`
-    flex flex-col overflow-y-auto
+    flex flex-col overflow-y-auto font-serif
     ${isAdmin ? "bg-white border-r border-gray-200" : "bg-bg-secondary"}
     lg:fixed min-h-screen top-16 lg:w-72
     h-[calc(100vh-8rem)]  

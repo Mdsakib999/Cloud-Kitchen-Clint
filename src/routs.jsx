@@ -9,7 +9,7 @@ import VerifyEmail from "./Pages/Authentication/VerifyEmail";
 import ShowEmailVerification from "./Pages/Authentication/ShowEmailVerification";
 import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
 import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
-import { OrderNow } from "./Pages/OrderNow/OrderNow";
+import { PriceList } from "./Pages/PriceList/PriceList";
 import { UpdateProfile } from "./Components/UserDashBoardPageComponents/UpdateProfile";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { OrderHistory } from "./Components/UserDashBoardPageComponents/OrderHistory";
@@ -39,6 +39,7 @@ import EditFoodForm from "./Components/AdminDashBoardPageComponent/ManageFood/Ed
 import CheckoutForm from "./Pages/Checkout/CheckoutForm";
 import { CreateBlog } from "./Components/AdminDashBoardPageComponent/Blogs/CreateBlog";
 import { ManageBlog } from "./Components/AdminDashBoardPageComponent/Blogs/ManageBlog";
+import PublicRoute from "./router/PublicRoute";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./Pages/TermsAndConditions/TermsAndConditions";
 import Refund from "./Pages/Refund/Refund";
@@ -47,7 +48,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
-    // errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -82,8 +83,8 @@ export const router = createBrowserRouter([
         element: <FoodDetails />,
       },
       {
-        path: "/order",
-        element: <OrderNow />,
+        path: "/priceList",
+        element: <PriceList />,
       },
       {
         path: "/manage-category",
@@ -95,15 +96,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/checkout",
-        element: <CheckoutForm />,
+        element: (
+          <PrivateRoute>
+            <CheckoutForm />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/signin",
-        element: <SignIn />,
+        element: (
+          <PublicRoute>
+            <SignIn />
+          </PublicRoute>
+        ),
       },
       {
         path: "/signup",
-        element: <SignUp />,
+        element: (
+          <PublicRoute>
+            <SignUp />
+          </PublicRoute>
+        ),
       },
       {
         path: "/privacy",
@@ -144,7 +157,11 @@ export const router = createBrowserRouter([
   // User Dashboard
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "",
@@ -163,7 +180,11 @@ export const router = createBrowserRouter([
   // Admin Dashboard
   {
     path: "admin/dashboard",
-    element: <Dashboard />,
+    element: (
+      <AdminRoute>
+        <Dashboard />
+      </AdminRoute>
+    ),
     children: [
       {
         path: "",
@@ -201,7 +222,10 @@ export const router = createBrowserRouter([
         path: "add-food",
         element: <AddFood />,
       },
-      { path: "edit-food/:id", element: <EditFoodForm /> },
+      {
+        path: "edit-food/:id",
+        element: <EditFoodForm />,
+      },
       {
         path: "manage-food",
         element: <ManageFood />,
