@@ -127,7 +127,7 @@ const ErrorPage = () => {
         </div>
 
         {/* Quick navigation */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
           <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 hover:bg-white/80 transition-all duration-300 cursor-pointer group border border-emerald-100 hover:border-emerald-300 hover:shadow-lg">
             <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
               🍕
@@ -151,7 +151,7 @@ const ErrorPage = () => {
             <h4 className="font-semibold text-gray-800">Today's Special</h4>
             <p className="text-sm text-gray-600">Chef's recommendations</p>
           </div>
-        </div>
+        </div> */}
 
         {/* Contact info */}
         <div className="text-center">

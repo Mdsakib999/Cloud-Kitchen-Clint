@@ -179,9 +179,9 @@ export const UpdateProfile = () => {
         title: "text-white font-bold",
         content: "text-gray-300",
         confirmButton:
-          "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition",
+          "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition mr-2 cursor-pointer",
         cancelButton:
-          "bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition",
+          "bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition cursor-pointer",
       },
       buttonsStyling: false,
     });
