@@ -17,11 +17,9 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
     skip: !orderId,
   });
 
-  console.log("Order data:", order);
-
   // Show loader while loading or if orderId is not available
   if (isLoading || !orderId) {
-    return <Loader comp_Name={"Order Details"} />;
+    return <p>loading...</p>;
   }
 
   // Handle error state
