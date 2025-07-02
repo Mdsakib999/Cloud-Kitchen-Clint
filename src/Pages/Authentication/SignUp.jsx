@@ -131,7 +131,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#102B2A] font-serif py-20">
+    <div className="min-h-screen flex items-center justify-center bg-[#102B2A] font-serif pb-20 pt-44">
       <div className="w-full max-w-lg bg-[#0c2424] p-10 space-y-8 rounded-2xl shadow-2xl transform transition-all hover:scale-[1.01]">
         <div className="text-center">
           <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800 tracking-tight">

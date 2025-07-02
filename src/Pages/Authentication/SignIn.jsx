@@ -169,7 +169,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#102B2A] font-serif pt-20">
+    <div className="min-h-screen flex items-center justify-center bg-[#102B2A] font-serif pt-28">
       <div className="w-full max-w-lg p-10 bg-[#0c2424] space-y-8 rounded-2xl transform transition-all shadow shadow-green-800 mb-5">
         <div className="text-center">
           <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800 tracking-tight">
