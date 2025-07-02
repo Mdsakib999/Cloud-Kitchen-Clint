@@ -15,6 +15,7 @@ import { MdRemoveModerator } from "react-icons/md";
 import { FaUserShield } from "react-icons/fa";
 import Swal from "sweetalert2";
 import showToast from "../../../utils/ShowToast";
+import { Loader } from "../../SharedComponent/Loader";
 
 export const AllCustomer = () => {
   const [customers, setCustomers] = useState([]);
@@ -24,16 +25,18 @@ export const AllCustomer = () => {
   const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
 
   const fetchUsers = async () => {
+    setIsLoading(true);
     try {
       const res = await axiosInstance.get("/user/all-users", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      // Sort admins to the top
+
       const sortedUsers = res.data.sort((a, b) => {
         if (a.role === "admin" && b.role !== "admin") return -1;
         if (a.role !== "admin" && b.role === "admin") return 1;
@@ -42,6 +45,8 @@ export const AllCustomer = () => {
       setCustomers(sortedUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -208,15 +213,31 @@ export const AllCustomer = () => {
     }
   };
 
+  if (isLoading) {
+    return <Loader comp_Name={"customers"} />;
+  }
+
+  if (!isLoading && customers.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-emerald-950">
+        <span className="text-emerald-100 text-lg font-semibold font-serif">
+          No user found
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 min-h-screen text-white">
-      <h2 className="text-2xl text-black font-bold mb-6">All Customers</h2>
+      <h2 className="text-2xl text-black font-bold my-6 font-inknut">
+        All Customers
+      </h2>
 
       {/* Search Bar */}
-      <div className="mb-6 bg-bg-secondary rounded-lg p-4">
-        <div className="relative max-w-md">
+      <div className="mb-6">
+        <div className="relative max-w-lg bg-emerald-950 rounded-lg">
           <Search
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-100"
             size={20}
           />
           <input
@@ -227,17 +248,17 @@ export const AllCustomer = () => {
               setSearchTerm(e.target.value);
               setCurrentPage(1); // Reset to first page when searching
             }}
-            className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-emerald-600 focus:outline-none w-full pl-10 pr-4 py-2.5 bg-white/10 rounded-lg text-emerald-50 placeholder-white focus:ring-2 focus:ring-emerald-600"
           />
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl shadow-lg">
-        <table className="min-w-full bg-bg-secondary text-left rounded-md">
-          <thead className="bg-white/10 text-sm uppercase tracking-wider">
+      <div className="overflow-x-auto rounded-2xl shadow-2xl border border-emerald-200 bg-emerald-950">
+        <table className="min-w-full text-left rounded-2xl">
+          <thead className="bg-emerald-900 text-emerald-100 text-sm uppercase tracking-wider font-serif">
             <tr>
               <th
-                className="px-4 py-3 cursor-pointer hover:bg-white/5 select-none"
+                className="px-4 py-3 cursor-pointer hover:bg-emerald-100 select-none transition-colors"
                 onClick={() => handleSort("id")}
               >
                 <div className="flex items-center justify-between">
@@ -246,7 +267,7 @@ export const AllCustomer = () => {
                 </div>
               </th>
               <th
-                className="px-4 py-3 cursor-pointer hover:bg-white/5 select-none"
+                className="px-4 py-3 cursor-pointer hover:bg-emerald-200/60 select-none transition-colors"
                 onClick={() => handleSort("name")}
               >
                 <div className="flex items-center justify-between">
@@ -255,7 +276,7 @@ export const AllCustomer = () => {
                 </div>
               </th>
               <th
-                className="px-4 py-3 cursor-pointer hover:bg-white/5 select-none"
+                className="px-4 py-3 cursor-pointer hover:bg-emerald-200/60 select-none transition-colors"
                 onClick={() => handleSort("email")}
               >
                 <div className="flex items-center justify-between">
@@ -263,13 +284,9 @@ export const AllCustomer = () => {
                   {getSortIcon("email")}
                 </div>
               </th>
-              <th className="px-4 py-3">
-                <div className="flex items-center justify-between">Number</div>
-              </th>
-              <th className="px-4 py-3">
-                <div className="flex items-center justify-between">Role</div>
-              </th>
-              <th className="px-4 py-3">Action</th>
+              <th className="px-4 py-3 font-serif">Number</th>
+              <th className="px-4 py-3 font-serif">Role</th>
+              <th className="px-4 py-3 font-serif rounded-tr-2xl">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -277,44 +294,46 @@ export const AllCustomer = () => {
               paginatedCustomers.map((customer) => {
                 const isCurrentUser = customer.email === user?.email;
                 const buttonBaseClasses =
-                  "disabled:opacity-50 " +
-                  (isCurrentUser ? "cursor-not-allowed" : "cursor-pointer");
-
+                  "disabled:opacity-50 cursor-pointer transition-colors";
                 return (
                   <tr
                     key={customer._id}
-                    className={`border-t transition ${
+                    className={`border-t font-serif transition-colors ${
                       isCurrentUser
-                        ? "bg-gradient-to-l from-primary to-secondary  font-semibold"
-                        : "hover:bg-gray-50 hover:text-black"
+                        ? "bg-emerald-50 text-emerald-900 font-bold"
+                        : "hover:bg-white hover:text-emerald-900"
                     }`}
                   >
-                    <td className="px-4 py-3">#CID{customer._id.slice(-5)}</td>
+                    <td className="px-4 py-3 font-inter">
+                      #CID{customer._id.slice(-5)}
+                    </td>
                     <td className="px-4 py-3">{customer.name}</td>
-                    <td className="px-4 py-3">{customer.email}</td>
-                    <td className="px-4 py-3">{customer.phone}</td>
+                    <td className="px-4 py-3 break-all">{customer.email}</td>
+                    <td className="px-4 py-3 font-inter">
+                      {customer.phone || "Not Provided"}
+                    </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                        className={`px-3 py-1 text-xs font-semibold rounded-full font-serif ${
                           customer.role === "admin"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-green-100 text-green-600"
+                            ? "bg-emerald-200 text-emerald-900 border border-emerald-400"
+                            : "bg-emerald-50 text-emerald-700 border border-emerald-200"
                         }`}
                       >
                         {customer.role === "admin" ? "Admin" : "User"}
                       </span>
                     </td>
-                    <td className=" py-3 flex gap-5">
+                    <td className="py-3 flex flex-col md:flex-row items-center gap-3">
                       <button
                         onClick={() => setSelectedCustomer(customer)}
-                        className="cursor-pointer transition-colors flex items-center justify-center gap-2 px-2 py-2 bg-blue-500/50 text-white font-medium rounded-xl hover:bg-primary"
+                        className="flex items-center justify-center gap-2 px-2 py-2 bg-emerald-500/80 text-white font-medium rounded-xl hover:bg-emerald-600 active:bg-emerald-700 focus:ring-2 focus:ring-emerald-300 font-serif cursor-pointer"
                       >
                         <Eye size={18} />
                       </button>
                       {customer.role === "admin" ? (
                         <button
                           title="Demote to User"
-                          className={`flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 ${buttonBaseClasses}`}
+                          className={`flex items-center justify-center gap-2 px-3 py-2 bg-emerald-100 border border-emerald-300 text-emerald-700 font-medium rounded-xl hover:bg-emerald-200 active:bg-emerald-300 focus:ring-2 focus:ring-emerald-300 font-serif ${buttonBaseClasses}`}
                           onClick={() => removeAdmin(customer._id)}
                           disabled={isCurrentUser}
                         >
@@ -323,7 +342,7 @@ export const AllCustomer = () => {
                       ) : (
                         <button
                           title="Promote to Admin"
-                          className={`flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 border border-blue-300 text-blue-700 font-medium rounded-xl hover:bg-blue-100 transition-colors disabled:opacity-50 ${buttonBaseClasses}`}
+                          className={`flex items-center justify-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-300 text-emerald-700 font-medium rounded-xl hover:bg-emerald-200 active:bg-emerald-300 focus:ring-2 focus:ring-emerald-300 font-serif ${buttonBaseClasses}`}
                           onClick={() => makeAdmin(customer._id)}
                           disabled={isCurrentUser}
                         >
@@ -333,7 +352,7 @@ export const AllCustomer = () => {
                       <button
                         onClick={() => deleteUser(customer._id)}
                         disabled={isCurrentUser}
-                        className="cursor-pointer flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 active:bg-red-200 focus:ring-2 focus:ring-red-300 font-serif cursor-pointer disabled:cursor-not-allowed"
                       >
                         <Trash2 size={18} />
                       </button>
@@ -343,8 +362,11 @@ export const AllCustomer = () => {
               })
             ) : (
               <tr>
-                <td colSpan="5" className="px-4 py-3 text-center">
-                  No customers found
+                <td
+                  colSpan="6"
+                  className="px-4 py-6 text-center text-emerald-200 font-serif text-xl"
+                >
+                  No Customer Found
                 </td>
               </tr>
             )}
@@ -398,18 +420,19 @@ export const AllCustomer = () => {
       {/* Enhanced Modal */}
       {selectedCustomer && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="relative w-full max-w-4xl transform transition-all duration-300 ease-out scale-100">
+          <div className="relative w-full max-w-4xl transform transition-all duration-300 ease-out scale-100 max-h-[100vh] flex items-center justify-center">
             {/* Decorative border */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#e6a344] via-[#00b074] to-[#e6a344] p-[2px]">
-              <div className="h-full w-full rounded-3xl bg-bg-primary"></div>
-            </div>
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#e6a344] via-[#00b074] to-[#e6a344] p-[2px] pointer-events-none"></div>
 
             {/* Modal content */}
-            <div className="relative p-8 rounded-3xl">
+            <div
+              className="relative p-4 md:p-8 rounded-3xl w-full bg-bg-primary overflow-y-auto max-h-[90vh] min-h-[60vh] sm:min-h-0 sm:max-h-[90vh]"
+              style={{ scrollbarGutter: "stable" }}
+            >
               {/* Close button */}
               <button
                 onClick={() => setSelectedCustomer(null)}
-                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110 bg-secondary/30 text-primary"
+                className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110 bg-secondary/30 text-primary z-10"
               >
                 <span className="text-xl font-bold">×</span>
               </button>
@@ -417,11 +440,11 @@ export const AllCustomer = () => {
               {/* Header section */}
               <div className="mb-8">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl bg-primary">
+                  <div className="w-8 md:w-12 h-8 md:h-12 rounded-full flex items-center justify-center text-white font-bold text-xl bg-primary">
                     {selectedCustomer.name.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="text-3xl font-bold text-primary font-playfair-display">
+                    <h3 className="text-xl md:text-3xl font-bold text-primary font-playfair-display">
                       Customer Profile
                     </h3>
                     <p className="text-sm text-secondary">
