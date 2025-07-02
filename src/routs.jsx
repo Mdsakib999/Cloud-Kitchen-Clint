@@ -40,6 +40,9 @@ import CheckoutForm from "./Pages/Checkout/CheckoutForm";
 import { CreateBlog } from "./Components/AdminDashBoardPageComponent/Blogs/CreateBlog";
 import { ManageBlog } from "./Components/AdminDashBoardPageComponent/Blogs/ManageBlog";
 import PublicRoute from "./router/PublicRoute";
+import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
+import TermsAndConditions from "./Pages/TermsAndConditions/TermsAndConditions";
+import Refund from "./Pages/Refund/Refund";
 
 export const router = createBrowserRouter([
   {
@@ -115,6 +118,18 @@ export const router = createBrowserRouter([
           </PublicRoute>
         ),
       },
+      {
+        path: "/privacy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "/terms",
+        element: <TermsAndConditions />,
+      },
+      {
+        path: "/refund",
+        element: <Refund />,
+      },
     ],
   },
   // Email verification & reset password
@@ -138,6 +153,7 @@ export const router = createBrowserRouter([
     path: "/verification-email",
     element: <ShowEmailVerification />,
   },
+
   // User Dashboard
   {
     path: "/dashboard",
