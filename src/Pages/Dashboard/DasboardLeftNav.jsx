@@ -145,7 +145,7 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
                 <button
                   className={`cursor-pointer flex items-center gap-3 px-3 py-2 w-full font-medium ${
                     isActive
-                      ? "text-emerald-500 text-xl font-bold"
+                      ? "text-primary text-xl font-bold"
                       : isAdmin
                       ? "text-black"
                       : "text-white"
