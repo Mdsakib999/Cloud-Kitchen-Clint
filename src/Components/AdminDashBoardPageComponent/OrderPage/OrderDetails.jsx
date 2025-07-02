@@ -103,14 +103,16 @@ export const OrderDetails = () => {
         </div>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 lg:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 lg:grid-cols-3">
         <OrderHistoryTimeline
           orderTime={currentOrder?.createdAt}
           status={orderStatus}
           isPaid={currentOrder?.isPaid}
         />
         {/* !!! TODO: IN FUTURE */}
-        {/* <DeliveryTracker /> */}
+        <div className="lg:col-span-2">
+          <DeliveryTracker />
+        </div>
       </div>
     </div>
   );

@@ -40,11 +40,6 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
       path: "/admin/dashboard/orders",
     },
     {
-      label: "Add Offer",
-      icon: <BadgeDollarSign size={20} />,
-      path: "/admin/dashboard/add-offer",
-    },
-    {
       label: "Add Food",
       icon: <FaPlusCircle size={20} />,
       path: "/admin/dashboard/add-food",
@@ -55,9 +50,14 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
       path: "/admin/dashboard/manage-food",
     },
     {
-      label: "Manage Category",
+      label: "Add Category",
       icon: <FaFolderPlus size={20} />,
       path: "/admin/dashboard/add-category",
+    },
+    {
+      label: "Add Offer",
+      icon: <BadgeDollarSign size={20} />,
+      path: "/admin/dashboard/add-offer",
     },
     {
       label: "Add Coupon",

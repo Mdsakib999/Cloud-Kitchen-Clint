@@ -102,8 +102,8 @@ export const FoodDetails = () => {
           </button>
         </div>
       </div>
-      <div className="bg-white">
-        <div className="max-w-6xl bg-white w-full mx-auto px-4 py-8">
+      <div className="">
+        <div className="max-w-6xl  w-full mx-auto px-4 py-8">
           <div className="grid grid-cols-1  lg:grid-cols-2 gap-8">
             {/* Images */}
             <div>
@@ -132,7 +132,7 @@ export const FoodDetails = () => {
             {/* Details */}
             <div className="space-y-6">
               <h1 className="text-3xl font-bold text-primary">{food.title}</h1>
-              <div className="flex items-center gap-6 text-sm text-gray-800">
+              <div className="flex items-center gap-6 text-sm text-gray-300">
                 {food.rating > 0 && (
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 text-yellow-500" />
@@ -147,14 +147,14 @@ export const FoodDetails = () => {
                 </div>
               </div>
               <div>
-                <p>{food.description}</p>
+                <p className="text-gray-300">{food.description}</p>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold text-primary">
                   Ingredients
                 </h3>
-                <ul className=" list-inside text-gray-800">
+                <ul className=" list-inside text-gray-300">
                   {food.ingredients.map((ing, i) => (
                     <li key={i}>{ing}</li>
                   ))}
@@ -169,9 +169,9 @@ export const FoodDetails = () => {
                     <button
                       key={size.label}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-2 rounded-full border ${
+                      className={`px-4 py-3 rounded-full ${
                         selectedSize?.label === size.label
-                          ? "bg-primary text-bg-primary"
+                          ? "bg-primary text-white"
                           : "bg-gray-100"
                       }`}
                     >
@@ -225,7 +225,7 @@ export const FoodDetails = () => {
                   >
                     −
                   </button>
-                  <span className="w-6 text-center">{qty}</span>
+                  <span className="w-6 text-center text-white">{qty}</span>
                   <button
                     onClick={() => handleQtyChange(+1)}
                     className="px-4 py-1 border border-gray-300 text-white rounded bg-primary  hover:bg-primary/90"
@@ -262,7 +262,7 @@ export const FoodDetails = () => {
             </button>
           ))}
         </div>
-        <div className="pt-6 px-6">
+        <div className="pt-6 px-6 max-w-7xl mx-auto">
           {activeTab === "Details" ? (
             <>
               <div className="mb-6">
