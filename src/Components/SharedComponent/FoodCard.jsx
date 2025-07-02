@@ -38,7 +38,7 @@ const FoodCard = ({ item }) => {
 
       {/* Dynamic Price */}
       <p className="font-semibold text-primary text-lg group-hover:text-white">
-        ${selectedSize.price.toFixed(2)}
+        {selectedSize.price.toFixed(2)} Tk
       </p>
 
       <div className="flex justify-center items-center gap-3 ">

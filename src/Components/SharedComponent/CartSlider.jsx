@@ -73,7 +73,7 @@ const CartSlider = ({ isOpen, onClose }) => {
                         {item.addons.map((addon, i) => (
                           <li key={i} className="flex justify-between">
                             <span>+ {addon.label}</span>
-                            <span>${addon.price.toFixed(2)}</span>
+                            <span>{addon.price.toFixed(2)} Tk</span>
                           </li>
                         ))}
                       </ul>
@@ -94,7 +94,7 @@ const CartSlider = ({ isOpen, onClose }) => {
                       </button>
                     </div>
                     <p className="text-sm text-gray-300 mt-1">
-                      Price: ${totalPrice.toFixed(2)}
+                      Price: {totalPrice.toFixed(2)} Tk
                     </p>
                   </div>
 
@@ -108,7 +108,6 @@ const CartSlider = ({ isOpen, onClose }) => {
           <div className="flex justify-between text-lg font-semibold text-white">
             <span>Total:</span>
             <span>
-              BDT{" "}
               {cartItems.ids
                 .reduce((total, id) => {
                   const item = cartItems.entities[id];
@@ -117,7 +116,8 @@ const CartSlider = ({ isOpen, onClose }) => {
                   const itemTotal = (item.price + addonTotal) * item.quantity;
                   return total + itemTotal;
                 }, 0)
-                .toFixed(2)}
+                .toFixed(2)}{" "}
+              Tk
             </span>
           </div>
         </div>
@@ -127,7 +127,7 @@ const CartSlider = ({ isOpen, onClose }) => {
           <Link
             to="/checkout"
             onClick={onClose}
-            className="font-inter tracking-wider block w-full text-center bg-bg-secondary border border-primary text-white py-2 rounded cursor-pointer"
+            className="font-inter tracking-wider block w-full text-center bg-primary hover:bg-white hover:text-black duration-500 border border-primary text-white py-2 rounded cursor-pointer"
           >
             Checkout
           </Link>
