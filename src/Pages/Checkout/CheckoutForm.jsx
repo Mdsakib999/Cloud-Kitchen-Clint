@@ -470,7 +470,7 @@ const CheckoutForm = () => {
               <label
                 className={`flex items-center p-4 border rounded-lg cursor-pointer ${
                   selectedPayment === "cash"
-                    ? "border-teal-500 bg-teal-900/30"
+                    ? "border-emerald-200 bg-teal-900"
                     : "border-gray-600 hover:border-teal-500"
                 }`}
                 onClick={() => setSelectedPayment("cash")}
