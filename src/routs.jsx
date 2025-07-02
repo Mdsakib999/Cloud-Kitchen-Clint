@@ -9,7 +9,7 @@ import VerifyEmail from "./Pages/Authentication/VerifyEmail";
 import ShowEmailVerification from "./Pages/Authentication/ShowEmailVerification";
 import { AllFoodItem } from "./Pages/AllFoodItem/AllFoodItem";
 import { FoodDetails } from "./Pages/FoodDetails/FoodDetails";
-import { OrderNow } from "./Pages/OrderNow/OrderNow";
+import { PriceList } from "./Pages/PriceList/PriceList";
 import { UpdateProfile } from "./Components/UserDashBoardPageComponents/UpdateProfile";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { OrderHistory } from "./Components/UserDashBoardPageComponents/OrderHistory";
@@ -82,8 +82,8 @@ export const router = createBrowserRouter([
         element: <FoodDetails />,
       },
       {
-        path: "/order",
-        element: <OrderNow />,
+        path: "/priceList",
+        element: <PriceList />,
       },
       {
         path: "/manage-category",

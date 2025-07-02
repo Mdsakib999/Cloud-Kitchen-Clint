@@ -1,11 +1,11 @@
 import { ChefSpecial } from "../../Components/OrderNowPageComponents/ChefSpecial";
 import { OrderMenu } from "../../Components/OrderNowPageComponents/OrderMenu";
-import { OrderNowBanner } from "../../Components/OrderNowPageComponents/OrderNowBanner";
+import { PriceListBanner } from "../../Components/OrderNowPageComponents/OrderNowBanner";
 
-export const OrderNow = () => {
+export const PriceList = () => {
   return (
-    <div>
-      <OrderNowBanner />
+    <div className="pt-36 md:pt-48">
+      <PriceListBanner />
       <OrderMenu />
       <ChefSpecial />
     </div>
