@@ -3,8 +3,8 @@ import { AllFoodCard } from "../../Components/AllFoodItemPageComponents/AllFoodC
 
 export const AllFoodItem = () => {
   return (
-    <div>
-      {/* <AllFoodBanner /> */}
+    <div className="pt-36 md:pt-48">
+      <AllFoodBanner />
       <AllFoodCard />
     </div>
   );

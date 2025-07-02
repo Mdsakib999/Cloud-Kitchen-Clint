@@ -8,7 +8,7 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import Ramen from "/assets/Food/ramen.png";
-import Chiken from "/assets/Food/Chicken Fry.jpg";
+import Chiken from "/assets/Food/Chicken-Fry.jpg";
 
 export const ContactHero = () => {
   return (

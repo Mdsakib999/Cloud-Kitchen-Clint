@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Star, User, Award } from "lucide-react";
+import chef1 from "/assets/Chef/Testemonial/Chef1.png";
+import chef2 from "/assets/Chef/Testemonial/Chef2.png";
+import chef3 from "/assets/Chef/Testemonial/Chef3.png";
+import chef4 from "/assets/Chef/Testemonial/Chef4.png";
 
 const HomeChefs = () => {
   const [activeChef, setActiveChef] = useState(0);
@@ -9,8 +13,7 @@ const HomeChefs = () => {
       id: 1,
       name: "John Smith",
       title: "Chef De Cuisine",
-      image:
-        "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&h=600&fit=crop&crop=face",
+      image: chef1,
       specialty: "French Cuisine",
       experience: "15+ years",
       description: "Master of classic French techniques with a modern twist",
@@ -20,8 +23,7 @@ const HomeChefs = () => {
       id: 2,
       name: "Lucas Silva",
       title: "Pastry Chef",
-      image:
-        "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&h=600&fit=crop&crop=face",
+      image: chef2,
       specialty: "Artisan Pastries",
       experience: "12+ years",
       description: "Creating delicate pastries that are both art and flavor",
@@ -35,8 +37,7 @@ const HomeChefs = () => {
       id: 3,
       name: "Anna Maria",
       title: "Sous Chef",
-      image:
-        "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&h=600&fit=crop&crop=face",
+      image: chef3,
       specialty: "Mediterranean",
       experience: "10+ years",
       description: "Bringing authentic Mediterranean flavors to every dish",
@@ -50,8 +51,7 @@ const HomeChefs = () => {
       id: 4,
       name: "Diana Marie",
       title: "Grill Chef",
-      image:
-        "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&h=600&fit=crop&crop=face",
+      image: chef4,
       specialty: "Grilled Specialties",
       experience: "8+ years",
       description: "Expert in flame-grilled perfection and smoky flavors",
@@ -98,7 +98,7 @@ const HomeChefs = () => {
               onMouseEnter={() => setActiveChef(index)}
             >
               <div className="relative overflow-hidden rounded-2xl bg-bg-secondary hover:border-primary transition-all duration-300">
-                <div className="relative h-60 overflow-hidden">
+                <div className="relative h-72 overflow-hidden">
                   <img
                     src={chef.image}
                     alt={chef.name}

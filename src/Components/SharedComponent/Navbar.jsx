@@ -96,7 +96,7 @@ const Navbar = ({ offsetTop = 56 }) => {
   const menuItems = [
     { to: "/", label: "Home" },
     { to: "/menu", label: "Menu" },
-    { to: "/order", label: "Price List" },
+    { to: "/priceList", label: "Price List" },
     { to: "/about", label: "About" },
     { to: "/contact", label: "Contact" },
     { to: "/blogs", label: "Blogs" },

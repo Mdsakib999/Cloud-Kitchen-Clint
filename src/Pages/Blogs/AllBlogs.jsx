@@ -3,16 +3,13 @@ import { useGetAllBlogsQuery } from "../../redux/apiSlice";
 import { formatDate } from "../../utils/formatDate";
 import { SectionHeader } from "../../Components/SharedComponent/SectionHeader";
 import { Newspaper } from "lucide-react";
+import { Loader } from "../../Components/SharedComponent/Loader";
 
 export const AllBlogs = () => {
   const { data: blogs = [], isLoading, isError, error } = useGetAllBlogsQuery();
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-40">
-        <span className="text-xl font-medium">Loading blogs…</span>
-      </div>
-    );
+    return <Loader comp_Name="AllBlogs" />;
   }
 
   if (isError) {
