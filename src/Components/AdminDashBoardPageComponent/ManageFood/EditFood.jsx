@@ -50,11 +50,12 @@ export default function EditFoodForm() {
   } = useForm({
     defaultValues: {
       title: product?.title || "",
+      description: product?.description || "",
       category: product?.category?._id || "",
       cookTime: product?.cookTime || "",
       servings: product?.servings || 1,
       ingredients: product?.ingredients || [""],
-      sizes: product?.sizes || [{ label: "", price: 0 }],
+      sizes: product?.sizes || [{ label: "", price: 0, discountPrice: 0 }],
       addons: product?.addons || [],
       options: product?.options || [],
       images: [],
@@ -83,6 +84,7 @@ export default function EditFoodForm() {
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
+    formData.append("description", data.description);
     formData.append("category", data.category);
     formData.append("cookTime", data.cookTime);
     formData.append("servings", data.servings.toString());
@@ -151,6 +153,17 @@ export default function EditFoodForm() {
             )}
           </div>
         </div>
+        <div className="lg:col-span-2">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Description
+          </label>
+          <textarea
+            rows={4}
+            className="w-full border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors resize-none"
+            placeholder="Enter a brief description of the food"
+            {...register("description")}
+          />
+        </div>
 
         {/* — Sizes — */}
         <DynamicFieldArray
@@ -165,7 +178,12 @@ export default function EditFoodForm() {
               type: "text",
               placeholder: "Small / Medium / Large",
             },
-            { name: "price", type: "number", placeholder: "e.g. 5.99" },
+            { name: "price", type: "number", placeholder: "Price" },
+            {
+              name: "discountPrice",
+              type: "number",
+              placeholder: "Discount Price",
+            },
           ]}
         />
 
