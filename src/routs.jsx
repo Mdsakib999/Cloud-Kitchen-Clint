@@ -39,12 +39,13 @@ import EditFoodForm from "./Components/AdminDashBoardPageComponent/ManageFood/Ed
 import CheckoutForm from "./Pages/Checkout/CheckoutForm";
 import { CreateBlog } from "./Components/AdminDashBoardPageComponent/Blogs/CreateBlog";
 import { ManageBlog } from "./Components/AdminDashBoardPageComponent/Blogs/ManageBlog";
+import PublicRoute from "./router/PublicRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
-    // errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -92,15 +93,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/checkout",
-        element: <CheckoutForm />,
+        element: (
+          <PrivateRoute>
+            <CheckoutForm />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/signin",
-        element: <SignIn />,
+        element: (
+          <PublicRoute>
+            <SignIn />
+          </PublicRoute>
+        ),
       },
       {
         path: "/signup",
-        element: <SignUp />,
+        element: (
+          <PublicRoute>
+            <SignUp />
+          </PublicRoute>
+        ),
       },
     ],
   },
@@ -128,7 +141,11 @@ export const router = createBrowserRouter([
   // User Dashboard
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "",
@@ -147,7 +164,11 @@ export const router = createBrowserRouter([
   // Admin Dashboard
   {
     path: "admin/dashboard",
-    element: <Dashboard />,
+    element: (
+      <AdminRoute>
+        <Dashboard />
+      </AdminRoute>
+    ),
     children: [
       {
         path: "",
@@ -185,7 +206,10 @@ export const router = createBrowserRouter([
         path: "add-food",
         element: <AddFood />,
       },
-      { path: "edit-food/:id", element: <EditFoodForm /> },
+      {
+        path: "edit-food/:id",
+        element: <EditFoodForm />,
+      },
       {
         path: "manage-food",
         element: <ManageFood />,
