@@ -143,7 +143,6 @@ export const AllCustomer = () => {
             },
           }
         );
-        console.log("result", result);
         Swal.fire("Success", "User promoted to admin", "success");
         fetchUsers();
       } catch (error) {
@@ -153,7 +152,6 @@ export const AllCustomer = () => {
   };
 
   const removeAdmin = async (id) => {
-    console.log(id);
     const confirm = await Swal.fire({
       title: "Are you sure?",
       text: "This Admin will turn into a user!",
@@ -199,7 +197,6 @@ export const AllCustomer = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log("result in delete", result);
         if (result?.data?.success) {
           showToast({
             title: "Account deleted successfully!",

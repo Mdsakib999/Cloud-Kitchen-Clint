@@ -114,7 +114,6 @@ const CheckoutForm = () => {
       );
       setShowError("");
     } catch (error) {
-      console.log("error in coupon handling", error);
       setShowError(error.response?.data?.error);
       // toast.error(
       //   <h1 className="text-center font-serif">
@@ -170,7 +169,6 @@ const CheckoutForm = () => {
         );
         navigate("/dashboard/order");
       }
-      console.log(result);
       dispatch(clearCart());
       setAppliedCoupon(null);
       setDiscount(0);

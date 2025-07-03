@@ -121,7 +121,6 @@ const CartSlider = ({ isOpen, onClose }) => {
             </span>
           </div>
         </div>
-        {console.log(cartItems)}
         {/* Footer with Total & Buttons - always visible */}
         <div className="w-full px-4 py-4 border-t border-gray-500 space-y-2 bg-bg-primary sticky bottom-0 z-10">
           {cartItems.ids.length === 0 ? (

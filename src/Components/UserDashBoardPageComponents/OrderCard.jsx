@@ -81,34 +81,44 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
           {status === "pending" && (
             <button
               onClick={() => onCancel(order._id)}
-              className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700"
+              className="flex items-center justify-center px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition-all"
             >
               Cancel Order
             </button>
           )}
+
           <button
             onClick={() => onView(order._id)}
-            className="px-4 py-2 bg-tertiary text-white text-sm rounded-lg hover:bg-opacity-90"
+            className="flex items-center justify-center px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-xl shadow hover:bg-bg-secondary/90 transition-all"
           >
             View Details
           </button>
+
           {["accepted", "preparing", "delivering"].includes(status) && (
             <Link
               to={`/order-track/${order._id}`}
               onClick={() => onTrack(order)}
-              className="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:bg-opacity-90"
+              className="flex items-center justify-center px-4 py-2 text-sm font-medium bg-primary text-white rounded-xl shadow hover:bg-primary/90 transition-all"
             >
-              Track order
+              Track Order
             </Link>
           )}
 
           {status === "delivered" && (
             <button
               onClick={() => onReorder(order)}
-              className="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-opacity-90"
+              className="w-full px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition-all"
             >
               Reorder
             </button>
+            // <div className="grid grid-cols-2 gap-3">
+            //   <Link
+            //     to={`/food-details/${order.items[0].foodId}`}
+            //     className="w-full px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-xl shadow hover:bg-green-700 transition-all"
+            //   >
+            //     Add a Review
+            //   </Link>
+            // </div>
           )}
         </div>
       </div>
