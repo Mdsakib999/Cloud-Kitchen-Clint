@@ -175,6 +175,14 @@ const CheckoutForm = () => {
     setDiscount(0);
   }, [orderItems.length]);
 
+  // Reset coupon/discount when component unmounts (user leaves or reloads page)
+  useEffect(() => {
+    return () => {
+      setAppliedCoupon(null);
+      setDiscount(0);
+    };
+  }, []);
+
   if (loading || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
