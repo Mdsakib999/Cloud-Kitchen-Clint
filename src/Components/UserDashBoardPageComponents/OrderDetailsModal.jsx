@@ -6,8 +6,6 @@ import { GetStatusColor } from "../SharedComponent/GetStatusColor";
 import { GetPaymentStatusColor } from "../SharedComponent/GetPaymentStatusColor";
 
 const OrderDetailsModal = ({ orderId, onClose }) => {
-  console.log("OrderDetailsModal orderId:", orderId);
-
   const {
     data: order,
     isLoading,
