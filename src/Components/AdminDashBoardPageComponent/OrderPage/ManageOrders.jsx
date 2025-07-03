@@ -1,7 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
-import { Search, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Search,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  RefreshCw,
+} from "lucide-react";
 import { Link } from "react-router-dom";
-import { useGetOrdersQuery } from "../../../redux/orderSlice";
+import {
+  useGetOrdersQuery,
+  useUpdateOrderMutation,
+} from "../../../redux/orderSlice";
 import { GetStatusColor } from "../../SharedComponent/GetStatusColor";
 import FilterControls from "../../UserDashBoardPageComponents/FilterControls";
 import showToast from "../../../utils/ShowToast";
@@ -14,7 +23,21 @@ export const ManageOrders = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [paymentFilter, setPaymentFilter] = useState("all");
 
-  const { data: orders = [], isLoading, isError, error } = useGetOrdersQuery();
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+  } = useGetOrdersQuery({
+    pollingInterval: 10000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+
+  const [updateOrder] = useUpdateOrderMutation();
 
   useEffect(() => {
     if (isError) {
@@ -90,44 +113,92 @@ export const ManageOrders = () => {
     setSearchTerm("");
   };
 
+  const handleRefresh = () => {
+    refetch();
+  };
+
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      await updateOrder({
+        id: orderId,
+        orderData: { order_status: newStatus },
+      }).unwrap();
+
+      showToast({
+        title: "Order status updated successfully!",
+        icon: "success",
+      });
+    } catch (error) {
+      console.error("Status update error:", error);
+      showToast({
+        title: error?.data?.message || "Failed to update order status",
+        icon: "error",
+      });
+    }
+  };
+
   if (isLoading) {
     return <Loader comp_Name={"orders"} />;
   }
 
   return (
-    <div className="p-6 min-h-screen text-white font-serif">
-      <h2 className="text-2xl font-bold mb-1 text-black">All Orders</h2>
-      <p className="mb-4 text-black">Showing {filteredOrders.length} orders</p>
+    <div className="p-6 min-h-screen text-white font-inter">
+      <div className="flex items-center justify-between mb-1">
+        <h2 className="text-2xl font-bold text-black">All Orders</h2>
+      </div>
 
-      {/* Search & Filters */}
-      <div className="mb-6 bg-bg-secondary rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        {/* Search Input */}
-        <div className="relative w-full md:max-w-md">
-          <Search
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={20}
-          />
-          <input
-            type="text"
-            placeholder="Search by name or OID..."
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+      {/* Search, Filters, result count & refresh */}
+      <div className="mb-6 bg-bg-secondary rounded-lg p-4 md:p-6 space-y-6">
+        {/* Top Row: Search + Filters */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          {/* Search Input */}
+          <div className="w-full lg:max-w-md relative">
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
+            <input
+              type="text"
+              placeholder="Search by name or OID..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Filters */}
+          <div className="w-full">
+            <FilterControls
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+              paymentFilter={paymentFilter}
+              setPaymentFilter={setPaymentFilter}
+              handleClearFilters={handleClearFilters}
+            />
+          </div>
         </div>
 
-        {/* Filters */}
-        <div className="flex-1">
-          <FilterControls
-            statusFilter={statusFilter}
-            setStatusFilter={setStatusFilter}
-            paymentFilter={paymentFilter}
-            setPaymentFilter={setPaymentFilter}
-            handleClearFilters={handleClearFilters}
-          />
+        {/* Bottom Row: Result Count + Refresh */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <p className="text-gray-200 text-lg font-medium">
+            Showing{" "}
+            <span className="text-primary font-bold">
+              {filteredOrders.length}
+            </span>{" "}
+            orders
+          </p>
+
+          <button
+            onClick={handleRefresh}
+            disabled={isFetching}
+            className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <RefreshCw size={18} className={isFetching ? "animate-spin" : ""} />
+            {isFetching ? "Refreshing..." : "Refresh"}
+          </button>
         </div>
       </div>
 
@@ -162,13 +233,23 @@ export const ManageOrders = () => {
                     ৳ {order.totalPrice.toFixed(2)}
                   </td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${GetStatusColor(
-                        order.order_status
+                    <select
+                      value={order.order_status || order.status || "pending"}
+                      onChange={(e) =>
+                        handleStatusChange(order._id, e.target.value)
+                      }
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${GetStatusColor(
+                        order.order_status || order.status
                       )}`}
                     >
-                      {order.order_status}
-                    </span>
+                      <option value="pending">Pending</option>
+                      <option value="accepted">Accepted</option>
+                      <option value="cancelled">Cancelled</option>
+                      <option value="preparing">Preparing</option>
+                      <option value="ready">Ready</option>
+                      <option value="delivering">Delivering</option>
+                      <option value="delivered">Delivered</option>
+                    </select>
                   </td>
                   <td className="px-4 py-3">
                     <Link to={`/admin/dashboard/order-details/${order._id}`}>
