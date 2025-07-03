@@ -12,7 +12,6 @@ import {
 
 export const OrderDetails = () => {
   const { id: orderId } = useParams();
-  console.log(orderId);
 
   const { data: fetchedOrder, isLoading: isFetching } = useGetOrderByIdQuery(
     orderId,

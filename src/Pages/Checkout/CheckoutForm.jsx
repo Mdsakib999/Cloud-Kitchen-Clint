@@ -103,7 +103,6 @@ const CheckoutForm = () => {
       );
       setShowError("");
     } catch (error) {
-      console.log("error in coupon handling", error);
       setShowError(error.response?.data?.error);
     } finally {
       setCouponLoading(false);
@@ -154,7 +153,6 @@ const CheckoutForm = () => {
         );
         navigate("/order-success", { state: result.order });
       }
-      console.log(result);
       dispatch(clearCart());
       setAppliedCoupon(null);
       setDiscount(0);

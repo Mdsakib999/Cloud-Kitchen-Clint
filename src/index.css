@@ -1,9 +1,17 @@
+/* ==========================================================================
+   IMPORTS
+   ========================================================================== */
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 @import "tailwindcss";
+
+/* ==========================================================================
+   DESIGN TOKENS & THEME
+   ========================================================================== */
 
 @theme {
   --color-primary: #e6a344;
@@ -20,7 +28,9 @@
   --font-doto: "Doto", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-playfair-display: "Playfair Display", serif;
+  --text-font: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
+
 :root {
   --color-primary: #e6a344;
   --color-secondary: #938888;
@@ -32,7 +42,32 @@
   --color-bg-cart: #02403d;
   --color-bg-footer: #052c21;
 }
+
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
+
 @layer base {
+  /* Typography */
+  .blog-content ul,
+  .ingredients-list ul,
+  .blog-content ol,
+  .ingredients-list ol {
+    list-style: revert;
+    font-size: medium;
+  }
+
+  .blog-content li,
+  .ingredients-list li {
+    margin-bottom: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  p {
+    font-size: medium;
+  }
+
+  /* Form Controls */
   /* Chrome, Safari, Edge, Opera */
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
@@ -43,34 +78,34 @@
   /* Firefox */
   input[type="number"] {
     -moz-appearance: textfield;
+    appearance: textfield;
   }
 }
+
+/* ==========================================================================
+   UTILITY CLASSES
+   ========================================================================== */
+
+/* Debug borders */
 .b {
   border: 2px solid;
 }
+
 .bb {
   border: 2px solid red;
 }
 
+/* Scrollbar utilities */
 .scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 16px;
-  width: 16px;
-  background: red;
-  border-radius: 50%;
-  cursor: pointer;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
-}
-
+/* Text clamping utilities */
 .clamp-2 {
   display: -webkit-box;
   display: box;
@@ -91,7 +126,28 @@ input[type="search"]::-webkit-search-cancel-button {
   overflow: hidden;
 }
 
-/* @import "tailwindcss/preflight";
+/* ==========================================================================
+   COMPONENT STYLES
+   ========================================================================== */
+
+/* Search input cancel button */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background: red;
+  border-radius: 50%;
+  cursor: pointer;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   COMMENTED OUT UTILITIES
+   ========================================================================== */
+
+/* 
+@import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 
 @layer utilities {
@@ -109,4 +165,5 @@ input[type="search"]::-webkit-search-cancel-button {
       transform: translateY(0);
     }
   }
-} */
+} 
+*/
