@@ -2,17 +2,17 @@ export const GetStatusColor = (status) => {
   const normalized = status?.toLowerCase().replace(/\s+/g, "_");
 
   const colors = {
-    pending: "bg-yellow-100 text-yellow-800",
-    accepted: "bg-blue-100 text-blue-800",
-    confirmed: "bg-cyan-100 text-cyan-800",
-    preparing: "bg-orange-100 text-orange-800",
-    ready: "bg-teal-100 text-teal-800",
-    on_delivery: "bg-purple-100 text-purple-800",
-    delivering: "bg-purple-100 text-purple-800",
-    delivered: "bg-green-100 text-green-800",
-    completed: "bg-green-100 text-green-800",
-    cancelled: "bg-red-100 text-red-800",
+    pending: "bg-amber-200 text-amber-900",
+    accepted: "bg-indigo-200 text-indigo-900",
+    confirmed: "bg-sky-200 text-sky-900",
+    preparing: "bg-orange-200 text-orange-900",
+    ready: "bg-lime-200 text-lime-900",
+    on_delivery: "bg-pink-200 text-pink-900",
+    delivering: "bg-pink-300 text-pink-900",
+    delivered: "bg-emerald-200 text-emerald-900",
+    completed: "bg-cyan-200 text-cyan-900",
+    cancelled: "bg-rose-200 text-rose-900",
   };
 
-  return colors[normalized] || "bg-gray-100 text-gray-800";
+  return colors[normalized] || "bg-zinc-200 text-zinc-800";
 };

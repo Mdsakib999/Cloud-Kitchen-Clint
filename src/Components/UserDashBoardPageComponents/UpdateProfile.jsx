@@ -104,7 +104,6 @@ export const UpdateProfile = () => {
           },
         }
       );
-      console.log("updatedResult", updatedResult);
       setUser(updatedResult.data);
       showToast({
         title: "Profile updated successfully!",
