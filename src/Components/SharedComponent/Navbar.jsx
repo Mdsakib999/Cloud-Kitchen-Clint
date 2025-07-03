@@ -144,8 +144,7 @@ const Navbar = ({ offsetTop = 56 }) => {
           </ul>
 
           {/* Desktop Right Side */}
-          <div className="hidden md:flex items-center gap-3">
-            {/* TODO "Search" */}
+          <div className="hidden lg:flex items-center gap-3">
             <GlobalSearch />
             <button onClick={openCart} className="relative cursor-pointer">
               <IoCartOutline
@@ -169,7 +168,7 @@ const Navbar = ({ offsetTop = 56 }) => {
 
                 {/* Desktop User Dropdown */}
                 {showUserDropdown && (
-                  <div className="absolute right-0 mt-2 w-64 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden font-serif">
+                  <div className="absolute right-0 mt-2 w-72 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden font-serif">
                     <div className="flex justify-between items-center p-3 border-b border-white/20">
                       <span className="text-sm font-medium">Profile</span>
                       <button
@@ -179,14 +178,12 @@ const Navbar = ({ offsetTop = 56 }) => {
                         <IoCloseOutline />
                       </button>
                     </div>
-                    <div className="p-4 space-y-5">
-                      <div>
-                        <p className="text-sm text-gray-300">Name</p>
-                        <p className="font-medium">{user.name}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-300">Email</p>
-                        <p className="font-medium">{user.email}</p>
+                    <div className="px-5 py-8 space-y-5">
+                      <div className="flex items-center gap-2">
+                        <IoPersonCircleOutline className="text-5xl text-primary" />
+                        <p className="font-medium text-white text-lg">
+                          {user.name}
+                        </p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Link
@@ -195,13 +192,13 @@ const Navbar = ({ offsetTop = 56 }) => {
                               ? "/admin/dashboard"
                               : "/dashboard"
                           }
-                          className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors cursor-pointer text-center text-sm"
+                          className="flex-1 px-5 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors cursor-pointer text-center text-sm"
                         >
                           Dashboard
                         </Link>
                         <button
                           onClick={handleLogout}
-                          className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors cursor-pointer text-center text-sm"
+                          className="flex-1 px-5 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors cursor-pointer text-center text-sm"
                         >
                           Logout
                         </button>
@@ -220,30 +217,27 @@ const Navbar = ({ offsetTop = 56 }) => {
             )}
           </div>
 
-          {/* Mobile Right Side */}
-          <div className="flex md:hidden justify-around px-3">
+          {/* Mobile/Tablet Right Side */}
+          <div className="flex lg:hidden items-center gap-3">
             <GlobalSearch />
-            <div className="flex gap-5">
-              <button onClick={openCart} className="relative cursor-pointer">
-                <IoCartOutline
-                  size={28}
-                  className="hover:text-primary transition-colors"
-                />
-                {totalQty > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                    {totalQty}
-                  </span>
-                )}
-              </button>
-
-              <button
-                onClick={toggleMobileMenu}
-                className="text-2xl focus:outline-none cursor-pointer"
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? <IoCloseOutline /> : <IoMenuOutline />}
-              </button>
-            </div>
+            <button onClick={openCart} className="relative cursor-pointer">
+              <IoCartOutline
+                size={28}
+                className="hover:text-primary transition-colors"
+              />
+              {totalQty > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {totalQty}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={toggleMobileMenu}
+              className="text-2xl focus:outline-none cursor-pointer"
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? <IoCloseOutline /> : <IoMenuOutline />}
+            </button>
           </div>
         </div>
 
@@ -273,13 +267,11 @@ const Navbar = ({ offsetTop = 56 }) => {
               <div className="pt-4 border-t border-white/20 space-y-3">
                 {user ? (
                   <div className="space-y-3">
-                    <div>
-                      <p className="text-sm text-gray-300">Name</p>
-                      <p className="font-medium">{user.name}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-300">Email</p>
-                      <p className="font-medium">{user.email}</p>
+                    <div className="flex items-center gap-2">
+                      <IoPersonCircleOutline className="text-4xl text-primary" />
+                      <p className="font-medium text-white text-lg">
+                        {user.name}
+                      </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Link
@@ -288,13 +280,13 @@ const Navbar = ({ offsetTop = 56 }) => {
                             ? "/admin/dashboard"
                             : "/dashboard"
                         }
-                        className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors cursor-pointer text-center text-sm"
+                        className="flex-1 px-5 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors cursor-pointer text-center text-sm"
                       >
                         Dashboard
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors cursor-pointer text-center text-sm"
+                        className="flex-1 px-5 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors cursor-pointer text-center text-sm"
                       >
                         Logout
                       </button>

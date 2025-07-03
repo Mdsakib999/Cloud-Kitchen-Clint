@@ -43,6 +43,7 @@ import PublicRoute from "./router/PublicRoute";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./Pages/TermsAndConditions/TermsAndConditions";
 import Refund from "./Pages/Refund/Refund";
+import OrderSuccess from "./Pages/Checkout/OrderSuccess";
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
       {
         path: "/order-track/:id",
         element: <TrackOrder />,
+      },
+      {
+        path: "/order-success",
+        element: <OrderSuccess />,
       },
       {
         path: "/checkout",

@@ -25,14 +25,8 @@ const CheckoutForm = () => {
   const [coupons, setCoupons] = useState([]);
   const [couponLoading, setCouponLoading] = useState(false);
   const [showError, setShowError] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState(() => {
-    const stored = localStorage.getItem("appliedCoupon");
-    return stored ? JSON.parse(stored) : null;
-  });
-  const [discount, setDiscount] = useState(() => {
-    const stored = localStorage.getItem("discount");
-    return stored ? Number(stored) : 0;
-  });
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [discount, setDiscount] = useState(0);
   const [couponCode, setCouponCode] = useState("");
   const [placingOrder, setPlacingOrder] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
@@ -43,7 +37,6 @@ const CheckoutForm = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors, isSubmitting },
     reset,
   } = useForm({
@@ -91,23 +84,19 @@ const CheckoutForm = () => {
     fetchCoupons();
   }, []);
 
+  // coupon functionality
   const handleCouponApply = async () => {
     try {
       setCouponLoading(true);
       const res = await axiosInstance.post(
         "/admin/apply",
-        { code: couponCode, cartTotal: subtotal + shipping },
+        { code: couponCode, cartTotal: subtotal },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
       setDiscount(res.data.discount);
       setAppliedCoupon({ code: couponCode, discount: res.data.discount });
-      localStorage.setItem(
-        "appliedCoupon",
-        JSON.stringify({ code: couponCode, discount: res.data.discount })
-      );
-      localStorage.setItem("discount", res.data.discount);
       setCouponCode("");
       toast.success(
         <h1 className="text-center font-serif">Coupon applied successfully</h1>
@@ -115,11 +104,6 @@ const CheckoutForm = () => {
       setShowError("");
     } catch (error) {
       setShowError(error.response?.data?.error);
-      // toast.error(
-      //   <h1 className="text-center font-serif">
-      //     {error.response?.data?.error || "Invalid coupon"}
-      //   </h1>
-      // );
     } finally {
       setCouponLoading(false);
     }
@@ -167,13 +151,11 @@ const CheckoutForm = () => {
         toast.success(
           <h1 className="font-serif text-center">Order placed successfully!</h1>
         );
-        navigate("/dashboard/order");
+        navigate("/order-success", { state: result.order });
       }
       dispatch(clearCart());
       setAppliedCoupon(null);
       setDiscount(0);
-      localStorage.removeItem("appliedCoupon");
-      localStorage.removeItem("discount");
       reset();
       setSelectedPayment("");
     } catch (error) {
@@ -186,6 +168,20 @@ const CheckoutForm = () => {
       setPlacingOrder(false);
     }
   };
+
+  // Reset coupon/discount if cart changes
+  useEffect(() => {
+    setAppliedCoupon(null);
+    setDiscount(0);
+  }, [orderItems.length]);
+
+  // Reset coupon/discount when component unmounts (user leaves or reloads page)
+  useEffect(() => {
+    return () => {
+      setAppliedCoupon(null);
+      setDiscount(0);
+    };
+  }, []);
 
   if (loading || isLoading) {
     return (
@@ -372,11 +368,11 @@ const CheckoutForm = () => {
                           {item.name}
                         </h3>
                         <p className="text-xs text-gray-300">{item.size}</p>
-                        <p className="text-xs text-gray-300">
+                        <p className="text-xs text-emerald-300">
                           {item.quantity} x {item.price} Tk
                         </p>
                         {item.addons?.map((addon, idx) => (
-                          <p key={idx} className="text-xs text-teal-400">
+                          <p key={idx} className="text-xs text-primary">
                             {item.quantity} x {addon.label} {addon.price} Tk
                           </p>
                         ))}
@@ -450,7 +446,7 @@ const CheckoutForm = () => {
                 </span>
               </div>
               {shipping === 0 && (
-                <p className="text-xs text-teal-400 flex items-center">
+                <p className="text-xs text-primary flex items-center">
                   <CheckCircle className="w-4 h-4 mr-1" /> Free shipping on
                   total over 1599 Tk
                 </p>

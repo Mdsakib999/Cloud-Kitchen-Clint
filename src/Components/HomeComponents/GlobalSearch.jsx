@@ -72,35 +72,45 @@ const GlobalSearch = () => {
         )}
 
         <div className="relative flex items-center justify-center w-full">
-          <FiSearch className="absolute left-3 text-primary text-xl pointer-events-none z-10" />
+          {/* Show icon inside input */}
+          <span className="absolute left-3 text-white text-xl pointer-events-none z-10 hidden md:block">
+            <FiSearch size={20} />
+          </span>
+          {isFocused && (
+            <span className="absolute left-3 text-white text-xl pointer-events-none z-10 md:hidden">
+              <FiSearch size={20} />
+            </span>
+          )}
+
           <input
             type="search"
             placeholder="Search Here..."
             className={`
-    w-full pl-10 pr-5 py-3 rounded-2xl bg-white/20 border border-primary/30
-    text-white placeholder:text-gray-300 shadow-lg backdrop-blur-md
-    focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all duration-300
-    text-base sm:text-sm [appearance:textfield]
-    [&::-webkit-search-cancel-button]:appearance-none
-    [&::-webkit-search-cancel-button]:h-4
-    [&::-webkit-search-cancel-button]:w-4
-    [&::-webkit-search-cancel-button]:bg-red-500
-    [&::-webkit-search-cancel-button]:rounded-full
-    [&::-webkit-search-cancel-button]:cursor-pointer
-    [&::-webkit-search-cancel-button]:[mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E")]
-    ${isFocused ? "ring-2 ring-primary/60" : ""}
-    ${isFocused ? "block" : "hidden md:block"}
-  `}
+              w-full pl-10 pr-5 py-3 rounded-2xl bg-white/20 border border-primary/30
+              text-white placeholder:text-gray-300 shadow-lg backdrop-blur-md
+              focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all duration-300
+              text-base sm:text-sm [appearance:textfield]
+              [&::-webkit-search-cancel-button]:appearance-none
+              [&::-webkit-search-cancel-button]:h-4
+              [&::-webkit-search-cancel-button]:w-4
+              [&::-webkit-search-cancel-button]:bg-red-500
+              [&::-webkit-search-cancel-button]:rounded-full
+              [&::-webkit-search-cancel-button]:cursor-pointer
+              [&::-webkit-search-cancel-button]:[mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E")]
+              ${isFocused ? "ring-2 ring-primary/60" : ""}
+              ${isFocused ? "block" : "hidden md:block"}
+            `}
             value={searchText}
             onChange={handleChange}
             onFocus={() => setIsFocused(true)}
           />
+
           {!isFocused && (
             <button
-              className="cursor-pointer md:hidden p-2.5 rounded-full bg-white/20 border border-primary/30 text-primary"
+              className="cursor-pointer md:hidden text-white mt-1 mr-3"
               onClick={() => setIsFocused(true)}
             >
-              <FiSearch className="w-5 h-5" />
+              <FiSearch size={24} />
             </button>
           )}
         </div>
