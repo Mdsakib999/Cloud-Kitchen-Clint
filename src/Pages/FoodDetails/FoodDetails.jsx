@@ -1,13 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  ArrowLeft,
-  Clock,
-  Users,
-  Star,
-  Heart,
-  ShoppingCart,
-} from "lucide-react";
+import { ArrowLeft, Clock, Users, Star } from "lucide-react";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { PreviousReviews } from "./PreviousReviews";
@@ -16,6 +9,8 @@ import { addToCart } from "../../redux/cartSlice";
 import { useGetOrdersByUserQuery } from "../../redux/orderSlice";
 
 import { useAuth } from "../../providers/AuthProvider";
+import RelatedProduct from "./RelatedProduct";
+
 export const FoodDetails = () => {
   const { state } = useLocation();
   const { user } = useAuth();
@@ -84,7 +79,6 @@ export const FoodDetails = () => {
     selectedAddons.reduce((sum, a) => sum + a.price, 0) * 1;
 
   const handleBack = () => navigate(-1);
-  const toggleFavorite = () => setIsFavorite((f) => !f);
   const toggleAddon = (addon) => {
     setSelectedAddons((prev) =>
       prev.find((a) => a.label === addon.label)
@@ -124,6 +118,7 @@ export const FoodDetails = () => {
   return (
     <div className="pt-30">
       <div className="sticky top-0  z-10">
+        {/* Back Button */}
         <div className="max-w-6xl mx-auto px-4 py-4">
           <button
             onClick={handleBack}
@@ -180,16 +175,18 @@ export const FoodDetails = () => {
               <div>
                 <p className="text-gray-300">{food.description}</p>
               </div>
-
+              {/* Ingredients */}
               <div>
                 <h3 className="text-lg font-semibold text-primary">
                   Ingredients
                 </h3>
-                <ul className=" list-inside text-gray-300">
-                  {food.ingredients.map((ing, i) => (
-                    <li key={i}>{ing}</li>
-                  ))}
-                </ul>
+                <div className="ingredients-list">
+                  <ul className=" list-inside text-gray-300">
+                    {food.ingredients.map((ing, i) => (
+                      <li key={i}>{ing}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               {/* Size selection */}
@@ -331,6 +328,7 @@ export const FoodDetails = () => {
           )}
         </div>
       </div>
+      <RelatedProduct category={food.category?.name} currentId={food._id} />
     </div>
   );
 };

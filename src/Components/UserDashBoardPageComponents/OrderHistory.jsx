@@ -20,7 +20,7 @@ export const OrderHistory = () => {
     isFetching,
   } = useGetOrdersByUserQuery(userId, {
     skip: !userId,
-    pollingInterval: 30000,
+    pollingInterval: 20000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,

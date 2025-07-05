@@ -70,7 +70,7 @@ export const BlogDetail = ({ blog }) => {
 
         {/* Sanitized Content */}
         <div
-          className="prose prose-lg max-w-none text-gray-300 mb-6"
+          className="prose prose-lg max-w-none text-gray-300 mb-6 blog-content"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(blog.content),
           }}

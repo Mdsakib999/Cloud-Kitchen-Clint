@@ -86,7 +86,7 @@ const Banner = () => {
       </Carousel>
 
       {/* Extra Info Section */}
-      <div className="absolute  -bottom-2 lg:bottom-6 left-1/2 transform -translate-x-1/2 px-4 lg:px-6 py-4 w-full max-w-7xl mx-auto flex flex-row justify-between md:items-center space-y-6 lg:space-y-0 lg:space-x-8 z-20">
+      <div className="absolute  -bottom-2 lg:bottom-6 left-1/2 transform -translate-x-1/2 px-4 lg:px-6 py-4 w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between md:items-center space-y-6 lg:space-y-0 lg:space-x-8 z-20 mb-10 text-center">
         {/* Hours */}
         <div className="flex items-start gap-x-1 lg:gap-x-2 text-left whitespace-nowrap">
           <FaRegClock size={24} className="text-primary" />

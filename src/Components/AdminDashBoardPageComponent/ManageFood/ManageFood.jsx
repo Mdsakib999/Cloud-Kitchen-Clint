@@ -19,8 +19,6 @@ export default function ManageFood() {
   const [deleteProduct] = useDeleteProductMutation();
   const [deletingId, setDeletingId] = useState(null);
 
-  console.log("products", products);
-
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
       title: "Are you sure?",

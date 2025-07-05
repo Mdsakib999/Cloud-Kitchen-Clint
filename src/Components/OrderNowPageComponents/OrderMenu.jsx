@@ -20,10 +20,25 @@ export const OrderMenu = () => {
 
   // Static placeholder URLs for the big category circles
   const staticCategoryImages = {
-    Burger: "https://via.placeholder.com/300?text=Burger",
-    Pizza: "https://via.placeholder.com/300?text=Pizza",
-    Coffee: "https://via.placeholder.com/300?text=Coffee",
-    Uncategorized: "https://via.placeholder.com/300?text=Other",
+    // Unsplash Images (high quality, free to use)
+    Burger:
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&h=400&fit=crop",
+    Pizza:
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=500&h=400&fit=crophttps://images.pexels.com/photos/315755/pexels-photo-315755.jpeg?auto=compress&cs=tinysrgb&w=500&h=400&dpr=1",
+    Coffee:
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=400&fit=crop",
+    Sandwich:
+      "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=500&h=400&fit=crop",
+    Pasta:
+      "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=500&h=400&dpr=1",
+    Salad:
+      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=400&fit=crop",
+    Dessert:
+      "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&h=400&fit=crop",
+    Chicken:
+      "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&h=400&fit=crop",
+    Uncategorized:
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&h=400&fit=crop",
   };
 
   // Build our tabs list
@@ -63,21 +78,6 @@ export const OrderMenu = () => {
   return (
     <div className="min-h-screen bg-bg-secondary p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Search */}
-        {/* <div className="relative w-full max-w-xl mx-auto mb-10">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-            <Search className="w-5 h-5 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            placeholder="Search menu items..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full py-3 pl-12 pr-4 rounded-full bg-white shadow-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div> */}
-
-        {/* Tabs */}
         <nav className="flex flex-wrap justify-center gap-4 mb-8">
           {categories.map((cat) => (
             <button
