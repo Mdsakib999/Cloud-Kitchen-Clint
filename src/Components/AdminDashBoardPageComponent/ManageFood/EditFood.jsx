@@ -44,13 +44,13 @@ export default function EditFoodForm() {
     control,
     register,
     handleSubmit,
-    reset,
     setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
       title: product?.title || "",
       category: product?.category?._id || "",
+      description: product?.description || "",
       cookTime: product?.cookTime || "",
       servings: product?.servings || 1,
       ingredients: product?.ingredients || [""],
@@ -168,6 +168,20 @@ export default function EditFoodForm() {
             { name: "price", type: "number", placeholder: "e.g. 5.99" },
           ]}
         />
+        {/* description */}
+        <div>
+          <label className="block mb-1 font-semibold">Description *</label>
+          <textarea
+            {...register("description", { required: "Required" })}
+            className="w-full border border-gray-200 p-3 rounded-lg resize-y min-h-[150px] focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+            placeholder="Enter a short description of the dish..."
+          />
+          {errors.description && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.description.message}
+            </p>
+          )}
+        </div>
 
         {/* — Images — */}
         <div>

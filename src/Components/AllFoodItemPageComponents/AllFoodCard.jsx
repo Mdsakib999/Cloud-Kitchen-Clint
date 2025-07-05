@@ -30,7 +30,7 @@ export const AllFoodCard = () => {
     return counts;
   }, [foodItems]);
 
-  // Merge fetched categories with counts
+  // Combined categories with count and image if available
   const sidebarCategories = useMemo(() => {
     if (isCategoriesLoading) return [];
     return [
@@ -38,6 +38,7 @@ export const AllFoodCard = () => {
       ...categoriesData.map((cat) => ({
         label: cat.name || "Uncategorized",
         count: categoryCounts[cat.name] || 0,
+        image: cat.image || null,
       })),
     ];
   }, [categoriesData, foodItems.length, categoryCounts, isCategoriesLoading]);
@@ -64,27 +65,53 @@ export const AllFoodCard = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col lg:flex-row gap-6 mt-10 min-h-screen">
-        {/* Sidebar / Filter Bar */}
-        <aside className="w-full lg:w-1/4">
-          <div className="flex flex-wrap lg:flex-col gap-3 lg:gap-4 lg:space-y-2 lg:h-full justify-start">
+        {/* Filter Controls */}
+        <>
+          {/* Mobile Design (below lg) */}
+          <nav className="flex flex-wrap justify-center gap-4 mb-8 lg:hidden cursor-pointer">
             {sidebarCategories.map((cat) => (
               <button
                 key={cat.label}
                 onClick={() => setActiveCategory(cat.label)}
-                className={`px-4 py-2 sm:px-6 sm:py-3 rounded-bl-3xl rounded-tr-3xl font-mono text-sm sm:text-base whitespace-nowrap transition-all ${
-                  activeCategory === cat.label
-                    ? "bg-primary text-white"
-                    : "bg-bg-secondary text-gray-300 hover:bg-gray-700"
-                }`}
-                style={{
-                  minWidth: "fit-content",
-                }}
+                className={`
+                  flex items-center px-4 py-1 rounded-full font-medium transition-all cursor-pointer
+                  ${
+                    activeCategory === cat.label
+                      ? "bg-primary text-white shadow-lg"
+                      : "bg-white text-gray-600 hover:bg-gray-100 shadow-md"
+                  }
+                `}
               >
-                {cat.label} ({cat.count})
+                <span>
+                  {cat.label}
+                  {cat.label !== "All" && ` (${cat.count})`}
+                </span>
               </button>
             ))}
-          </div>
-        </aside>
+          </nav>
+
+          {/* Desktop (lg+) Design */}
+          <aside className="hidden lg:block w-full lg:w-1/4">
+            <div className="flex flex-wrap lg:flex-col gap-3 lg:gap-4 lg:space-y-2 lg:h-full justify-start">
+              {sidebarCategories.map((cat) => (
+                <button
+                  key={cat.label}
+                  onClick={() => setActiveCategory(cat.label)}
+                  className={`px-4 py-2 sm:px-6 sm:py-3 rounded-bl-3xl rounded-tr-3xl font-mono text-sm sm:text-base whitespace-nowrap transition-all  cursor-pointer ${
+                    activeCategory === cat.label
+                      ? "bg-primary text-white"
+                      : "bg-bg-secondary text-gray-300 hover:bg-gray-700"
+                  }`}
+                  style={{
+                    minWidth: "fit-content",
+                  }}
+                >
+                  {cat.label} ({cat.count})
+                </button>
+              ))}
+            </div>
+          </aside>
+        </>
 
         {/* Main Content */}
         <main className="flex-1">

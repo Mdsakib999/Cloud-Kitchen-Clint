@@ -40,10 +40,10 @@ export const AboutHero = () => {
   ];
 
   return (
-    <div className="text-white font-inter px-6 py-16 md:px-12 lg:px-20 my-20">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center">
+    <div className="text-white font-inter px-6 py-16 mt-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
         {/* Left Content */}
-        <div className="w-full md:w-1/2 lg:w-full mx-auto">
+        <div className="order-2 lg:order-1 w-full mx-auto pt-24 lg:pt-0">
           <p className="text-primary uppercase tracking-widest text-sm mb-2">
             Simple. Classic. Delicious
           </p>
@@ -63,45 +63,51 @@ export const AboutHero = () => {
         </div>
 
         {/* Right Image Stack */}
-        <div className="relative w-full md:w-fit mx-auto mt-12 md:mt-10 lg:mt-0">
-          <div className="flex flex-col items-center gap-6 md:gap-0 md:block">
-            {/* Main Image */}
-            <div className="w-64 h-80 sm:w-72 sm:h-96 md:w-72 md:h-[24rem] lg:w-80 lg:h-[25rem] rounded-xl overflow-hidden shadow-lg relative z-[1]">
-              <img
-                src={ChefWork}
-                alt="Chef Working"
-                className="w-full h-full object-cover"
-              />
-            </div>
+        <div className="order-1 lg:order-2 relative w-fit mx-auto">
+          {/* Main ChefWork Image */}
+          <div className="w-64 h-80 md:w-72 md:h-96 lg:w-80 lg:h-[24rem] rounded-xl overflow-hidden shadow-lg">
+            <img
+              src={ChefWork}
+              alt="Chef Working"
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-            {/* Overlapping Image */}
-            <div
-              className="w-48 h-64 sm:w-56 sm:h-72 md:w-56 md:h-[17rem] lg:w-80 lg:h-80 rounded-xl overflow-hidden shadow-md relative z-0 
-              md:absolute md:bottom-[-12rem] md:right-[-3.5rem] 
-              lg:bottom-[-15rem] lg:right-[-5rem]"
-            >
-              <img
-                src={ChefTeam}
-                alt="Chef Team"
-                className="w-full h-full object-cover"
-              />
-            </div>
+          {/* Overlapping ChefTeam Image */}
+          <div className="absolute bottom-[-6rem] right-[-4rem] md:bottom-[-8rem] md:right-[-6rem] lg:bottom-[-4 rem] lg:right-[-7rem] w-48 h-64 md:w-56 md:h-72 lg:w-64 lg:h-72 rounded-xl overflow-hidden shadow-md">
+            <img
+              src={ChefTeam}
+              alt="Chef Team"
+              className="w-full h-full object-cover"
+            />
           </div>
 
           {/* Rotated Title */}
-          <div className="hidden md:block absolute bottom-20 right-[-17rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap z-[2]">
-            <h1 className="text-4xl lg:text-5xl font-semibold text-white font-inknut">
+          <div className="absolute top-1/2 right-[-17rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap">
+            <h1 className="text-5xl font-semibold text-white font-inknut">
               About Us
             </h1>
           </div>
         </div>
       </div>
 
-      <div className="w-full mt-5 md:mt-32 lg:mt-0">
+      <div className="w-full mt-5">
+        {/* Features Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          {features.map((feature, index) => (
+            <div key={index} className="flex items-center space-x-4">
+              <div className="flex-shrink-0 w-8 h-8 text-primary">
+                {feature.icon}
+              </div>
+              <div className="text-slate-300 font-medium">{feature.title}</div>
+            </div>
+          ))}
+        </div>
+
         {/* Stats Section */}
         <div
           ref={ref}
-          className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-16 max-w-7xl mx-auto"
+          className="grid grid-cols-2 md:grid-cols-4 gap-2 my-8 max-w-7xl mx-auto"
         >
           {stats.map((stat, index) => (
             <div key={index} className="text-start">
@@ -121,18 +127,6 @@ export const AboutHero = () => {
               <div className="text-slate-300 text-sm font-medium">
                 {stat.label}
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Features Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {features.map((feature, index) => (
-            <div key={index} className="flex items-center space-x-4">
-              <div className="flex-shrink-0 w-8 h-8 text-primary">
-                {feature.icon}
-              </div>
-              <div className="text-slate-300 font-medium">{feature.title}</div>
             </div>
           ))}
         </div>

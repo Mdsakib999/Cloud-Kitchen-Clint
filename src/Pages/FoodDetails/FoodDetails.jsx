@@ -216,14 +216,14 @@ export const FoodDetails = () => {
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => handleQtyChange(-1)}
-                    className="px-4 py-1 border border-gray-300 text-white rounded bg-primary  hover:bg-primary/90"
+                    className="px-4 py-1  text-white rounded bg-primary  hover:bg-primary/90"
                   >
                     −
                   </button>
                   <span className="w-6 text-center text-white">{qty}</span>
                   <button
                     onClick={() => handleQtyChange(+1)}
-                    className="px-4 py-1 border border-gray-300 text-white rounded bg-primary  hover:bg-primary/90"
+                    className="px-4 py-1  text-white rounded bg-primary  hover:bg-primary/90"
                   >
                     +
                   </button>
