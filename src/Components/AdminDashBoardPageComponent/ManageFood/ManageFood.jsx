@@ -50,7 +50,7 @@ export default function ManageFood() {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-8 mt-16 md:mt-8">
       <h1 className="text-3xl font-bold my-6 font-inknut">Manage Food Items</h1>
       <div className="overflow-x-auto bg-white shadow rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
@@ -78,7 +78,7 @@ export default function ManageFood() {
                 <td className="px-6 py-4 font-inter">
                   ৳{(product.sizes?.[0]?.price || 0).toLocaleString()}
                 </td>
-                <td className="px-6 py-4 text-center space-x-2">
+                <td className="px-6 py-4 text-center space-x-2 space-y-2">
                   <button
                     onClick={() =>
                       navigate(`/admin/dashboard/edit-food/${product._id}`, {

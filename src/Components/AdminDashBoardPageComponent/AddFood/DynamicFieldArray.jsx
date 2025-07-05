@@ -73,9 +73,9 @@ export default function DynamicFieldArray({
             <button
               type="button"
               onClick={() => remove(index)}
-              className="block border py-2 px-4 text-red-600 hover:text-red-700  transition-colors "
+              className="text-red-600 hover:text-red-700  transition-colors "
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 />
             </button>
           </div>
         ))}

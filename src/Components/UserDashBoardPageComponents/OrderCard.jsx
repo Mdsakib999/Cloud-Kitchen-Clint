@@ -89,7 +89,7 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
 
           <button
             onClick={() => onView(order._id)}
-            className="flex items-center justify-center px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-xl shadow hover:bg-bg-secondary/90 transition-all"
+            className="flex items-center justify-center px-4 py-2 text-sm font-medium bg-emerald-600 text-white rounded-xl shadow hover:bg-emerald-900 transition-all"
           >
             View Details
           </button>

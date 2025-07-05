@@ -142,9 +142,11 @@ export const ManageOrders = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen text-white font-inter">
+    <div className="p-6 min-h-screen text-white font-inter mt-20 md:mt-16">
       <div className="flex items-center justify-between mb-1">
-        <h2 className="text-2xl font-bold text-black">All Orders</h2>
+        <h2 className="text-2xl font-bold text-black mb-2 md:mb-5">
+          All Orders
+        </h2>
       </div>
 
       {/* Search, Filters, result count & refresh */}

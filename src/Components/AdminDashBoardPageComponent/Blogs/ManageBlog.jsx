@@ -59,7 +59,7 @@ export const ManageBlog = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 mt-20 md:mt-16">
       <h1 className="text-3xl md:text-4xl text-center font-bold text-white bg-bg-primary py-4 px-6 rounded-lg shadow-md">
         Published Blogs
       </h1>

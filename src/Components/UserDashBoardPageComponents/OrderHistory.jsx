@@ -76,7 +76,7 @@ export const OrderHistory = () => {
   if (isLoading && !orders.length) return <Loader />;
 
   return (
-    <div className="min-h-screen py-8 px-4 mt-16 md:mt-5">
+    <div className="min-h-screen py-8 px-4 mt-16 lg:mt-10">
       <div className="max-w-7xl mx-auto">
         <div className="py-5">
           <h1 className="text-3xl font-bold text-gray-200 mb-2">
