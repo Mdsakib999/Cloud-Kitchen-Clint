@@ -43,7 +43,7 @@ const slides = [
 
 const Banner = () => {
   return (
-    <div className="relative w-full">
+    <div className="min-h-screen relative w-full">
       <Carousel
         showThumbs={false}
         autoPlay
@@ -70,7 +70,7 @@ const Banner = () => {
                   <h1 className="text-3xl md:text-5xl font-bold mb-4 max-w-4xl text-white font-inknut">
                     {slide.title}
                   </h1>
-                  <p className="mb-6 text-lg md:text-2xl max-w-4xl text-white font-serif">
+                  <p className="hidden md:block mb-6 text-lg md:text-2xl max-w-4xl text-white font-serif">
                     {slide.description}
                   </p>
                   <Link to="/menu">
@@ -86,9 +86,9 @@ const Banner = () => {
       </Carousel>
 
       {/* Extra Info Section */}
-      <div className="absolute  -bottom-2 lg:bottom-6 left-1/2 transform -translate-x-1/2 px-4 lg:px-6 py-4 w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between md:items-center space-y-6 lg:space-y-0 lg:space-x-8 z-20 mb-10 text-center">
+      <div className="absolute -bottom-1 lg:bottom-6 left-1/2 transform -translate-x-1/2 px-4 lg:px-6 py-4 w-full max-w-7xl mx-auto flex justify-between md:items-center space-y-6 lg:space-y-0 lg:space-x-8 z-20 my-5 text-center">
         {/* Hours */}
-        <div className="flex items-start gap-x-1 lg:gap-x-2 text-left whitespace-nowrap">
+        <div className="flex items-start gap-x-1 lg:gap-x-2 text-left">
           <FaRegClock size={24} className="text-primary" />
           <div>
             <h3 className="font-semibold text-gray-200 text-sm lg:text-lg font-serif">
@@ -104,16 +104,16 @@ const Banner = () => {
         </div>
 
         {/* Address */}
-        <div className="flex items-start gap-x-1 lg:gap-x-2 text-left whitespace-nowrap">
+        <div className="flex gap-x-1 lg:gap-x-2 text-left">
           <IoLocationOutline size={24} className="text-primary" />
           <div>
             <h3 className="font-semibold text-gray-200 text-sm lg:text-lg font-serif">
               Our Location
             </h3>
-            <p className="text-white text-xs lg:text-sm max-w-xs lg:max-w-none font-inter">
-              South Khulsi,
-              <p>Nasirabad Properties LTD,</p>
-              <p>Chottogram, Bangladesh</p>
+            <p className="text-white text-xs md:text-sm font-inter">
+              <span className="block">South Khulsi</span>
+              <span className="block">Nasirabad Properties LTD,</span>
+              <span className="block">Chottogram, Bangladesh</span>
             </p>
           </div>
         </div>

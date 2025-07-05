@@ -64,7 +64,7 @@ const AddCoupon = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-lg mt-10">
+    <div className="p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-lg mt-20 md:mt-40">
       <h2 className="text-3xl text-center font-bold text-gray-800 mb-6 border-b pb-2">
         Create Coupon{" "}
       </h2>
@@ -189,7 +189,7 @@ const AddCoupon = () => {
         <button
           type="submit"
           disabled={loading}
-          className="cursor-pointer md:col-span-2 bg-primary disabled:bg-gray-400 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200 shadow"
+          className="cursor-pointer md:col-span-2 bg-primary disabled:bg-gray-400 text-white py-2 rounded-md hover:bg-amber-600 transition duration-200 shadow"
         >
           {loading ? "Creating..." : "Create Coupon"}
         </button>

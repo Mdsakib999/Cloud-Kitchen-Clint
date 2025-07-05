@@ -123,9 +123,9 @@ const ManageCoupon = () => {
   }
 
   return (
-    <div className="p-6 w-full mx-auto bg-white rounded-2xl shadow-lg mt-10 font-inter">
+    <div className="p-6 w-full max-w-[1200px] mx-auto bg-white rounded-2xl shadow-lg mt-20 md:mt-16 font-inter">
       <h2 className="text-3xl font-bold text-gray-800 border-b pb-2 font-inknut mb-6">
-        Manage Existing Coupons
+        Manage Coupons
       </h2>
       <div className="overflow-x-auto flex flex-col items-center justify-center">
         <table className="min-w-full bg-white border border-gray-200 rounded-md shadow-sm">
@@ -160,7 +160,7 @@ const ManageCoupon = () => {
               allCoupons.map((coupon, index) => (
                 <tr
                   key={coupon._id}
-                  className="border-t border-gray-200 hover:bg-gray-50 text-center"
+                  className="border-t border-gray-200 hover:bg-gray-50"
                 >
                   <td className="py-3 px-4">{index + 1}</td>
                   <td className="py-3 px-4 font-medium">{coupon.code}</td>

@@ -22,10 +22,9 @@ const Navbar = ({ offsetTop = 56 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const photoUrl = localStorage.getItem("photo");
   const { user, logout } = useAuth();
-
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const photoUrl = user?.profilePicture || localStorage.getItem("photo");
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
@@ -185,7 +184,7 @@ const Navbar = ({ offsetTop = 56 }) => {
                       <div className="flex items-center gap-2">
                         {user && (
                           <>
-                            {photoUrl && imageLoaded ? (
+                            {photoUrl || imageLoaded ? (
                               <img
                                 src={photoUrl}
                                 alt="profile"
@@ -295,7 +294,7 @@ const Navbar = ({ offsetTop = 56 }) => {
                 {user ? (
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                      {photoUrl && imageLoaded ? (
+                      {photoUrl || imageLoaded ? (
                         <img
                           src={photoUrl}
                           alt="profile"
