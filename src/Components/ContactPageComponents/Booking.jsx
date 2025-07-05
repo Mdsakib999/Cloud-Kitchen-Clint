@@ -9,6 +9,7 @@ import {
 } from "react-icons/fi";
 import { SectionHeader } from "../SharedComponent/SectionHeader";
 import { PhoneCall } from "lucide-react";
+import toast from "react-hot-toast";
 
 export const Booking = () => {
   const {
@@ -19,7 +20,9 @@ export const Booking = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    alert("Booking request submitted successfully!");
+    toast.success(
+      <h1 className="text-center font-serif">Request Submitted Successfully</h1>
+    );
     reset();
   };
 
@@ -34,7 +37,7 @@ export const Booking = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-secondary text-white p-8">
+    <div className="min-h-[90vh] bg-bg-secondary text-white p-8 pt-40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Info */}
@@ -240,7 +243,7 @@ export const Booking = () => {
               <button
                 type="button"
                 onClick={handleSubmit(onSubmit)}
-                className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+                className="cursor-pointer w-full bg-primary hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
               >
                 Submit Request
               </button>

@@ -21,7 +21,7 @@ export const SectionHeader = ({
       </h1>
 
       {/* Description */}
-      <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+      <p className="text-slate-400 mt-3 text-sm md:text-lg max-w-2xl mx-3 md:mx-auto md:leading-relaxed">
         {description}
       </p>
 

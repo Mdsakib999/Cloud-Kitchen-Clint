@@ -78,21 +78,6 @@ export const OrderMenu = () => {
   return (
     <div className="min-h-screen bg-bg-secondary p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Search */}
-        {/* <div className="relative w-full max-w-xl mx-auto mb-10">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-            <Search className="w-5 h-5 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            placeholder="Search menu items..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full py-3 pl-12 pr-4 rounded-full bg-white shadow-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div> */}
-
-        {/* Tabs */}
         <nav className="flex flex-wrap justify-center gap-4 mb-8">
           {categories.map((cat) => (
             <button
