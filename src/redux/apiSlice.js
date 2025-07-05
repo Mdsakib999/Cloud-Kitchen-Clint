@@ -174,7 +174,7 @@ export const apiSlice = createApi({
       ],
     }),
     getReviews: builder.query({
-      query: ({ productId }) => `/products/${productId}/reviews`,
+      query: ({ productId }) => `/user/${productId}/reviews`,
       providesTags: (result, err, { productId }) => [
         { type: "Review", id: productId },
       ],

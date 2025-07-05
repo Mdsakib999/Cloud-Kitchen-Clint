@@ -13,20 +13,43 @@ import toast from "react-hot-toast";
 import { PreviousReviews } from "./PreviousReviews";
 import { ReviewForm } from "./ReviewForm";
 import { addToCart } from "../../redux/cartSlice";
-//
+import { useGetOrdersByUserQuery } from "../../redux/orderSlice";
+
+import { useAuth } from "../../providers/AuthProvider";
 export const FoodDetails = () => {
   const { state } = useLocation();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const food = state?.item;
-  console.log(state);
 
+  const userId = user?._id;
+  const food = state?.item;
+
+  const { data: orders = [], isLoading } = useGetOrdersByUserQuery(userId, {
+    skip: !userId,
+  });
+  // foodId
+  // const orderId = orders.map((id) => id._id);
+
+  const [hasPurchased, setHasPurchased] = useState(false);
+  const [orderId, setOrderId] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [mainImage, setMainImage] = useState("");
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedAddons, setSelectedAddons] = useState([]);
-
   const [activeTab, setActiveTab] = useState("Details");
+
+  useEffect(() => {
+    if (!food?._id || !orders.length) return;
+    const ord = orders.find((o) => o.items.some((i) => i.food === food._id));
+    if (ord) {
+      setHasPurchased(true);
+      setOrderId(ord._id);
+    } else {
+      setHasPurchased(false);
+      setOrderId(null);
+    }
+  }, [orders, food]);
 
   // quantity state for add to cart
   const [qty, setQty] = useState(1);
@@ -45,6 +68,14 @@ export const FoodDetails = () => {
       setSelectedSize(food.sizes[0]);
     }
   }, [food, navigate]);
+  useEffect(() => {
+    if (!orders || !food?._id) return;
+
+    const purchased = orders.some((order) =>
+      order.items.some((item) => item.food === food._id)
+    );
+    setHasPurchased(purchased);
+  }, [orders, food]);
 
   if (!food) return null;
 
@@ -284,8 +315,18 @@ export const FoodDetails = () => {
             </>
           ) : (
             <>
-              <ReviewForm />
-              <PreviousReviews foodTitle={food.title} />
+              {hasPurchased ? (
+                <ReviewForm
+                  productId={food._id}
+                  user={user}
+                  orderId={orderId}
+                />
+              ) : (
+                <p className="text-gray-400 text-sm mb-4">
+                  You must purchase this item to leave a review.
+                </p>
+              )}
+              <PreviousReviews foodTitle={food.title} productId={food._id} />
             </>
           )}
         </div>

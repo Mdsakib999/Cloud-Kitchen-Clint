@@ -1,8 +1,18 @@
 import { Star } from "lucide-react";
-import { reviews } from "../../FakeDB/mockReviewData";
+import { useGetReviewsQuery } from "../../redux/apiSlice";
 
-export const PreviousReviews = ({ foodTitle }) => {
-  const filteredReviews = reviews.filter((r) => r.dish === foodTitle);
+export const PreviousReviews = ({ productId, foodTitle }) => {
+  const {
+    data, // data is { reviews: [...], page, pages, total }
+    isLoading,
+    isError,
+  } = useGetReviewsQuery({ productId });
+
+  // 1) Safely grab the inner array
+  const reviewsArray = Array.isArray(data?.reviews) ? data.reviews : [];
+
+  // 2) (Optional) filter by dish if your backend includes a `dish` prop
+  const filtered = reviewsArray.filter((r) => r.dish === foodTitle);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -14,7 +24,6 @@ export const PreviousReviews = ({ foodTitle }) => {
         <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
       );
     }
-
     if (half) {
       stars.push(
         <div key="half" className="relative w-4 h-4">
@@ -25,13 +34,11 @@ export const PreviousReviews = ({ foodTitle }) => {
         </div>
       );
     }
-
     while (stars.length < 5) {
       stars.push(
         <Star key={`empty-${stars.length}`} className="w-4 h-4 text-white" />
       );
     }
-
     return stars;
   };
 
@@ -41,17 +48,26 @@ export const PreviousReviews = ({ foodTitle }) => {
         Reviews for {foodTitle}
       </h2>
 
-      {filteredReviews.length === 0 ? (
+      {isLoading ? (
+        <p className="text-gray-300">Loading reviews…</p>
+      ) : isError ? (
+        <p className="text-red-400">
+          Oops, something went wrong. Please try again later.
+        </p>
+      ) : filtered.length === 0 ? (
         <p className="text-gray-300">No reviews yet for this item.</p>
       ) : (
         <div className="space-y-6">
-          {filteredReviews.map((review) => {
-            const name = review.reviewer?.name || review.name;
-            const avatar = review.reviewer?.avatar || review.avatar;
-            const text = review.reviewer?.review || review.text;
+          {filtered.map((review) => {
+            const name = review.user?.name || "Anonymous";
+            // your API doesn’t return avatars, so use a placeholder
+            const avatar =
+              review.user?.avatar ||
+              `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}`;
+            const text = review.comment || "No comment";
 
             return (
-              <div key={review.id} className="border-b border-gray-700 pb-6">
+              <div key={review._id} className="border-b border-gray-700 pb-6">
                 <div className="flex items-start gap-4">
                   <img
                     src={avatar}
