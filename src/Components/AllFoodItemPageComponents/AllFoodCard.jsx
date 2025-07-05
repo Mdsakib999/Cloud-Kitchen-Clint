@@ -43,7 +43,7 @@ export const AllFoodCard = () => {
   }, [categoriesData, foodItems.length, categoryCounts, isCategoriesLoading]);
 
   if (isLoading || isCategoriesLoading) {
-    return <Loader comp_Name="AllFoodCard" />;
+    return <Loader comp_Name="Foods" />;
   }
 
   if (isError) {
@@ -71,10 +71,10 @@ export const AllFoodCard = () => {
               <button
                 key={cat.label}
                 onClick={() => setActiveCategory(cat.label)}
-                className={`px-4 py-2 sm:px-6 sm:py-3 rounded-bl-3xl rounded-tr-3xl font-mono text-sm sm:text-base whitespace-nowrap transition-all ${
+                className={`cursor-pointer px-4 py-2 sm:px-6 sm:py-3 rounded-bl-3xl rounded-tr-3xl font-mono text-sm sm:text-base whitespace-nowrap transition-all ${
                   activeCategory === cat.label
                     ? "bg-primary text-white"
-                    : "bg-bg-secondary text-gray-300 hover:bg-gray-700"
+                    : "bg-bg-secondary text-gray-300 hover:bg-emerald-800"
                 }`}
                 style={{
                   minWidth: "fit-content",

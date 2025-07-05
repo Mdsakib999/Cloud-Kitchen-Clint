@@ -78,6 +78,9 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("token");
+      localStorage.removeItem("photo");
+      localStorage.removeItem("name");
+      localStorage.removeItem("email");
       setUser(null);
     } finally {
       setLoading(false);
@@ -137,6 +140,9 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      localStorage.setItem("photo", currentUser?.photoURL);
+      localStorage.setItem("name", currentUser?.displayName);
+      localStorage.setItem("email", currentUser?.email);
       if (currentUser) {
         try {
           await currentUser.reload();
