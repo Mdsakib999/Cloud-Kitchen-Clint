@@ -68,20 +68,22 @@ export default function AddFood() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 mt-20 md:mt-16">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-8 mt-20 md:mt-16">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl"
+        className="w-full max-w-lg sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto p-2 sm:p-4 md:p-8 bg-white shadow-lg rounded-xl"
       >
-        <div className="mb-8">
-          <h2 className="text-4xl font-bold text-gray-800 mb-2">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-4xl font-bold text-gray-800 mb-2">
             Add New Food
           </h2>
-          <p className="text-gray-600">Create a new food item for your menu</p>
+          <p className="text-gray-600 text-xs sm:text-base">
+            Create a new food item for your menu
+          </p>
         </div>
 
         {/* Basic Info Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 mb-6 sm:mb-8">
           {/* Title */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -144,25 +146,27 @@ export default function AddFood() {
           </div>
         </div>
         {/* Ingredients */}
-        <fieldset className="mb-8">
-          <legend className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Ingredients</h3>
+        <fieldset className="mb-6 sm:mb-8">
+          <legend className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 sm:mb-4 gap-2">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800">
+              Ingredients
+            </h3>
             <button
               type="button"
               onClick={() => ingredientsArray.append("")}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-base"
             >
               <Plus className="w-4 h-4" /> Add Ingredient
             </button>
           </legend>
 
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {ingredientsArray.fields.map((field, idx) => (
-              <div key={field.id} className="flex gap-3">
+              <div key={field.id} className="flex flex-col xs:flex-row gap-2">
                 <input
                   type="text"
                   placeholder="Ingredient"
-                  className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 transition-colors"
+                  className="flex-1 border-2 border-gray-200 rounded-lg p-2 sm:p-3 focus:border-blue-500 transition-colors text-xs sm:text-base"
                   {...register(`ingredients.${idx}`, {
                     required: "Ingredient is required",
                   })}
@@ -170,7 +174,7 @@ export default function AddFood() {
                 <button
                   type="button"
                   onClick={() => ingredientsArray.remove(idx)}
-                  className="px-4 py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors"
+                  className="px-2 py-2 sm:px-4 sm:py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors text-xs sm:text-base"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -179,31 +183,35 @@ export default function AddFood() {
           </div>
 
           {errors.ingredients && (
-            <p className="text-red-500 text-sm mt-2">
+            <p className="text-red-500 text-xs sm:text-sm mt-2">
               {errors.ingredients.message}
             </p>
           )}
         </fieldset>
         {/* Size & Price */}
-        <DynamicFieldArray
-          name="sizes"
-          label="Sizes"
-          control={control}
-          register={register}
-          errors={errors}
-          fieldDefs={[
-            { name: "label", type: "text", placeholder: "Size" },
-            { name: "price", type: "number", placeholder: "Price" },
-            {
-              name: "discount price",
-              type: "number",
-              placeholder: "Discount Price",
-            },
-          ]}
-        />
-
+        <div className="mb-6 sm:mb-8">
+          <DynamicFieldArray
+            name="sizes"
+            label="Sizes"
+            control={control}
+            register={register}
+            errors={errors}
+            fieldDefs={[
+              { name: "label", type: "text", placeholder: "Size" },
+              { name: "price", type: "number", placeholder: "Price" },
+              {
+                name: "discountPrice",
+                type: "number",
+                placeholder: "Discount Price",
+              },
+            ]}
+            inputClassName="p-2 text-xs min-w-0 w-full"
+            rowClassName="flex flex-col xs:flex-row gap-2 w-full"
+            colClassName="flex-1 min-w-0 w-full xs:min-w-[80px]"
+          />
+        </div>
         {/* Image Upload Section */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <input type="hidden" {...register("images")} />
           <ImageUploader
             uploadedImages={uploadedImages}
@@ -211,9 +219,8 @@ export default function AddFood() {
             setValue={setValue}
           />
         </div>
-
         {/* Cook Time and Servings */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 mb-6 sm:mb-8">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Cook Time
@@ -244,23 +251,27 @@ export default function AddFood() {
         </div>
 
         {/* Add-ons */}
-        <DynamicFieldArray
-          name="addons"
-          label="Add-ons"
-          control={control}
-          register={register}
-          errors={errors}
-          noRequired
-          fieldDefs={[
-            { name: "label", type: "text", placeholder: "e.g. Extra Cheese" },
-            { name: "price", type: "number", placeholder: "e.g. 1.50" },
-          ]}
-        />
-
+        <div className="mb-6 sm:mb-8">
+          <DynamicFieldArray
+            name="addons"
+            label="Add-ons"
+            control={control}
+            register={register}
+            errors={errors}
+            noRequired
+            fieldDefs={[
+              { name: "label", type: "text", placeholder: "e.g. Extra Cheese" },
+              { name: "price", type: "number", placeholder: "e.g. 1.50" },
+            ]}
+            inputClassName="p-2 text-xs min-w-0 w-full focus:border-blue-500 border-gray-200 rounded-lg"
+            rowClassName="flex flex-col xs:flex-row gap-2 w-full"
+            colClassName="flex-1 min-w-0 w-full xs:min-w-[100px]"
+          />
+        </div>
         {/* Options */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-4 gap-2">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800">
               Option Groups
             </h3>
             <button
@@ -273,32 +284,31 @@ export default function AddFood() {
                   choices: [{ label: "", price: 0 }],
                 })
               }
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-base"
             >
-              <Plus className="w-4 h-4" />
-              Add Option Group
+              <Plus className="w-4 h-4" /> Add Option Group
             </button>
           </div>
-          <div className="space-y-6">
+          <div className="space-y-3 sm:space-y-6">
             {optionsArray.fields.map((item, index) => (
               <div
                 key={item.id}
-                className="border-2 border-gray-200 rounded-lg p-6"
+                className="border-2 border-gray-200 rounded-lg p-2 sm:p-6"
               >
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 xs:gap-4 mb-2 sm:mb-4">
                   <input
                     placeholder="Option group name (e.g., Spice Level, Toppings)"
-                    className="flex-1 border-2 border-gray-200 rounded-lg p-3 font-medium focus:border-blue-500 focus:outline-none transition-colors"
+                    className="flex-1 border-2 border-gray-200 rounded-lg p-2 sm:p-3 font-medium focus:border-blue-500 focus:outline-none transition-colors text-xs sm:text-base"
                     {...register(`options.${index}.name`, { required: true })}
                   />
                   <select
                     {...register(`options.${index}.type`)}
-                    className="border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
+                    className="border-2 border-gray-200 rounded-lg p-2 sm:p-3 focus:border-blue-500 focus:outline-none transition-colors text-xs sm:text-base"
                   >
                     <option value="single">Single Choice</option>
                     <option value="multiple">Multiple Choice</option>
                   </select>
-                  <label className="flex items-center gap-2 text-sm font-medium">
+                  <label className="flex items-center gap-2 text-xs sm:text-sm font-medium">
                     <input
                       type="checkbox"
                       {...register(`options.${index}.required`)}
@@ -320,15 +330,18 @@ export default function AddFood() {
                   control={control}
                   render={({ field }) => (
                     <div>
-                      <p className="text-sm font-medium text-gray-700 mb-3">
+                      <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">
                         Choices
                       </p>
                       <div className="space-y-2">
                         {field.value.map((choice, cIndex) => (
-                          <div key={cIndex} className="flex gap-3">
+                          <div
+                            key={cIndex}
+                            className="flex flex-col xs:flex-row gap-2"
+                          >
                             <input
                               placeholder="Choice label"
-                              className="flex-1 border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none transition-colors"
+                              className="flex-1 border border-gray-300 rounded-lg p-2 sm:p-3 focus:border-blue-500 focus:outline-none transition-colors text-xs sm:text-base"
                               value={choice.label}
                               onChange={(e) => {
                                 const newChoices = [...field.value];
@@ -340,7 +353,7 @@ export default function AddFood() {
                               type="number"
                               step="0.01"
                               placeholder="Price"
-                              className="w-28 border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none transition-colors"
+                              className="w-20 sm:w-28 border border-gray-300 rounded-lg p-2 sm:p-3 focus:border-blue-500 focus:outline-none transition-colors text-xs sm:text-base"
                               value={choice.price}
                               onChange={(e) => {
                                 const newChoices = [...field.value];
@@ -360,10 +373,9 @@ export default function AddFood() {
                             { label: "", price: 0 },
                           ])
                         }
-                        className="mt-3 flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                        className="mt-2 sm:mt-3 flex items-center gap-2 text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium"
                       >
-                        <Plus className="w-3 h-3" />
-                        Add Choice
+                        <Plus className="w-3 h-3" /> Add Choice
                       </button>
                     </div>
                   )}
@@ -377,14 +389,16 @@ export default function AddFood() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors text-lg"
+          className="w-full py-3 sm:py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors text-base sm:text-lg"
         >
           {isLoading ? "Saving..." : "Save Food Item"}
         </button>
 
         {isError && (
-          <div className="mt-4 p-4  bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600 font-medium">{error?.toString()}</p>
+          <div className="mt-4 p-2 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 font-medium text-xs sm:text-base">
+              {error?.toString()}
+            </p>
           </div>
         )}
       </form>

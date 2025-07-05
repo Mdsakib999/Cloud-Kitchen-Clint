@@ -41,12 +41,12 @@ const WhyUs = () => {
 
   return (
     <section className="min-h-[70vh] bg-bg-primary text-white py-28 px-6">
-      <div className="max-w-6xl mx-auto md:flex md:space-x-12">
-        <div className="md:w-1/2 mb-12 md:mb-0">
+      <div className="max-w-6xl mx-auto lg:flex md:space-x-12">
+        <div className="w-full lg:w-1/2 mb-12 md:mb-0">
           <p className="text-sm  text-primary uppercase mb-2 tracking-[.3em]">
             Experience the Best
           </p>
-          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold font-inknut leading-tight bg-gradient-to-r from-white via-amber-100 to-primary bg-clip-text text-transparent my-5">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold font-inknut leading-tight bg-gradient-to-r from-white via-amber-100 to-primary bg-clip-text text-transparent my-5">
             Why People Love Us?
           </h1>
           <p className=" text-gray-300 font-inter mb-6 leading-relaxed">
@@ -82,7 +82,7 @@ const WhyUs = () => {
           </Link>
         </div>
 
-        <div className="md:w-1/2 overflow-hidden">
+        <div className="w-full lg:w-1/2 overflow-hidden mt-5">
           <div className="flex transition-transform duration-500 flex-wrap sm:flex-nowrap w-full">
             {visibleFeatures.map((feat) => (
               <div

@@ -214,19 +214,19 @@ const CheckoutForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-secondary py-12 px-4 lg:px-8 pt-40">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
-          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-6 shadow-md">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">
+    <div className="min-h-screen bg-bg-secondary py-8 px-1 sm:px-4 lg:px-8 pt-32 sm:pt-40">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-4 sm:gap-8">
+        <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-2 sm:p-6 shadow-md">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2">
+              <h2 className="text-lg sm:text-xl font-semibold text-white">
                 Contact Information
               </h2>
-              <div className="flex items-center text-sm text-emerald-500">
+              <div className="flex items-center text-xs sm:text-sm text-emerald-500">
                 <Shield className="w-4 h-4 mr-1" /> Secure checkout
               </div>
             </div>
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">
                   Name
@@ -281,14 +281,14 @@ const CheckoutForm = () => {
             </div>
           </section>
 
-          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-6 shadow-md">
-            <div className="flex items-center mb-6">
+          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-2 sm:p-6 shadow-md">
+            <div className="flex items-center mb-4 sm:mb-6">
               <Truck className="w-5 h-5 text-emerald-600 mr-2" />
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-lg sm:text-xl font-semibold text-white">
                 Shipping Address
               </h2>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-2 sm:space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">
                   Street Address
@@ -297,7 +297,7 @@ const CheckoutForm = () => {
                   {...register("streetAddress", {
                     required: "Street address is required",
                   })}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg SIXTH AI INC. gray-700 text-white focus:outline-none focus:border-teal-500"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-transparent text-white focus:outline-none focus:border-teal-500"
                   placeholder="Enter your Address"
                 />
                 {errors.streetAddress && (
@@ -336,15 +336,15 @@ const CheckoutForm = () => {
           </section>
         </div>
 
-        <div className="lg:col-span-1">
-          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-6 shadow-md sticky top-4">
-            <div className="flex items-center mb-6">
+        <div className="lg:col-span-1 mt-6 lg:mt-0">
+          <section className="bg-emerald-950/20 border border-emerald-600 rounded-xl p-2 sm:p-6 shadow-md sticky top-4">
+            <div className="flex items-center mb-4 sm:mb-6">
               <Package className="w-5 h-5 text-emerald-500 mr-2" />
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-lg sm:text-xl font-semibold text-white">
                 Order Summary
               </h2>
             </div>
-            <div className="space-y-4 mb-6">
+            <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-6">
               {orderItems.map((item, index) => {
                 const addonsTotal =
                   item.addons?.reduce(
@@ -386,7 +386,7 @@ const CheckoutForm = () => {
               })}
             </div>
 
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               {!appliedCoupon && (
                 <>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -430,7 +430,7 @@ const CheckoutForm = () => {
               </p>
             </div>
 
-            <div className="border-t border-gray-600 pt-4 space-y-3">
+            <div className="border-t border-gray-600 pt-2 sm:pt-4 space-y-2 sm:space-y-3">
               <div className="flex justify-between text-gray-300">
                 <span>Subtotal</span>
                 <span>{subtotal.toFixed(2)} Tk</span>
@@ -457,10 +457,10 @@ const CheckoutForm = () => {
               </div>
             </div>
 
-            <h2 className="text-xl font-semibold text-white mt-6 mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-white mt-4 sm:mt-6 mb-2 sm:mb-4">
               Payment Method
             </h2>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               <label
                 className={`flex items-center p-4 border rounded-lg cursor-pointer ${
                   selectedPayment === "cash"
@@ -518,7 +518,7 @@ const CheckoutForm = () => {
               type="button"
               disabled={isSubmitting || placingOrder || orderLoading}
               onClick={handleSubmit(handleOrder)}
-              className="w-full mt-6 bg-emerald-950 border border-emerald-700 text-white font-semibold py-3 rounded-lg hover:bg-emerald-900 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full mt-4 sm:mt-6 bg-emerald-950 border border-emerald-700 text-white font-semibold py-2 sm:py-3 rounded-lg hover:bg-emerald-900 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base"
             >
               {placingOrder || orderLoading ? (
                 <svg
@@ -547,7 +547,7 @@ const CheckoutForm = () => {
                 : "Complete Order"}
               <ArrowRight className="w-5 h-5" />
             </button>
-            <p className="mt-4 text-sm text-gray-300 flex items-center justify-center">
+            <p className="mt-2 sm:mt-4 text-xs sm:text-sm text-gray-300 flex items-center justify-center">
               <Shield className="w-4 h-4 mr-2" /> SSL encrypted & secure
               checkout
             </p>

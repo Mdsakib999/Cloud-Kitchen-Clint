@@ -3,6 +3,7 @@ import { FaCheckCircle } from "react-icons/fa";
 
 const OrderSuccess = () => {
   const { state: order } = useLocation();
+  console.log(order);
 
   if (!order) {
     return (
@@ -29,7 +30,12 @@ const OrderSuccess = () => {
       </h1>
 
       <p className="text-emerald-200 text-center max-w-lg mb-8 text-sm sm:text-base">
-        Your order has been placed successfully! It’s on its way to
+        Your order has been placed successfully! Your OrderId{" "}
+        <span className="font-inter">
+          (OID
+          {order._id.slice(-4)})
+        </span>{" "}
+        . It’s on its way to
         <span className="font-semibold">
           {" "}
           {order.address}, {order.city}
@@ -87,10 +93,6 @@ const OrderSuccess = () => {
             );
           })}
         </div>
-        <div className="text-xl flex items-center justify-between text-emerald-200 mt-4 px-2">
-          <span>Total:</span>{" "}
-          <span className="font-inter">৳ {order.totalPrice}</span>
-        </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-2">
           <div className="flex-1 bg-emerald-950 p-3 rounded-lg border border-emerald-700">
@@ -131,6 +133,22 @@ const OrderSuccess = () => {
             </div>
           </div>
         </div>
+        <div className="text-xl flex items-center justify-between text-emerald-200 px-2">
+          <span>Total:</span>{" "}
+          <span className="font-inter">৳ {order.totalPrice}</span>
+        </div>
+      </div>
+      <div className="flex items-center justify-between gap-x-3">
+        <Link to="/dashboard/order">
+          <button className="cursor-pointer px-10 py-3 mt-5 rounded hover:bg-primary hover:text-white bg-white text-black">
+            Track Order
+          </button>
+        </Link>
+        <Link to="/menu">
+          <button className="cursor-pointer px-10 py-3 mt-5 rounded bg-primary text-white hover:bg-white hover:text-black">
+            Buy More
+          </button>
+        </Link>
       </div>
     </div>
   );
