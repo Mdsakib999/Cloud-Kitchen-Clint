@@ -37,7 +37,10 @@ export default function DynamicFieldArray({
 
       <div className="space-y-3">
         {fields.map((item, index) => (
-          <div key={item.id} className="flex gap-3">
+          <div
+            key={item.id}
+            className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full"
+          >
             {fieldDefs.map((def) => {
               const rules = {};
               if (!noRequired) {
@@ -53,7 +56,10 @@ export default function DynamicFieldArray({
               }
 
               return (
-                <div className="flex flex-col mb-4">
+                <div
+                  key={def.name}
+                  className="flex flex-col w-full min-w-0 mb-2 sm:mb-0"
+                >
                   <label
                     className="block text-sm font-semibold text-gray-700 mb-1"
                     htmlFor={`${name}.${index}.${def.name}`}
@@ -64,7 +70,7 @@ export default function DynamicFieldArray({
                     id={`${name}.${index}.${def.name}`}
                     type={def.type}
                     placeholder={def.placeholder || def.name}
-                    className="flex-1 border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
+                    className="border-2 border-gray-200 rounded-lg p-2 sm:p-3 focus:border-blue-500 focus:outline-none transition-colors w-full min-w-0 text-sm"
                     {...register(`${name}.${index}.${def.name}`, rules)}
                   />
                 </div>
@@ -73,9 +79,10 @@ export default function DynamicFieldArray({
             <button
               type="button"
               onClick={() => remove(index)}
-              className="text-red-600 hover:text-red-700  transition-colors "
+              className="self-end sm:self-center mt-2 sm:mt-0 text-red-600 hover:text-red-700 transition-colors flex-shrink-0"
+              aria-label="Remove"
             >
-              <Trash2 />
+              <Trash2 className="w-5 h-5" />
             </button>
           </div>
         ))}

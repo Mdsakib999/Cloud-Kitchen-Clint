@@ -3,10 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { IoClose, IoTrashOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { updateQuantity, removeFromCart } from "../../redux/cartSlice";
+import { useAuth } from "../../providers/AuthProvider";
+import toast from "react-hot-toast";
 
 const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
+  const { user } = useAuth();
+  console.log(user);
 
   const [deleteTarget, setDeleteTarget] = useState(null);
 
@@ -27,10 +31,24 @@ const CartSlider = ({ isOpen, onClose }) => {
     setDeleteTarget(null);
   };
 
+  // Handler for checkout button
+  const handleCheckoutClick = (e) => {
+    if (user?.role === "admin") {
+      e.preventDefault();
+      toast(
+        <h1 className="text-center font-serif text-red-600">
+          Create customer account to order food
+        </h1>
+      );
+      return;
+    }
+    onClose();
+  };
+
   return (
     <>
       <div
-        className={`fixed top-0 right-0 h-full w-96 bg-bg-primary text-gray-200 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-full md:w-96 bg-bg-primary text-gray-200 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -130,7 +148,7 @@ const CartSlider = ({ isOpen, onClose }) => {
           ) : (
             <Link
               to="/checkout"
-              onClick={onClose}
+              onClick={handleCheckoutClick}
               className="font-inter tracking-wider block w-full text-center bg-primary hover:bg-white hover:text-black duration-500 border border-primary text-white py-2 rounded cursor-pointer"
             >
               Checkout

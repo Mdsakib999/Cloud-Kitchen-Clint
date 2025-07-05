@@ -211,7 +211,7 @@ export const UpdateProfile = () => {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4 font-serif mt-16 md:mt-8 lg:mt-0">
+    <div className="min-h-screen py-8 font-serif mt-16 md:mt-8 lg:mt-0">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
