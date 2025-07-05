@@ -152,9 +152,9 @@ export const ManageOrders = () => {
       {/* Search, Filters, result count & refresh */}
       <div className="mb-6 bg-bg-secondary rounded-lg p-4 md:p-6 space-y-6">
         {/* Top Row: Search + Filters */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div className="flex flex-col lg:items-center lg:justify-between gap-6">
           {/* Search Input */}
-          <div className="w-full lg:max-w-md relative">
+          <div className="w-1/2 relative">
             <Search
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}

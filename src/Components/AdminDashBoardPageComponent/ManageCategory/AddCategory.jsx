@@ -48,7 +48,7 @@ export const AddCategory = () => {
       if (editId) {
         await editCategory({
           id: editId,
-          name: categoryName,
+          name: categoryName.toUpperCase(),
           imageFile, // This will be null if no new image selected
         }).unwrap();
         showToast({
@@ -58,7 +58,7 @@ export const AddCategory = () => {
         });
       } else {
         await addCategory({
-          name: categoryName,
+          name: categoryName.toUpperCase(),
           imageFile, // This will be the selected file or null
         }).unwrap();
         showToast({

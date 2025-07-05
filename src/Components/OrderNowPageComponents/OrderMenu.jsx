@@ -21,22 +21,24 @@ export const OrderMenu = () => {
   // Static placeholder URLs for the big category circles
   const staticCategoryImages = {
     // Unsplash Images (high quality, free to use)
-    Burger:
+    BURGER:
       "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&h=400&fit=crop",
-    Pizza:
+    PIZZA:
       "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=500&h=400&fit=crophttps://images.pexels.com/photos/315755/pexels-photo-315755.jpeg?auto=compress&cs=tinysrgb&w=500&h=400&dpr=1",
-    Coffee:
+    COFFEE:
       "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=400&fit=crop",
-    Sandwich:
+    SANDWICHES:
       "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=500&h=400&fit=crop",
-    Pasta:
+    PASTA:
       "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=500&h=400&dpr=1",
-    Salad:
+    SALADS:
       "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=400&fit=crop",
-    Dessert:
+    DESSERTS:
       "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&h=400&fit=crop",
-    Chicken:
+    CHICKEN:
       "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&h=400&fit=crop",
+    APPETIZERS:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAycQcpOdNLqQ8Cw1zyDFkuS6CfSnbPT4PoQ&s",
     Uncategorized:
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&h=400&fit=crop",
   };
@@ -84,7 +86,7 @@ export const OrderMenu = () => {
               key={cat.name}
               onClick={() => setActiveCategory(cat.name)}
               className={`
-                flex items-center px-6 py-3 rounded-full font-medium transition-all
+                flex items-center px-4 py-2 rounded-full font-medium transition-all cursor-pointer
                 ${
                   activeCategory === cat.name
                     ? "bg-primary text-white shadow-lg"
@@ -96,7 +98,7 @@ export const OrderMenu = () => {
                 <img
                   src={cat.image}
                   alt={cat.name}
-                  className="w-6 h-6 rounded-full object-cover mr-2"
+                  className="w-8 h-8 rounded-full object-cover mr-2"
                 />
               )}
               <span>

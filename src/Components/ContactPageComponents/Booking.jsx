@@ -243,7 +243,7 @@ export const Booking = () => {
               <button
                 type="button"
                 onClick={handleSubmit(onSubmit)}
-                className="cursor-pointer w-full bg-primary hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+                className="w-full bg-primary hover:bg-orange-500  text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
               >
                 Submit Request
               </button>
