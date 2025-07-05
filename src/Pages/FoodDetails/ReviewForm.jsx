@@ -1,33 +1,35 @@
 import { useState } from "react";
 import { StarRating } from "../../utils/StarRating";
+import { useCreateReviewMutation } from "../../redux/apiSlice";
+import toast from "react-hot-toast";
 
-export const ReviewForm = ({ onSubmit }) => {
-  const [rating, setRating] = useState(0);
+export const ReviewForm = ({ productId, user, orderId }) => {
+  const [createReview, { isLoading }] = useCreateReviewMutation();
+  const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(null);
-  const [review, setReview] = useState("");
-  const [suggestion, setSuggestion] = useState("");
+  const [comment, setComment] = useState("");
+  const [title, setTitle] = useState("");
 
-  const handleFormSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await createReview({
+        user: user._id,
+        product: productId,
+        order: orderId,
+        rating,
+        title,
+        comment,
+      }).unwrap();
 
-    if (!rating || !review.trim()) {
-      alert("Please provide both rating and review.");
-      return;
+      toast.success("Review submitted!");
+      setTitle("");
+      setComment("");
+      setRating(5);
+    } catch (err) {
+      toast.error("Failed to submit review.");
+      console.error(err);
     }
-
-    const formData = {
-      rating,
-      review: review.trim(),
-      suggestion: suggestion.trim(),
-    };
-
-    onSubmit?.(formData);
-
-    // Reset form
-    setRating(0);
-    setHoverRating(null);
-    setReview("");
-    setSuggestion("");
   };
 
   return (
@@ -49,36 +51,33 @@ export const ReviewForm = ({ onSubmit }) => {
         </p>
       </div>
 
-      {/* Review Textarea */}
-      <textarea
-        rows="4"
-        value={review}
-        onChange={(e) => setReview(e.target.value)}
-        placeholder="Write your thoughts about this dish..."
-        className="w-full p-3 rounded-lg bg-bg-input text-white border border-gray-600 mb-4 focus:border-yellow-400 focus:outline-none"
-        required
-      />
-
-      {/* Tips for Improvement */}
-      <label className="block text-white mb-2 font-medium">
-        Tips for Improvement{" "}
-        <span className="text-sm text-gray-400">(optional)</span>
-      </label>
+      {/* Title (optional) */}
       <input
         type="text"
-        value={suggestion}
-        onChange={(e) => setSuggestion(e.target.value)}
-        placeholder="Any suggestion for improvement?"
-        className="w-full p-3 rounded-lg bg-bg-input text-white border border-gray-600 mb-4 focus:border-yellow-400 focus:outline-none"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Title (optional)"
+        className="w-full p-3 rounded-lg bg-bg-input text-white border border-gray-600 mb-4"
+      />
+
+      {/* Comment Textarea */}
+      <textarea
+        rows="4"
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        placeholder="Write your thoughts about this dish..."
+        className="w-full p-3 rounded-lg bg-bg-input text-white border border-gray-600 mb-4"
+        required
       />
 
       {/* Submit */}
       <button
-        type="button"
-        onClick={handleFormSubmit}
+        type="submit"
+        onClick={handleSubmit}
         className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition font-semibold"
+        disabled={isLoading}
       >
-        Submit Review
+        {isLoading ? "Submitting..." : "Submit Review"}
       </button>
     </div>
   );

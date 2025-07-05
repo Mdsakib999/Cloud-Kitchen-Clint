@@ -13,7 +13,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Category", "Product", "Blog"],
+  tagTypes: ["Category", "Product", "Blog", "Review"],
   endpoints: (builder) => ({
     getCategories: builder.query({
       query: () => "/admin/categories",
@@ -161,6 +161,24 @@ export const apiSlice = createApi({
         { type: "Blog", id: "LIST" },
       ],
     }),
+
+    // Reviews
+    createReview: builder.mutation({
+      query: (formData) => ({
+        url: "/user/reviews",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: (res, err, { productId }) => [
+        { type: "Review", id: productId },
+      ],
+    }),
+    getReviews: builder.query({
+      query: ({ productId }) => `/user/${productId}/reviews`,
+      providesTags: (result, err, { productId }) => [
+        { type: "Review", id: productId },
+      ],
+    }),
   }),
 });
 
@@ -181,4 +199,7 @@ export const {
   useCreateBlogMutation,
   useUpdateBlogMutation,
   useDeleteBlogMutation,
+  // Reviews
+  useCreateReviewMutation,
+  useGetReviewsQuery,
 } = apiSlice;
