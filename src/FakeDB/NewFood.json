@@ -1,0 +1,881 @@
+[
+  {
+    "title": "Classic Beef Burger",
+    "description": "Juicy beef patty with lettuce, tomato, onion, and our special sauce",
+    "category": {
+      "$oid": "67893f2a1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/classic-beef-burger.jpg",
+        "public_id": "products/classic-beef-burger"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Regular",
+        "price": 299,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large",
+        "price": 499,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Cheese", "price": 150 },
+      { "label": "Bacon", "price": 200 },
+      { "label": "Avocado", "price": 175 }
+    ],
+    "options": [
+      {
+        "name": "Cooking Style",
+        "type": "single",
+        "required": false,
+        "choices": [
+          { "label": "Medium Rare", "price": 0 },
+          { "label": "Medium", "price": 0 },
+          { "label": "Well Done", "price": 0 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "beef patty",
+      "lettuce",
+      "tomato",
+      "onion",
+      "bun",
+      "special sauce"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "15",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Chicken Deluxe Burger",
+    "description": "Grilled chicken breast with fresh vegetables and mayo",
+    "category": {
+      "$oid": "67893f2a1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/chicken-deluxe-burger.jpg",
+        "public_id": "products/chicken-deluxe-burger"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Regular",
+        "price": 349,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large",
+        "price": 549,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Cheese", "price": 150 },
+      { "label": "Mushrooms", "price": 125 },
+      { "label": "Jalapeños", "price": 100 }
+    ],
+    "options": [],
+    "ingredients": [
+      "chicken breast",
+      "lettuce",
+      "tomato",
+      "cucumber",
+      "mayo",
+      "bun"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "12",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Margherita Pizza",
+    "description": "Classic Italian pizza with fresh mozzarella, tomato sauce, and basil",
+    "category": {
+      "$oid": "67893f2b1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/margherita-pizza.jpg",
+        "public_id": "products/margherita-pizza"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Small (10\")",
+        "price": 599,
+        "discountPrice": 0
+      },
+      {
+        "label": "Medium (12\")",
+        "price": 799,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large (14\")",
+        "price": 999,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Cheese", "price": 200 },
+      { "label": "Pepperoni", "price": 250 },
+      { "label": "Mushrooms", "price": 150 }
+    ],
+    "options": [
+      {
+        "name": "Crust Type",
+        "type": "single",
+        "required": true,
+        "choices": [
+          { "label": "Thin Crust", "price": 0 },
+          { "label": "Thick Crust", "price": 150 },
+          { "label": "Stuffed Crust", "price": 300 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "pizza dough",
+      "tomato sauce",
+      "mozzarella",
+      "fresh basil",
+      "olive oil"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "18",
+    "servings": 2,
+    "__v": 0
+  },
+  {
+    "title": "Pepperoni Supreme",
+    "description": "Loaded with pepperoni, bell peppers, onions, and extra cheese",
+    "category": {
+      "$oid": "67893f2b1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/pepperoni-supreme.jpg",
+        "public_id": "products/pepperoni-supreme"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Small (10\")",
+        "price": 799,
+        "discountPrice": 0
+      },
+      {
+        "label": "Medium (12\")",
+        "price": 999,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large (14\")",
+        "price": 1299,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Pepperoni", "price": 300 },
+      { "label": "Olives", "price": 175 },
+      { "label": "Pineapple", "price": 150 }
+    ],
+    "options": [
+      {
+        "name": "Crust Type",
+        "type": "single",
+        "required": true,
+        "choices": [
+          { "label": "Thin Crust", "price": 0 },
+          { "label": "Thick Crust", "price": 150 },
+          { "label": "Stuffed Crust", "price": 300 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "pizza dough",
+      "tomato sauce",
+      "mozzarella",
+      "pepperoni",
+      "bell peppers",
+      "onions"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "20",
+    "servings": 3,
+    "__v": 0
+  },
+  {
+    "title": "Spaghetti Carbonara",
+    "description": "Classic Italian pasta with eggs, cheese, pancetta, and black pepper",
+    "category": {
+      "$oid": "67893f2c1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/spaghetti-carbonara.jpg",
+        "public_id": "products/spaghetti-carbonara"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Regular",
+        "price": 649,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large",
+        "price": 849,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Parmesan", "price": 200 },
+      { "label": "Garlic Bread", "price": 350 },
+      { "label": "Side Salad", "price": 400 }
+    ],
+    "options": [
+      {
+        "name": "Spice Level",
+        "type": "single",
+        "required": false,
+        "choices": [
+          { "label": "Mild", "price": 0 },
+          { "label": "Medium", "price": 0 },
+          { "label": "Spicy", "price": 0 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "spaghetti",
+      "eggs",
+      "pancetta",
+      "parmesan cheese",
+      "black pepper",
+      "olive oil"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "16",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Penne Arrabbiata",
+    "description": "Spicy tomato sauce with garlic, red chilies, and fresh herbs",
+    "category": {
+      "$oid": "67893f2c1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/penne-arrabbiata.jpg",
+        "public_id": "products/penne-arrabbiata"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Regular",
+        "price": 599,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large",
+        "price": 799,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Grilled Chicken", "price": 400 },
+      { "label": "Shrimp", "price": 550 },
+      { "label": "Extra Cheese", "price": 150 }
+    ],
+    "options": [
+      {
+        "name": "Spice Level",
+        "type": "single",
+        "required": true,
+        "choices": [
+          { "label": "Mild", "price": 0 },
+          { "label": "Medium", "price": 0 },
+          { "label": "Hot", "price": 0 },
+          { "label": "Extra Hot", "price": 0 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "penne pasta",
+      "tomato sauce",
+      "garlic",
+      "red chilies",
+      "basil",
+      "olive oil"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "14",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Espresso",
+    "description": "Rich, concentrated coffee shot with a golden crema",
+    "category": {
+      "$oid": "67893f2d1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/espresso.jpg",
+        "public_id": "products/espresso"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Single Shot",
+        "price": 150,
+        "discountPrice": 0
+      },
+      {
+        "label": "Double Shot",
+        "price": 250,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Shot", "price": 150 },
+      { "label": "Sugar", "price": 0 },
+      { "label": "Honey", "price": 50 }
+    ],
+    "options": [
+      {
+        "name": "Bean Type",
+        "type": "single",
+        "required": false,
+        "choices": [
+          { "label": "Arabica", "price": 0 },
+          { "label": "Robusta", "price": 50 }
+        ]
+      }
+    ],
+    "ingredients": ["espresso beans", "water"],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "3",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Cappuccino",
+    "description": "Espresso with steamed milk and a layer of milk foam",
+    "category": {
+      "$oid": "67893f2d1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/cappuccino.jpg",
+        "public_id": "products/cappuccino"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Small",
+        "price": 299,
+        "discountPrice": 0
+      },
+      {
+        "label": "Medium",
+        "price": 399,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large",
+        "price": 499,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Shot", "price": 150 },
+      { "label": "Vanilla Syrup", "price": 75 },
+      { "label": "Cinnamon", "price": 25 }
+    ],
+    "options": [
+      {
+        "name": "Milk Type",
+        "type": "single",
+        "required": true,
+        "choices": [
+          { "label": "Whole Milk", "price": 0 },
+          { "label": "Almond Milk", "price": 60 },
+          { "label": "Oat Milk", "price": 75 },
+          { "label": "Soy Milk", "price": 50 }
+        ]
+      }
+    ],
+    "ingredients": ["espresso", "steamed milk", "milk foam"],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "5",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Chocolate Lava Cake",
+    "description": "Warm chocolate cake with a molten center, served with vanilla ice cream",
+    "category": {
+      "$oid": "67893f2e1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/chocolate-lava-cake.jpg",
+        "public_id": "products/chocolate-lava-cake"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Individual",
+        "price": 449,
+        "discountPrice": 0
+      },
+      {
+        "label": "Sharing",
+        "price": 699,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Ice Cream", "price": 200 },
+      { "label": "Whipped Cream", "price": 150 },
+      { "label": "Fresh Berries", "price": 250 }
+    ],
+    "options": [
+      {
+        "name": "Ice Cream Flavor",
+        "type": "single",
+        "required": false,
+        "choices": [
+          { "label": "Vanilla", "price": 0 },
+          { "label": "Chocolate", "price": 0 },
+          { "label": "Strawberry", "price": 0 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "chocolate",
+      "butter",
+      "eggs",
+      "sugar",
+      "flour",
+      "vanilla ice cream"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "16",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Tiramisu",
+    "description": "Classic Italian dessert with coffee-soaked ladyfingers and mascarpone",
+    "category": {
+      "$oid": "67893f2e1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/tiramisu.jpg",
+        "public_id": "products/tiramisu"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Single Portion",
+        "price": 499,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Cocoa Powder", "price": 50 },
+      { "label": "Amaretto Drizzle", "price": 150 }
+    ],
+    "options": [],
+    "ingredients": [
+      "mascarpone",
+      "ladyfingers",
+      "espresso",
+      "cocoa powder",
+      "eggs",
+      "sugar"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "0",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Club Sandwich",
+    "description": "Triple-layer sandwich with turkey, bacon, lettuce, tomato, and mayo",
+    "category": {
+      "$oid": "67893f2f1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/club-sandwich.jpg",
+        "public_id": "products/club-sandwich"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Regular",
+        "price": 549,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large",
+        "price": 749,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Fries", "price": 350 },
+      { "label": "Onion Rings", "price": 400 },
+      { "label": "Coleslaw", "price": 250 }
+    ],
+    "options": [
+      {
+        "name": "Bread Type",
+        "type": "single",
+        "required": true,
+        "choices": [
+          { "label": "White Bread", "price": 0 },
+          { "label": "Whole Wheat", "price": 50 },
+          { "label": "Sourdough", "price": 100 }
+        ]
+      }
+    ],
+    "ingredients": ["turkey", "bacon", "lettuce", "tomato", "mayo", "bread"],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "9",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Grilled Cheese & Tomato Soup",
+    "description": "Classic grilled cheese sandwich served with homemade tomato soup",
+    "category": {
+      "$oid": "67893f2f1234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/grilled-cheese-soup.jpg",
+        "public_id": "products/grilled-cheese-soup"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Regular",
+        "price": 399,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Cheese", "price": 150 },
+      { "label": "Bacon", "price": 200 },
+      { "label": "Avocado", "price": 175 }
+    ],
+    "options": [
+      {
+        "name": "Cheese Type",
+        "type": "multiple",
+        "required": true,
+        "choices": [
+          { "label": "Cheddar", "price": 0 },
+          { "label": "Swiss", "price": 50 },
+          { "label": "Gouda", "price": 75 }
+        ]
+      }
+    ],
+    "ingredients": ["bread", "cheese", "butter", "tomato soup", "herbs"],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "11",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Caesar Salad",
+    "description": "Crisp romaine lettuce with Caesar dressing, croutons, and parmesan",
+    "category": {
+      "$oid": "67893f301234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/caesar-salad.jpg",
+        "public_id": "products/caesar-salad"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Regular",
+        "price": 449,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large",
+        "price": 599,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Grilled Chicken", "price": 400 },
+      { "label": "Grilled Shrimp", "price": 550 },
+      { "label": "Salmon", "price": 650 }
+    ],
+    "options": [
+      {
+        "name": "Dressing Amount",
+        "type": "single",
+        "required": false,
+        "choices": [
+          { "label": "Light", "price": 0 },
+          { "label": "Regular", "price": 0 },
+          { "label": "Extra", "price": 0 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "romaine lettuce",
+      "caesar dressing",
+      "croutons",
+      "parmesan cheese"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "6",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Mediterranean Bowl",
+    "description": "Mixed greens with quinoa, feta, olives, cucumber, and tahini dressing",
+    "category": {
+      "$oid": "67893f301234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/mediterranean-bowl.jpg",
+        "public_id": "products/mediterranean-bowl"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Regular",
+        "price": 549,
+        "discountPrice": 0
+      },
+      {
+        "label": "Large",
+        "price": 749,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Hummus", "price": 200 },
+      { "label": "Grilled Chicken", "price": 400 },
+      { "label": "Falafel", "price": 350 }
+    ],
+    "options": [
+      {
+        "name": "Base",
+        "type": "single",
+        "required": true,
+        "choices": [
+          { "label": "Mixed Greens", "price": 0 },
+          { "label": "Quinoa", "price": 100 },
+          { "label": "Rice", "price": 50 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "mixed greens",
+      "quinoa",
+      "feta cheese",
+      "olives",
+      "cucumber",
+      "tahini dressing"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "9",
+    "servings": 1,
+    "__v": 0
+  },
+  {
+    "title": "Buffalo Wings",
+    "description": "Crispy chicken wings tossed in spicy buffalo sauce",
+    "category": {
+      "$oid": "67893f311234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/buffalo-wings.jpg",
+        "public_id": "products/buffalo-wings"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "6 pieces",
+        "price": 449,
+        "discountPrice": 0
+      },
+      {
+        "label": "12 pieces",
+        "price": 799,
+        "discountPrice": 0
+      },
+      {
+        "label": "24 pieces",
+        "price": 1399,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Ranch Dip", "price": 100 },
+      { "label": "Blue Cheese Dip", "price": 100 },
+      { "label": "Celery Sticks", "price": 150 }
+    ],
+    "options": [
+      {
+        "name": "Sauce Level",
+        "type": "single",
+        "required": true,
+        "choices": [
+          { "label": "Mild", "price": 0 },
+          { "label": "Medium", "price": 0 },
+          { "label": "Hot", "price": 0 },
+          { "label": "Extra Hot", "price": 0 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "chicken wings",
+      "buffalo sauce",
+      "butter",
+      "celery",
+      "ranch dressing"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "17",
+    "servings": 2,
+    "__v": 0
+  },
+  {
+    "title": "Mozzarella Sticks",
+    "description": "Golden fried mozzarella cheese sticks with marinara sauce",
+    "category": {
+      "$oid": "67893f311234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/mozzarella-sticks.jpg",
+        "public_id": "products/mozzarella-sticks"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "6 pieces",
+        "price": 399,
+        "discountPrice": 0
+      },
+      {
+        "label": "12 pieces",
+        "price": 699,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Marinara", "price": 100 },
+      { "label": "Ranch Dip", "price": 100 },
+      { "label": "Spicy Mayo", "price": 125 }
+    ],
+    "options": [],
+    "ingredients": [
+      "mozzarella cheese",
+      "breadcrumbs",
+      "marinara sauce",
+      "herbs"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "9",
+    "servings": 2,
+    "__v": 0
+  },
+  {
+    "title": "Pancake Stack",
+    "description": "Fluffy pancakes served with butter, maple syrup, and fresh berries",
+    "category": {
+      "$oid": "67893f321234567890abcdef"
+    },
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/example/image/upload/v1751701770/products/pancake-stack.jpg",
+        "public_id": "products/pancake-stack"
+      }
+    ],
+    "sizes": [
+      {
+        "label": "Short Stack (2)",
+        "price": 399,
+        "discountPrice": 0
+      },
+      {
+        "label": "Full Stack (3)",
+        "price": 549,
+        "discountPrice": 0
+      }
+    ],
+    "addons": [
+      { "label": "Extra Syrup", "price": 50 },
+      { "label": "Whipped Cream", "price": 150 },
+      { "label": "Fresh Berries", "price": 250 }
+    ],
+    "options": [
+      {
+        "name": "Syrup Type",
+        "type": "single",
+        "required": false,
+        "choices": [
+          { "label": "Maple Syrup", "price": 0 },
+          { "label": "Honey", "price": 25 },
+          { "label": "Chocolate Syrup", "price": 50 }
+        ]
+      }
+    ],
+    "ingredients": [
+      "flour",
+      "eggs",
+      "milk",
+      "butter",
+      "maple syrup",
+      "fresh berries"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "cookTime": "12",
+    "servings": 1,
+    "__v": 0
+  }
+]

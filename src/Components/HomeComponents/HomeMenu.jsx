@@ -61,8 +61,8 @@ const HomeMenu = () => {
               onClick={() => setActiveCategory(cat)}
               className={`px-4 py-2 rounded-full border border-primary transition ${
                 activeCategory === cat
-                  ? "bg-primary text-gray-900"
-                  : "text-primary hover:bg-primary hover:text-gray-900"
+                  ? "bg-primary text-white"
+                  : "text-primary hover:bg-primary hover:text-white"
               }`}
             >
               {cat}

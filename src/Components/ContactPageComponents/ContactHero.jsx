@@ -13,9 +13,10 @@ import Chiken from "/assets/Food/Chicken-Fry.jpg";
 export const ContactHero = () => {
   return (
     <div className="text-white font-inter px-6 py-16 md:px-12 lg:px-20 my-20">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {" "}
         {/* Left Content */}
-        <div>
+        <div className="order-2 lg:order-1 pt-16 lg:pt-0">
           <p className="text-primary uppercase tracking-widest text-sm mb-2">
             Meet. Celebrate. Gather
           </p>
@@ -98,29 +99,29 @@ export const ContactHero = () => {
 
           {/* Social Icons */}
           <div className="mt-16 flex flex-col md:flex-row items-center gap-4">
-            <p className=" text-white text-xl font-inknut">We Are Social :</p>
+            <p className="text-white text-xl font-inknut">We Are Social :</p>
             <div className="flex gap-4 text-xl items-center">
-              <div className=" border-primary rounded-full p-2 border-2">
-                <a href="#" className="text-primary">
+              <div className="group border-primary rounded-full p-2 border-2 hover:bg-primary transition-colors duration-300">
+                <a href="#" className="text-primary group-hover:text-white">
                   <FaFacebookF />
                 </a>
               </div>
-              <div className=" border-primary rounded-full p-2 border-2">
-                <a href="#" className="text-primary">
+              <div className="group border-primary rounded-full p-2 border-2 hover:bg-primary transition-colors duration-300">
+                <a href="#" className="text-primary group-hover:text-white">
                   <FaTwitter />
                 </a>
               </div>
-              <div className=" border-primary rounded-full p-2 border-2">
-                <a href="#" className="text-primary">
+              <div className="group border-primary rounded-full p-2 border-2 hover:bg-primary transition-colors duration-300">
+                <a href="#" className="text-primary group-hover:text-white">
                   <FaInstagram />
                 </a>
               </div>
             </div>
           </div>
         </div>
-
         {/* Right Image Stack */}
-        <div className="relative w-fit mx-auto">
+        <div className="order-1 lg:order-2 relative w-fit mx-auto">
+          {" "}
           {/* Main Ramen Image */}
           <div className="w-64 h-80 md:w-72 md:h-96 lg:w-80 lg:h-[28rem] rounded-xl overflow-hidden shadow-lg">
             <img
@@ -129,7 +130,6 @@ export const ContactHero = () => {
               className="w-full h-full object-cover"
             />
           </div>
-
           {/* Overlapping Chicken Image */}
           <div className="absolute bottom-[-6rem] right-[-4rem] md:bottom-[-8rem] md:right-[-6rem] lg:bottom-[-10rem] lg:right-[-7rem] w-48 h-64 md:w-56 md:h-72 lg:w-64 lg:h-80 rounded-xl overflow-hidden shadow-md">
             <img
@@ -138,8 +138,7 @@ export const ContactHero = () => {
               className="w-full h-full object-cover"
             />
           </div>
-
-          <div className="hidden lg:block absolute top-1/2 right-[-20rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap">
+          <div className="absolute top-1/2 right-[-20rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap">
             <h1 className="text-5xl font-semibold text-white font-inknut">
               Contact Us
             </h1>

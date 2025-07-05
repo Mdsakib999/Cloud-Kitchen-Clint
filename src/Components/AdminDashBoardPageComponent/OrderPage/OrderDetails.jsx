@@ -9,6 +9,7 @@ import {
   useGetOrderByIdQuery,
   useUpdateOrderMutation,
 } from "../../../redux/orderSlice";
+import { FiArrowLeft } from "react-icons/fi";
 
 export const OrderDetails = () => {
   const { id: orderId } = useParams();
@@ -58,9 +59,23 @@ export const OrderDetails = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4 lg:p-6 mt-16 lg:mt-0">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
-          Order ID: OID{currentOrder._id.slice(-4)}
-        </h1>
+        <div className="flex items-center gap-4">
+          {/* Navigate Back */}
+          <button
+            onClick={() => window.history.back()}
+            className="flex items-center justify-center bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg transition duration-200"
+          >
+            <FiArrowLeft className="w-5 h-5" />
+          </button>
+
+          {/* Order ID */}
+          <h1 className="text-lg sm:text-2xl font-bold text-gray-800">
+            Order ID:{" "}
+            <span className="text-primary">
+              OID{currentOrder._id.slice(-4)}
+            </span>
+          </h1>
+        </div>
 
         <div className="flex gap-2">
           <select

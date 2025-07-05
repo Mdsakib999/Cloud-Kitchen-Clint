@@ -1,105 +1,97 @@
-import TotalOrder from "/assets/Icon/TotalOrder.png";
-import TotalDeliver from "/assets/Icon/TotalDeliver.png";
-import TotalCancel from "/assets/Icon/TotalCancel.png";
-import TotalRevenue from "/assets/Icon/TotalRevenue.png";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { useGetOrdersQuery } from "../../../redux/orderSlice";
+import {
+  getStatus,
+  getRevenue,
+  filterOrdersByDateRange,
+} from "../../../utils/orderStats";
+
+import { generateStatsData } from "../../../utils/generateStatsData";
+import StatCard from "./StatCard";
 
 export const AllTimeSellStat = () => {
-  const statsData = [
-    {
-      id: 1,
-      title: "Total Orders",
-      value: "75",
-      icon: TotalOrder,
-      bgColor: "bg-green-100",
-      trend: "up",
-      percentage: "1% (30 days)",
-      trendColor: "text-green-500",
-    },
-    {
-      id: 2,
-      title: "Total Delivered",
-      value: "357",
-      icon: TotalDeliver,
-      bgColor: "bg-blue-100",
-      trend: "up",
-      percentage: "1% (30 days)",
-      trendColor: "text-green-500",
-    },
-    {
-      id: 3,
-      title: "Total Cancelled",
-      value: "65",
-      icon: TotalCancel,
-      bgColor: "bg-green-100",
-      trend: "down",
-      percentage: "2% (30 days)",
-      trendColor: "text-red-500",
-    },
-    {
-      id: 4,
-      title: "Total Revenue",
-      value: "$1280",
-      icon: TotalRevenue,
-      bgColor: "bg-green-100",
-      trend: "down",
-      percentage: "1% (30 days)",
-      trendColor: "text-red-500",
-    },
-  ];
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetOrdersQuery(undefined, {
+    pollingInterval: 10000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000);
+  const sixtyDaysAgo = new Date(now.getTime() - 60 * 86400000);
+
+  const last30 = filterOrdersByDateRange(orders, thirtyDaysAgo, now);
+  const prev30 = filterOrdersByDateRange(orders, sixtyDaysAgo, thirtyDaysAgo);
+
+  const getStats = (orderList) => {
+    const delivered = orderList.filter(
+      (o) => getStatus(o) === "delivered"
+    ).length;
+    const cancelled = orderList.filter(
+      (o) => getStatus(o) === "cancelled"
+    ).length;
+    const revenue = orderList
+      .filter((o) => getStatus(o) === "delivered")
+      .reduce((sum, o) => sum + getRevenue(o), 0);
+
+    return {
+      count: orderList.length,
+      delivered,
+      cancelled,
+      revenue,
+    };
+  };
+
+  const allStats = getStats(orders);
+  const recentStats = getStats(last30);
+  const previousStats = getStats(prev30);
+
+  const statsData = generateStatsData({
+    current: allStats,
+    previous: previousStats,
+    isLoading,
+    contextLabel: "Total",
+  });
+
+  if (isError) {
+    return (
+      <div className="p-4 bg-red-100 rounded-md text-sm">
+        <p className="text-red-600 font-medium">Error: {error?.message}</p>
+        <button
+          onClick={refetch}
+          className="mt-2 inline-block bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <h1 className="text-2xl font-bold text-primary mb-3">
+    <section>
+      <h2 className="text-xl sm:text-2xl font-semibold text-primary mb-4">
         All Time Sell Statistics
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 p-2">
-        {statsData.map((stat) => (
-          <div
-            key={stat.id}
-            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
-          >
-            {/* Icon and Value Section */}
-            <div className="flex items-center gap-4 justify-between mb-4">
-              <div
-                className={`w-20 h-20 ${stat.bgColor} rounded-full p-2 flex items-center justify-center`}
-              >
-                <img
-                  src={stat.icon}
-                  alt={stat.title}
-                  className="w-14 h-14 object-contain"
-                />
-              </div>
-              <div className="text-left whitespace-nowrap">
-                <div className="flex flex-col">
-                  <div className="text-2xl font-bold text-gray-800 mb-1">
-                    {stat.value}
-                  </div>
-                  {/* Title */}
-                  <div className="text-gray-600 font-medium mb-3">
-                    {stat.title}
-                  </div>
-                  {/* Trend Section */}
-                  <div className="flex items-center space-x-2">
-                    <div
-                      className={`flex items-center space-x-1 ${stat.trendColor}`}
-                    >
-                      {stat.trend === "up" ? (
-                        <TrendingUp size={16} />
-                      ) : (
-                        <TrendingDown size={16} />
-                      )}
-                      <span className="text-sm font-medium">
-                        {stat.percentage}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      </h2>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {statsData.map(({ id, title, value, icon, bgColor, trend }) => (
+          <StatCard
+            key={id}
+            title={title}
+            value={value}
+            icon={icon}
+            bgColor={bgColor}
+            trend={trend}
+            trendLabel="30 days"
+          />
         ))}
       </div>
-    </>
+    </section>
   );
 };
