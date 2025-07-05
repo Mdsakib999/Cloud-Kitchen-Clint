@@ -11,7 +11,7 @@ const ClientTestimonials = () => {
       name: "Maria Elena",
       role: "photographer",
       image:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHVzZXJ8ZW58MHx8MHx8fDA%3D",
       rating: 5,
       text: "The food was fresh, flavorful, and delivered right on time. Feels like restaurant dining at home",
     },
@@ -86,7 +86,7 @@ const ClientTestimonials = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg-secondary text-white relative overflow-hidden">
+    <div className="bg-bg-secondary text-white relative overflow-hidden">
       <div className="container mx-auto px-6 py-20 relative z-10">
         {/* Header Section */}
         <div className="text-center mb-16">
@@ -212,8 +212,6 @@ const ClientTestimonials = () => {
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
   );

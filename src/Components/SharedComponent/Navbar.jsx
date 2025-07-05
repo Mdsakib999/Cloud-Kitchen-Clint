@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useAuth } from "../../providers/AuthProvider";
 import toast from "react-hot-toast";
 import GlobalSearch from "../HomeComponents/GlobalSearch";
+import { Mail } from "lucide-react";
 
 const Navbar = ({ offsetTop = 56 }) => {
   const cartItems = useSelector((state) => state.cart);
@@ -21,6 +22,8 @@ const Navbar = ({ offsetTop = 56 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const photoUrl = localStorage.getItem("photo");
   const { user, logout } = useAuth();
 
   const dropdownRef = useRef(null);
@@ -168,7 +171,7 @@ const Navbar = ({ offsetTop = 56 }) => {
 
                 {/* Desktop User Dropdown */}
                 {showUserDropdown && (
-                  <div className="absolute right-0 mt-2 w-72 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden font-serif">
+                  <div className="absolute right-0 mt-2 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden font-serif">
                     <div className="flex justify-between items-center p-3 border-b border-white/20">
                       <span className="text-sm font-medium">Profile</span>
                       <button
@@ -180,9 +183,33 @@ const Navbar = ({ offsetTop = 56 }) => {
                     </div>
                     <div className="px-5 py-8 space-y-5">
                       <div className="flex items-center gap-2">
-                        <IoPersonCircleOutline className="text-5xl text-primary" />
+                        {user && (
+                          <>
+                            {photoUrl && imageLoaded ? (
+                              <img
+                                src={photoUrl}
+                                alt="profile"
+                                loading="lazy"
+                                onLoad={() => setImageLoaded(true)}
+                                onError={() => setImageLoaded(false)}
+                                className="w-10 h-10 rounded-full object-cover"
+                              />
+                            ) : (
+                              <IoPersonCircleOutline
+                                size={40}
+                                className="text-primary"
+                              />
+                            )}
+                            <p className="font-medium text-white text-lg">
+                              {user.name}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 ml-1 mb-5">
+                        <Mail size={32} className="text-primary" />
                         <p className="font-medium text-white text-lg">
-                          {user.name}
+                          {user.email}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -268,11 +295,32 @@ const Navbar = ({ offsetTop = 56 }) => {
                 {user ? (
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <IoPersonCircleOutline className="text-4xl text-primary" />
+                      {photoUrl && imageLoaded ? (
+                        <img
+                          src={photoUrl}
+                          alt="profile"
+                          loading="lazy"
+                          onError={() => setImageLoaded(false)}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      ) : (
+                        <IoPersonCircleOutline
+                          size={40}
+                          className="text-primary"
+                        />
+                      )}
                       <p className="font-medium text-white text-lg">
                         {user.name}
                       </p>
                     </div>
+
+                    <div className="flex items-center gap-2 ml-1 mb-5">
+                      <Mail size={32} className="text-primary" />
+                      <p className="font-medium text-white text-lg">
+                        {user.email}
+                      </p>
+                    </div>
+
                     <div className="flex items-center gap-2">
                       <Link
                         to={

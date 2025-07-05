@@ -44,7 +44,7 @@ export const AllFoodCard = () => {
   }, [categoriesData, foodItems.length, categoryCounts, isCategoriesLoading]);
 
   if (isLoading || isCategoriesLoading) {
-    return <Loader comp_Name="AllFoodCard" />;
+    return <Loader comp_Name="Foods" />;
   }
 
   if (isError) {

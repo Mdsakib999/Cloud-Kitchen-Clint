@@ -9,6 +9,7 @@ import {
 } from "react-icons/fi";
 import { SectionHeader } from "../SharedComponent/SectionHeader";
 import { PhoneCall } from "lucide-react";
+import toast from "react-hot-toast";
 
 export const Booking = () => {
   const {
@@ -19,7 +20,9 @@ export const Booking = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    alert("Booking request submitted successfully!");
+    toast.success(
+      <h1 className="text-center font-serif">Request Submitted Successfully</h1>
+    );
     reset();
   };
 
@@ -34,7 +37,7 @@ export const Booking = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-secondary text-white p-8">
+    <div className="min-h-[90vh] bg-bg-secondary text-white p-8 pt-40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Info */}
