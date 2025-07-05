@@ -336,7 +336,7 @@ const AddOffer = () => {
 
         {/* Live Preview with Actual Images */}
         {images.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="hidden md:block bg-white rounded-2xl shadow-xl p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
               Live Preview - How your {images.length} image
               {images.length > 1 ? "s" : ""} will appear

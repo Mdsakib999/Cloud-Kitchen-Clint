@@ -225,7 +225,7 @@ export const AllCustomer = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen text-white">
+    <div className="p-6 min-h-screen text-white mt-16 lg:mt-0">
       <h2 className="text-2xl text-black font-bold my-6 font-inknut">
         All Customers
       </h2>

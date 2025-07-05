@@ -49,7 +49,7 @@ export const CreateBlog = () => {
   };
 
   return (
-    <div className="mt-8 container mx-auto bg-base-300 p-6 rounded-lg">
+    <div className="max-w-6xl mx-auto bg-base-300 p-6 rounded-lg mt-20 md:mt-16">
       <h1 className="text-3xl font-bold text-center text-primary">
         Create a Rich Blog
       </h1>

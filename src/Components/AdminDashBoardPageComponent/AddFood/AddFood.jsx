@@ -68,7 +68,7 @@ export default function AddFood() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 mt-20 md:mt-16">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl"
