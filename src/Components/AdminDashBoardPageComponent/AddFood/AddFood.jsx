@@ -150,7 +150,7 @@ export default function AddFood() {
         </div>
         {/* Ingredients */}
         <fieldset className="mb-6 sm:mb-8">
-          <legend className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 sm:mb-4 gap-2">
+          <legend className="flex flex-col lg:flex-row justify-between items-start sm:items-center mb-2 sm:mb-4 gap-2">
             <h3 className="text-base sm:text-lg font-semibold text-gray-800">
               Ingredients
             </h3>
@@ -163,9 +163,9 @@ export default function AddFood() {
             </button>
           </legend>
 
-          <div className="space-y-2 sm:space-y-3">
+          <div className="space-y-2 lg:space-y-3">
             {ingredientsArray.fields.map((field, idx) => (
-              <div key={field.id} className="flex flex-col xs:flex-row gap-2">
+              <div key={field.id} className="flex flex-col lg:flex-row gap-2">
                 <input
                   type="text"
                   placeholder="Ingredient"
@@ -177,7 +177,7 @@ export default function AddFood() {
                 <button
                   type="button"
                   onClick={() => ingredientsArray.remove(idx)}
-                  className="px-2 py-2 sm:px-4 sm:py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors text-xs sm:text-base"
+                  className="px-2 py-2  sm:px-4 sm:py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors text-xs sm:text-base"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -299,7 +299,7 @@ export default function AddFood() {
                 key={item.id}
                 className="border-2 border-gray-200 rounded-lg p-2 sm:p-6"
               >
-                <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 xs:gap-4 mb-2 sm:mb-4">
+                <div className="flex flex-col lg:flex-row items-stretch xs:items-center gap-2 xs:gap-4 mb-2 sm:mb-4">
                   <input
                     placeholder="Option group name (e.g., Spice Level, Toppings)"
                     className="flex-1 border-2 border-gray-200 rounded-lg p-2 sm:p-3 font-medium focus:border-blue-500 focus:outline-none transition-colors text-xs sm:text-base"

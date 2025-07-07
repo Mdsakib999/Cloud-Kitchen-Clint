@@ -55,7 +55,8 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
 
   const status = order?.order_status || "unknown";
   const paymentStatus = order?.isPaid ? "paid" : "pending";
-  const originalTotal = (order.totalPrice || 0) + (order.discountPrice || 0);
+  const Total = (order.totalPrice || 0) + (order.discountPrice || 0);
+  const originalTotal = Total < 1599 ? Total - 100 : Total;
 
   return (
     <div
@@ -276,7 +277,7 @@ const OrderDetailsModal = ({ orderId, onClose }) => {
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-300">Delivery Charge</p>
                 <p className="text-sm font-semibold text-orange-400">
-                  ৳{order.deliveryCharge || 0}
+                  {originalTotal - order.discountPrice > 1599 ? "৳0" : "৳100"}
                 </p>
               </div>
 
