@@ -20,9 +20,9 @@ export const apiSlice = createApi({
       providesTags: (result, error) =>
         result && Array.isArray(result)
           ? [
-              { type: "Category", id: "LIST" },
-              ...result.map((cat) => ({ type: "Category", id: cat._id })),
-            ]
+            { type: "Category", id: "LIST" },
+            ...result.map((cat) => ({ type: "Category", id: cat._id })),
+          ]
           : [{ type: "Category", id: "LIST" }],
     }),
 
@@ -45,7 +45,6 @@ export const apiSlice = createApi({
         const form = new FormData();
         if (name) form.append("name", name);
         if (imageFile) form.append("image", imageFile);
-        // Always append removeImage as a string ("true" or "false")
         form.append("removeImage", removeImage ? "true" : "false");
         return {
           url: `/admin/categories/${id}`,
@@ -95,31 +94,38 @@ export const apiSlice = createApi({
       invalidatesTags: (result, error, id) => [{ type: "Product", id }],
     }),
 
-    // Public
+    // Public products
     getAllProducts: builder.query({
       query: () => "/user/products",
       providesTags: (result) =>
         result
           ? [
-              { type: "Product", id: "LIST" },
-              ...result.map(({ _id }) => ({ type: "Product", id: _id })),
-            ]
+            { type: "Product", id: "LIST" },
+            ...result.map(({ _id }) => ({ type: "Product", id: _id })),
+          ]
           : [{ type: "Product", id: "LIST" }],
     }),
     getProductById: builder.query({
       query: (id) => `/user/products/${id}`,
-      providesTags: (result, error, id) => [{ type: "Products", id }],
+      providesTags: (result, error, id) => [{ type: "Product", id }],
     }),
     getMenuCategories: builder.query({
       query: () => "/user/get-categories",
       providesTags: (result, error) =>
         result && Array.isArray(result)
           ? [
-              { type: "Category", id: "LIST" },
-              ...result.map((cat) => ({ type: "Category", id: cat._id })),
-            ]
+            { type: "Category", id: "LIST" },
+            ...result.map((cat) => ({ type: "Category", id: cat._id })),
+          ]
           : [{ type: "Category", id: "LIST" }],
     }),
+
+    // Trending products endpoint
+    getTrendingProducts: builder.query({
+      query: (period = "weekly") => `/admin/products/trending?period=${period}`,
+      providesTags: ['TrendingProducts'],
+    }),
+
 
     // Blogs
     getAllBlogs: builder.query({
@@ -195,6 +201,7 @@ export const {
   useGetAllProductsQuery,
   useGetProductByIdQuery,
   useGetMenuCategoriesQuery,
+  useGetTrendingProductsQuery,
   // Blogs
   useGetAllBlogsQuery,
   useGetBlogByIdQuery,
