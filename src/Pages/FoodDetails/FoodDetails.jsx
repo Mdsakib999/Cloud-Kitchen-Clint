@@ -203,7 +203,7 @@ export const FoodDetails = () => {
                           : "bg-gray-100"
                       }`}
                     >
-                      {size.label} (+${size.price.toFixed(2)})
+                      {size.label} (+{size.price.toFixed(2)} Tk)
                     </button>
                   ))}
                 </div>
@@ -233,7 +233,7 @@ export const FoodDetails = () => {
                       >
                         {addon.label}
                         <span className="text-sm font-medium">
-                          (+${addon.price.toFixed(2)})
+                          (+{addon.price.toFixed(2)} Tk)
                         </span>
                       </button>
                     );
@@ -244,25 +244,25 @@ export const FoodDetails = () => {
               {/* Price & Cart */}
               <div className="pt-6">
                 <div className="text-4xl font-bold text-primary pb-2">
-                  ${totalPrice.toFixed(2)}
+                  {totalPrice.toFixed(2)} Tk
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => handleQtyChange(-1)}
-                    className="px-4 py-1  text-white rounded bg-primary  hover:bg-primary/90"
+                    className="cursor-pointer px-4 py-1 text-white rounded bg-primary  hover:bg-primary/90"
                   >
                     −
                   </button>
                   <span className="w-6 text-center text-white">{qty}</span>
                   <button
                     onClick={() => handleQtyChange(+1)}
-                    className="px-4 py-1  text-white rounded bg-primary  hover:bg-primary/90"
+                    className="cursor-pointer px-4 py-1 text-white rounded bg-primary  hover:bg-primary/90"
                   >
                     +
                   </button>
                   <button
                     onClick={handleAddToCart}
-                    className="ml-4 px-8 py-3 bg-primary text-white rounded-full hover:bg-primary-dark"
+                    className="cursor-pointer ml-4 px-8 py-3 bg-primary text-white rounded-full hover:bg-primary-dark"
                   >
                     Add to Cart
                   </button>

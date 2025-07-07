@@ -2,16 +2,11 @@ import { Star } from "lucide-react";
 import { useGetReviewsQuery } from "../../redux/apiSlice";
 
 export const PreviousReviews = ({ productId, foodTitle }) => {
-  const {
-    data, // data is { reviews: [...], page, pages, total }
-    isLoading,
-    isError,
-  } = useGetReviewsQuery({ productId });
-
-  // 1) Safely grab the inner array
+  console.log(productId, foodTitle);
+  const { data, isLoading, isError } = useGetReviewsQuery({ productId });
+  console.log(data, isLoading, isError);
   const reviewsArray = Array.isArray(data?.reviews) ? data.reviews : [];
 
-  // 2) (Optional) filter by dish if your backend includes a `dish` prop
   const filtered = reviewsArray.filter((r) => r.dish === foodTitle);
 
   const renderStars = (rating) => {
