@@ -1,154 +1,47 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useGetTrendingProductsQuery } from "../../../redux/apiSlice";
 
 export const TrendingItems = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState("Weekly");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState("Weekly");
 
-  // Sample trending items data
-  const trendingData = {
-    Weekly: [
-      {
-        id: 1,
-        rank: 1,
-        name: "Tuna Soup Spinach with himalaya salt",
-        price: 12.56,
-        category: "MAIN COURSE",
-        sales: 524,
-        trend: "up",
-        percentage: 12,
-        image: "🍲",
-      },
-      {
-        id: 2,
-        rank: 2,
-        name: "Tuna Soup Spinach with himalaya salt",
-        price: 12.56,
-        category: "MAIN COURSE",
-        sales: 215,
-        trend: "down",
-        percentage: 2,
-        image: "🍲",
-      },
-      {
-        id: 3,
-        rank: 3,
-        name: "Tuna Soup Spinach with himalaya salt",
-        price: 12.56,
-        category: "MAIN COURSE",
-        sales: 524,
-        trend: "up",
-        percentage: 12,
-        image: "🍲",
-      },
-      {
-        id: 4,
-        rank: 4,
-        name: "Tuna Soup Spinach with himalaya salt",
-        price: 12.56,
-        category: "MAIN COURSE",
-        sales: 524,
-        trend: "up",
-        percentage: 12,
-        image: "🍲",
-      },
-    ],
-    Daily: [
-      {
-        id: 1,
-        rank: 1,
-        name: "Caesar Salad with Grilled Chicken",
-        price: 15.99,
-        category: "SALAD",
-        sales: 89,
-        trend: "up",
-        percentage: 8,
-        image: "🥗",
-      },
-      {
-        id: 2,
-        rank: 2,
-        name: "Beef Burger with Sweet Potato Fries",
-        price: 18.5,
-        category: "MAIN COURSE",
-        sales: 67,
-        trend: "up",
-        percentage: 15,
-        image: "🍔",
-      },
-      {
-        id: 3,
-        rank: 3,
-        name: "Margherita Pizza",
-        price: 14.25,
-        category: "PIZZA",
-        sales: 45,
-        trend: "down",
-        percentage: 3,
-        image: "🍕",
-      },
-      {
-        id: 4,
-        rank: 4,
-        name: "Chocolate Lava Cake",
-        price: 8.99,
-        category: "DESSERT",
-        sales: 38,
-        trend: "up",
-        percentage: 22,
-        image: "🍰",
-      },
-    ],
-    Monthly: [
-      {
-        id: 1,
-        rank: 1,
-        name: "Signature Pasta Carbonara",
-        price: 16.75,
-        category: "PASTA",
-        sales: 1250,
-        trend: "up",
-        percentage: 18,
-        image: "🍝",
-      },
-      {
-        id: 2,
-        rank: 2,
-        name: "Grilled Salmon with Vegetables",
-        price: 24.99,
-        category: "SEAFOOD",
-        sales: 980,
-        trend: "up",
-        percentage: 25,
-        image: "🐟",
-      },
-      {
-        id: 3,
-        rank: 3,
-        name: "Chicken Tikka Masala",
-        price: 19.5,
-        category: "CURRY",
-        sales: 875,
-        trend: "down",
-        percentage: 5,
-        image: "🍛",
-      },
-      {
-        id: 4,
-        rank: 4,
-        name: "Vegetarian Buddha Bowl",
-        price: 13.25,
-        category: "HEALTHY",
-        sales: 650,
-        trend: "up",
-        percentage: 30,
-        image: "🥙",
-      },
-    ],
-  };
+  const {
+    data = [],
+    isLoading,
+    error,
+  } = useGetTrendingProductsQuery(selectedPeriod.toLowerCase(), {
+    pollingInterval: 30000,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
+
+  if (isLoading)
+    return (
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 w-full max-w-2xl">
+        <div className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          <span className="ml-2 text-gray-600">
+            Loading trending products...
+          </span>
+        </div>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 w-full max-w-2xl">
+        <div className="text-center text-red-500 py-8">
+          <p>Error loading trending products</p>
+          <p className="text-sm text-gray-500 mt-1">
+            {error?.message || "Please try again later"}
+          </p>
+        </div>
+      </div>
+    );
 
   const periods = ["Daily", "Weekly", "Monthly"];
-  const currentItems = trendingData[selectedPeriod];
+  const currentItems = data;
 
   const TrendIcon = ({ trend, percentage }) => {
     if (trend === "up") {
@@ -159,6 +52,7 @@ export const TrendingItems = () => {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-label="Trending up"
           >
             <path
               strokeLinecap="round"
@@ -178,6 +72,7 @@ export const TrendingItems = () => {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-label="Trending down"
           >
             <path
               strokeLinecap="round"
@@ -192,45 +87,72 @@ export const TrendingItems = () => {
     }
   };
 
-  const TrendingItem = ({ item }) => (
-    <div className="flex items-center justify-between py-4 border-b border-gray-100 last:border-b-0">
+  const TrendingItem = ({ item, rank }) => (
+    <div className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
       {/* Left side - Rank, Image, Details */}
-      <div className="flex items-center space-x-4 flex-1">
+      <div className="flex items-center space-x-3 flex-1">
         {/* Rank */}
-        <div className="text-lg font-bold text-gray-800 w-8">#{item.rank}</div>
+        <div className="text-lg font-bold text-gray-800 w-6 text-center">
+          #{rank}
+        </div>
 
         {/* Food Image */}
-        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
-          {item.image}
+        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg">
+          {item.image && item.image.startsWith("http") ? (
+            <img
+              src={item.image}
+              alt={item.name}
+              className="w-full h-full object-cover rounded-lg"
+              onError={(e) => {
+                e.target.style.display = "none";
+                e.target.nextSibling.style.display = "flex";
+              }}
+            />
+          ) : (
+            <span>{item.image || "🍽️"}</span>
+          )}
+          <span
+            style={{ display: "none" }}
+            className="flex items-center justify-center w-full h-full"
+          >
+            🍽️
+          </span>
         </div>
 
         {/* Item Details */}
-        <div className="flex-1">
-          <h3 className="font-medium text-gray-900 text-sm leading-tight mb-1">
+        <div className="flex-1 min-w-0">
+          <h3 className="font-medium text-gray-900 text-sm leading-tight mb-1 truncate">
             {item.name}
           </h3>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             <span className="text-sm font-semibold text-gray-800">
-              ${item.price}
+              ${item.totalRevenue ? item.totalRevenue.toFixed(2) : "0.00"}
             </span>
-            <span className="text-xs text-teal-600 font-medium bg-teal-50 px-2 py-1 rounded">
-              {item.category}
+            <span className="text-xs text-teal-600 font-medium bg-teal-50 px-2 py-0.5 rounded">
+              {typeof item.category === "string"
+                ? item.category
+                : item.category?.name || "Unknown"}
             </span>
           </div>
         </div>
       </div>
 
       {/* Right side - Trend and Sales */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-3">
         {/* Trend Indicator */}
-        <div className="flex flex-col items-center">
-          <TrendIcon trend={item.trend} percentage={item.percentage} />
+        <div className="flex flex-col items-center min-w-0">
+          <TrendIcon
+            trend={item.trend || "up"}
+            percentage={item.percentage || 0}
+          />
         </div>
 
         {/* Sales */}
-        <div className="text-right">
-          <div className="text-lg font-bold text-gray-900">{item.sales}</div>
-          <div className="text-xs text-gray-500">Sales({item.percentage}%)</div>
+        <div className="text-right min-w-0">
+          <div className="text-base font-bold text-gray-900">
+            {item.sales || 0}
+          </div>
+          <div className="text-xs text-gray-500">Sales</div>
         </div>
       </div>
     </div>
@@ -241,9 +163,10 @@ export const TrendingItems = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
-          {/* Fire Icon */}
           <div className="text-orange-500 text-xl">🔥</div>
-          <h2 className="text-xl font-bold text-gray-900">Trending Items</h2>
+          <h2 className="text-xl font-bold text-gray-900">
+            Top 6 Trending Items
+          </h2>
         </div>
 
         {/* Period Dropdown */}
@@ -251,6 +174,8 @@ export const TrendingItems = () => {
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="flex items-center space-x-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+            aria-label="Select time period"
+            aria-expanded={isDropdownOpen}
           >
             <span className="font-medium">{selectedPeriod}</span>
             <div className="flex items-center space-x-1">
@@ -289,8 +214,22 @@ export const TrendingItems = () => {
 
       {/* Trending Items List */}
       <div className="space-y-0">
-        {currentItems.map((item) => (
-          <TrendingItem key={item.id} item={item} />
+        {currentItems.length === 0 && !isLoading && (
+          <div className="text-center text-gray-500 py-8">
+            <div className="text-4xl mb-2">📊</div>
+            <p>
+              No trending products found for {selectedPeriod.toLowerCase()}{" "}
+              period.
+            </p>
+            <p className="text-sm mt-1">Try a different time period.</p>
+          </div>
+        )}
+        {currentItems.map((item, idx) => (
+          <TrendingItem
+            key={item.id || item._id || idx}
+            item={item}
+            rank={item.rank || idx + 1}
+          />
         ))}
       </div>
 
