@@ -41,10 +41,12 @@ export const apiSlice = createApi({
     }),
 
     editCategory: builder.mutation({
-      query: ({ id, name, imageFile }) => {
+      query: ({ id, name, imageFile, removeImage }) => {
         const form = new FormData();
         if (name) form.append("name", name);
         if (imageFile) form.append("image", imageFile);
+        // Always append removeImage as a string ("true" or "false")
+        form.append("removeImage", removeImage ? "true" : "false");
         return {
           url: `/admin/categories/${id}`,
           method: "PUT",

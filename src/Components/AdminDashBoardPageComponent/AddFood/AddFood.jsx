@@ -7,6 +7,7 @@ import {
 } from "../../../redux/apiSlice";
 import ImageUploader from "./ImageUploader";
 import DynamicFieldArray from "./DynamicFieldArray";
+import toast from "react-hot-toast";
 
 export default function AddFood() {
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -61,7 +62,9 @@ export default function AddFood() {
       uploadedImages.forEach((u) => URL.revokeObjectURL(u.preview));
       setUploadedImages([]);
       reset();
-      alert("Product added successfully");
+      toast.success(
+        <h1 className="text-center font-serif">Food added successfully</h1>
+      );
     } catch (err) {
       console.error(err);
     }
@@ -237,6 +240,7 @@ export default function AddFood() {
             </label>
             <input
               type="number"
+              min={1}
               className="w-full border-2 border-gray-200 rounded-lg p-3 focus:border-blue-500 focus:outline-none transition-colors"
               {...register("servings", {
                 min: { value: 1, message: "At least 1 serving required" },
@@ -389,7 +393,7 @@ export default function AddFood() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-3 sm:py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors text-base sm:text-lg"
+          className="cursor-pointer w-full py-3 sm:py-4 bg-primary hover:bg-amber-500 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors text-base sm:text-lg"
         >
           {isLoading ? "Saving..." : "Save Food Item"}
         </button>

@@ -95,14 +95,14 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
   return (
     <aside
       className={`
-    flex flex-col overflow-y-auto font-serif
+    flex flex-col font-serif
     ${isAdmin ? "bg-white border-r border-gray-200" : "bg-bg-secondary"}
-    lg:fixed min-h-screen top-16 lg:w-72
-    h-[calc(100vh-8rem)]  
+    lg:fixed top-16 lg:w-72
+    h-[calc(100vh-4rem)]
   `}
     >
       {/* Header Section - Fixed */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-200 pt-10">
+      <div className="flex-shrink-0 p-4 border-b border-gray-200 pt-6 pb-2 relative">
         {/* Close button for mobile */}
         <button
           onClick={closeSidebar}
@@ -121,7 +121,7 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
 
         <h2
           className={`
-            text-xl font-bold text-center mt-8 lg:mt-0
+            text-xl font-bold text-center mt-2 lg:mt-0
             ${isAdmin ? "text-black" : "text-white"}
           `}
         >
@@ -130,7 +130,7 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
       </div>
 
       {/* Navigation Menu - Scrollable */}
-      <nav className="flex-1 overflow-y-auto p-4">
+      <nav className="flex-1 min-h-0 overflow-y-auto p-4 custom-scrollbar">
         <div className="flex flex-col gap-2">
           {routesToRender.map(({ label, icon, path }) => {
             const isActive = pathname === path;

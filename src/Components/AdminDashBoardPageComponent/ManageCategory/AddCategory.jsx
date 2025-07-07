@@ -12,15 +12,16 @@ import Swal from "sweetalert2";
 
 export const AddCategory = () => {
   const { data: categories = [], isLoading, error } = useGetCategoriesQuery();
-  const [addCategory] = useAddCategoryMutation();
-  const [editCategory] = useEditCategoryMutation();
-  const [deleteCategory] = useDeleteCategoryMutation();
+  const [addCategory, { isLoading: isAdding }] = useAddCategoryMutation();
+  const [editCategory, { isLoading: isEditing }] = useEditCategoryMutation();
+  const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation();
   const [categoryName, setCategoryName] = useState("");
   const [editId, setEditId] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
+  const [loadingId, setLoadingId] = useState(null); // for delete button loading
 
   useEffect(() => {
     if (editId) {
@@ -50,6 +51,7 @@ export const AddCategory = () => {
           id: editId,
           name: categoryName.toUpperCase(),
           imageFile, // This will be null if no new image selected
+          removeImage: !imageFile && !imagePreview, // true if image was removed
         }).unwrap();
         showToast({
           title: "Updated",
@@ -96,7 +98,7 @@ export const AddCategory = () => {
     });
 
     if (!result.isConfirmed) return;
-
+    setLoadingId(id);
     try {
       await deleteCategory(id).unwrap();
       showToast({
@@ -104,7 +106,6 @@ export const AddCategory = () => {
         text: "Category deleted",
         icon: "success",
       });
-
       if (editId === id) {
         setEditId(null);
         setCategoryName("");
@@ -117,6 +118,8 @@ export const AddCategory = () => {
         text: "Failed to delete category",
         icon: "error",
       });
+    } finally {
+      setLoadingId(null);
     }
   };
 
@@ -300,7 +303,7 @@ export const AddCategory = () => {
                         onClick={() =>
                           document.getElementById("category-image").click()
                         }
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                        className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
                       >
                         Browse Files
                       </button>
@@ -321,20 +324,28 @@ export const AddCategory = () => {
                   type="button"
                   onClick={handleCancelEdit}
                   className="px-8 py-3 rounded-xl font-semibold bg-slate-700 text-white hover:bg-slate-600"
+                  disabled={isAdding || isEditing}
                 >
                   Cancel
                 </button>
               )}
               <button
                 type="submit"
-                disabled={!categoryName.trim()}
-                className={`px-8 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                  categoryName.trim()
+                disabled={!categoryName.trim() || isAdding || isEditing}
+                className={`cursor-pointer px-8 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                  categoryName.trim() && !(isAdding || isEditing)
                     ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl"
                     : "bg-slate-700 text-white cursor-not-allowed"
                 }`}
               >
-                {editId ? "Update Category" : "Create Category"}
+                {(isAdding || isEditing) ? (
+                  <span className="flex items-center gap-2 justify-center">
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+                    {editId ? "Updating..." : "Creating..."}
+                  </span>
+                ) : (
+                  editId ? "Update Category" : "Create Category"
+                )}
               </button>
             </div>
           </div>
@@ -375,17 +386,23 @@ export const AddCategory = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => handleEdit(category._id)}
-                    className="text-blue-500 hover:text-blue-400 transition p-1 rounded"
+                    className="cursor-pointer text-blue-500 hover:text-blue-400 transition p-1 rounded"
                     title="Edit category"
+                    disabled={isAdding || isEditing || isDeleting}
                   >
                     <FaEdit />
                   </button>
                   <button
                     onClick={() => handleDelete(category._id)}
-                    className="text-red-500 hover:text-red-400 transition p-1 rounded"
+                    className="cursor-pointer text-red-500 hover:text-red-400 transition p-1 rounded"
                     title="Delete category"
+                    disabled={isAdding || isEditing || isDeleting || loadingId === category._id}
                   >
-                    <FaTrash />
+                    {loadingId === category._id ? (
+                      <svg className="animate-spin h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+                    ) : (
+                      <FaTrash />
+                    )}
                   </button>
                 </div>
               </div>
