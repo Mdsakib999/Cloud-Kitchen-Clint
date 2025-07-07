@@ -7,6 +7,7 @@ const OrderList = ({
   isFetching,
   onRefresh,
   onViewOrder,
+  onReorder,
 }) => {
   if (orders.length === 0) {
     return (
@@ -50,6 +51,7 @@ const OrderList = ({
             key={order._id}
             order={order}
             onView={() => onViewOrder(order._id)}
+            onReorder={() => onReorder(order)}
           />
         ))}
       </div>

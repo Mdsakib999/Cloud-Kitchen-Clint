@@ -10,7 +10,6 @@ const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
   const { user } = useAuth();
-  console.log(user);
 
   const [deleteTarget, setDeleteTarget] = useState(null);
 
