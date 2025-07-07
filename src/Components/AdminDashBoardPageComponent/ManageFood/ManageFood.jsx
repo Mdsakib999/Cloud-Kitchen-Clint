@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useGetAllProductsQuery,
   useDeleteProductMutation,
+  useGetCategoriesQuery,
 } from "../../../redux/apiSlice";
 import { Loader } from "../../SharedComponent/Loader";
 import Swal from "sweetalert2";
@@ -16,8 +17,12 @@ export default function ManageFood() {
     isError,
     error,
   } = useGetAllProductsQuery();
+  const { data: categories = [] } = useGetCategoriesQuery();
+
   const [deleteProduct] = useDeleteProductMutation();
   const [deletingId, setDeletingId] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
@@ -49,9 +54,44 @@ export default function ManageFood() {
       <p className="p-8 text-center text-red-600">Error: {error.toString()}</p>
     );
 
+  //  Filtered products based on search and category
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.title
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+    const matchesCategory =
+      !selectedCategory || product.category?.name === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <div className="min-h-screen bg-gray-50 p-8 mt-16 md:mt-8">
       <h1 className="text-3xl font-bold my-6 font-inknut">Manage Food Items</h1>
+
+      {/*  Search and Filter Controls */}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+        <input
+          type="text"
+          placeholder="Search by title..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="border px-3 py-2 rounded-md w-full md:w-1/3"
+        />
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="border px-3 py-2 rounded-md w-full md:w-1/4"
+        >
+          <option value="">All Categories</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat.name}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/*  Table */}
       <div className="overflow-x-auto bg-white shadow rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
@@ -64,7 +104,7 @@ export default function ManageFood() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <tr key={product._id} className="font-serif">
                 <td className="px-6 py-4">
                   <img
@@ -99,7 +139,9 @@ export default function ManageFood() {
                 </td>
               </tr>
             ))}
-            {!products.length && (
+
+            {/* No matching result */}
+            {filteredProducts.length === 0 && (
               <tr>
                 <td
                   colSpan={5}
