@@ -20,15 +20,12 @@ export const FoodDetails = () => {
   const userId = user?._id;
   const food = state?.item;
 
-  const { data: orders = [], isLoading } = useGetOrdersByUserQuery(userId, {
+  const { data: orders = [] } = useGetOrdersByUserQuery(userId, {
     skip: !userId,
   });
-  // foodId
-  // const orderId = orders.map((id) => id._id);
 
   const [hasPurchased, setHasPurchased] = useState(false);
   const [orderId, setOrderId] = useState(null);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [mainImage, setMainImage] = useState("");
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedAddons, setSelectedAddons] = useState([]);

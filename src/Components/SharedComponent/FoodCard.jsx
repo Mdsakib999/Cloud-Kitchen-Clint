@@ -11,7 +11,7 @@ const FoodCard = ({ item }) => {
     <div className="text-center group">
       <div
         key={item._id}
-        className="bg-bg-secondary rounded-bl-4xl rounded-tr-4xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-700 hover:border-primary overflow-hidden group"
+        className="bg-bg-secondary rounded-3xl  shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-700 hover:border-primary overflow-hidden group"
       >
         <div className="relative">
           <img

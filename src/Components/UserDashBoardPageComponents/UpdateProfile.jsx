@@ -32,7 +32,6 @@ export const UpdateProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  console.log(user);
 
   const {
     register,
