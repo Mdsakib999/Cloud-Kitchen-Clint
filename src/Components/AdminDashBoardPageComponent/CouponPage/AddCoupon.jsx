@@ -186,13 +186,15 @@ const AddCoupon = () => {
           <label className="text-sm text-gray-700 font-medium">Active</label>
         </div>
 
-        <button
+
+          <button
           type="submit"
           disabled={loading}
-          className="cursor-pointer md:col-span-2 bg-primary disabled:bg-gray-400 text-white py-2 rounded-md hover:bg-amber-600 transition duration-200 shadow"
+          className="cursor-pointer md:col-span-2 bg-primary disabled:bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-amber-600 transition duration-200 shadow "
         >
           {loading ? "Creating..." : "Create Coupon"}
         </button>
+
       </form>
     </div>
   );

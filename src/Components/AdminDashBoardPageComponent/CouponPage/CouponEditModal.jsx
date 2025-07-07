@@ -43,7 +43,7 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-2xl font-semibold text-gray-800">Edit Coupon</h2>
@@ -89,7 +89,7 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
                         message: "Code must be at least 2 characters",
                       },
                     })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-1 outline-none focus:ring-yellow-400 transition-colors ${
                       errors.code ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter coupon code"
@@ -108,7 +108,7 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
                     {...register("type", {
                       required: "Please select discount type",
                     })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-1 outline-none focus:ring-yellow-400 transition-colors ${
                       errors.type ? "border-red-500" : "border-gray-300"
                     }`}
                   >
@@ -151,7 +151,7 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
                             }
                           : undefined,
                     })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-1 outline-none focus:ring-yellow-400  transition-colors ${
                       errors.discountAmount
                         ? "border-red-500"
                         : "border-gray-300"
@@ -178,7 +178,7 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
                         message: "Amount cannot be negative",
                       },
                     })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-1 outline-none focus:ring-yellow-400 transition-colors ${
                       errors.minPurchaseAmount
                         ? "border-red-500"
                         : "border-gray-300"
@@ -209,7 +209,7 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
                     {...register("startDate", {
                       required: "Start date is required",
                     })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-1 outline-none focus:ring-yellow-400 transition-colors ${
                       errors.startDate ? "border-red-500" : "border-gray-300"
                     }`}
                   />
@@ -229,7 +229,7 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
                       required: "End date is required",
                       validate: validateEndDate,
                     })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-1 outline-none focus:ring-yellow-400 transition-colors ${
                       errors.endDate ? "border-red-500" : "border-gray-300"
                     }`}
                   />
@@ -261,7 +261,7 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
                         message: "Usage limit must be at least 1",
                       },
                     })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-1 outline-none focus:ring-yellow-400 transition-colors ${
                       errors.usageLimit ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter usage limit"
@@ -272,13 +272,13 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
                     </p>
                   )}
                 </div>
-                <div className="flex items-center">
+                <div className="flex  mt-5">
                   <div className="flex items-center h-full">
                     <label className="flex items-center cursor-pointer">
                       <input
                         type="checkbox"
                         {...register("isActive")}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded "
                       />
                       <span className="ml-2 text-sm font-medium text-gray-700">
                         Active Coupon
@@ -295,14 +295,14 @@ const CouponEditModal = ({ coupon, onClose, onSave }) => {
             <button
               type="button"
               onClick={onClose}
-              className="cursor-pointer px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              className="cursor-pointer px-6 py-2 text-sm font-medium  bg-red-500 text-white border border-gray-300 rounded-lg hover:bg-red-700 focus:outline-none transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               onClick={handleSubmit(onSubmit)}
-              className="cursor-pointer px-6 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              className="cursor-pointer px-6 py-2 text-sm font-medium text-white bg-yellow-500 border  rounded-lg hover:bg-yellow-600  transition-colors"
             >
               Save Changes
             </button>
