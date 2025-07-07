@@ -50,7 +50,6 @@ export default function EditFoodForm() {
       title: product?.title || "",
       description: product?.description || "",
       category: product?.category?._id || "",
-      description: product?.description || "",
       cookTime: product?.cookTime || "",
       servings: product?.servings || 1,
       ingredients: product?.ingredients || [""],
