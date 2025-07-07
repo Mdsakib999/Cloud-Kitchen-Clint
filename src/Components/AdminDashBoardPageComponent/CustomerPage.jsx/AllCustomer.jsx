@@ -1,13 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Eye,
-  Search,
-  ChevronUp,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Trash2,
-} from "lucide-react";
+import { Eye, Search, Trash2 } from "lucide-react";
 import { formatDate } from "../../../utils/formatDate";
 import axiosInstance from "../../../Utils/axios";
 import { useAuth } from "../../../providers/AuthProvider";
@@ -16,13 +8,12 @@ import { FaUserShield } from "react-icons/fa";
 import Swal from "sweetalert2";
 import showToast from "../../../utils/ShowToast";
 import { Loader } from "../../SharedComponent/Loader";
+import Pagination from "../../SharedComponent/Pagination";
 
 export const AllCustomer = () => {
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortField, setSortField] = useState("");
-  const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
@@ -65,63 +56,18 @@ export const AllCustomer = () => {
       (customer.phone || "").includes(searchTerm)
   );
 
-  // Sort customers
-  const sortedCustomers = !sortField
-    ? filteredCustomers
-    : [...filteredCustomers].sort((a, b) => {
-        let aValue = a[sortField];
-        let bValue = b[sortField];
-
-        if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-        if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-        return 0;
-      });
-
   // Pagination
-  const totalPages = Math.ceil(sortedCustomers.length / itemsPerPage);
+  const totalPages = Math.ceil(customers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedCustomers = sortedCustomers.slice(
+  const paginatedCustomers = filteredCustomers.slice(
     startIndex,
     startIndex + itemsPerPage
   );
-
-  const handleSort = (field) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const getSortIcon = (field) => {
-    if (sortField !== field) return null;
-    return sortDirection === "asc" ? (
-      <ChevronUp size={16} />
-    ) : (
-      <ChevronDown size={16} />
-    );
-  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const getPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-    return pages;
-  };
   const makeAdmin = async (id) => {
     const confirm = await Swal.fire({
       title: "Are you sure?",
@@ -243,7 +189,7 @@ export const AllCustomer = () => {
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
-              setCurrentPage(1); // Reset to first page when searching
+              setCurrentPage(1);
             }}
             className="border border-emerald-600 focus:outline-none w-full pl-10 pr-4 py-2.5 bg-white/10 rounded-lg text-emerald-50 placeholder-white focus:ring-2 focus:ring-emerald-600"
           />
@@ -254,32 +200,14 @@ export const AllCustomer = () => {
         <table className="min-w-full text-left rounded-2xl">
           <thead className="bg-emerald-900 text-emerald-100 text-sm uppercase tracking-wider font-serif">
             <tr>
-              <th
-                className="px-4 py-3 cursor-pointer hover:bg-emerald-100 select-none transition-colors"
-                onClick={() => handleSort("id")}
-              >
-                <div className="flex items-center justify-between">
-                  CID
-                  {getSortIcon("id")}
-                </div>
+              <th className="px-4 py-3">
+                <div className="flex items-center justify-between">CID</div>
               </th>
-              <th
-                className="px-4 py-3 cursor-pointer hover:bg-emerald-200/60 select-none transition-colors"
-                onClick={() => handleSort("name")}
-              >
-                <div className="flex items-center justify-between">
-                  Name
-                  {getSortIcon("name")}
-                </div>
+              <th className="px-4 py-3">
+                <div className="flex items-center justify-between">Name</div>
               </th>
-              <th
-                className="px-4 py-3 cursor-pointer hover:bg-emerald-200/60 select-none transition-colors"
-                onClick={() => handleSort("email")}
-              >
-                <div className="flex items-center justify-between">
-                  Email
-                  {getSortIcon("email")}
-                </div>
+              <th className="px-4 py-3">
+                <div className="flex items-center justify-between">Email</div>
               </th>
               <th className="px-4 py-3 font-serif">Number</th>
               <th className="px-4 py-3 font-serif">Role</th>
@@ -373,45 +301,14 @@ export const AllCustomer = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-6 ">
-          <div className="text-sm text-gray-400">
-            Showing {startIndex + 1} to{" "}
-            {Math.min(startIndex + itemsPerPage, sortedCustomers.length)} of{" "}
-            {sortedCustomers.length} customers
-          </div>
-
-          <div className="flex items-center space-x-2 bg-bg-secondary rounded-lg p-4">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              <ChevronLeft size={20} />
-            </button>
-
-            {getPageNumbers().map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`px-3 py-2 rounded-lg transition-colors ${
-                  currentPage === page
-                    ? "bg-primary text-white"
-                    : "bg-white/10 text-white hover:bg-white/20"
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-        </div>
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          totalItems={filteredCustomers.length}
+          startIndex={startIndex}
+          itemsPerPage={itemsPerPage}
+        />
       )}
 
       {/* Enhanced Modal */}

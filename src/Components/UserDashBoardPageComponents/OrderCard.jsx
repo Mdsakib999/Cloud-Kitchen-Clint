@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
 import { GetStatusColor } from "../SharedComponent/GetStatusColor";
 import { GetPaymentStatusColor } from "../SharedComponent/GetPaymentStatusColor";
+import { Eye, XCircle, Truck, Repeat } from "lucide-react";
 
 const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
   const status = order.status || order.order_status || "unknown";
@@ -78,38 +79,42 @@ const OrderCard = ({ order, onView, onCancel, onReorder, onTrack }) => {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:ml-4">
+          {/* Cancel Button */}
           {status === "pending" && (
             <button
               onClick={() => onCancel(order._id)}
-              className="flex items-center justify-center px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition-all"
+              className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-xl shadow hover:bg-red-700 transition-all"
             >
-              Cancel Order
+              <XCircle size={16} /> Cancel Order
             </button>
           )}
 
+          {/* View Details Button */}
           <button
             onClick={() => onView(order._id)}
-            className="flex items-center justify-center px-4 py-2 text-sm font-medium bg-emerald-600 text-white rounded-xl shadow hover:bg-emerald-900 transition-all"
+            className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium bg-emerald-600 text-white rounded-xl shadow hover:bg-emerald-900 transition-all"
           >
-            View Details
+            <Eye size={16} /> View Details
           </button>
 
+          {/* Track Order Link */}
           {["accepted", "preparing", "delivering"].includes(status) && (
             <Link
               to={`/order-track/${order._id}`}
               onClick={() => onTrack(order)}
-              className="flex items-center justify-center px-4 py-2 text-sm font-medium bg-primary text-white rounded-xl shadow hover:bg-primary/90 transition-all"
+              className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-white rounded-xl shadow hover:bg-primary/90 transition-all"
             >
-              Track Order
+              <Truck size={16} /> Track Order
             </Link>
           )}
 
+          {/* Reorder Button */}
           {status === "delivered" && (
             <button
               onClick={() => onReorder(order)}
-              className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition-all"
+              className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition-all"
             >
-              Reorder
+              <Repeat size={16} /> Reorder
             </button>
 
             // <div className="grid grid-cols-2 gap-3">
