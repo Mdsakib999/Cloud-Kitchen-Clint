@@ -6,11 +6,15 @@ import FilterControls from "./FilterControls";
 import OrderList from "./OrderList";
 import OrderDetailsModal from "./OrderDetailsModal";
 import showToast from "../../utils/ShowToast";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
+import { useGetAllProductsQuery } from "../../redux/apiSlice";
 
 export const OrderHistory = () => {
+  const dispatch = useDispatch();
   const { user } = useAuth();
   const userId = user?._id;
-
+  const { data: allFoods } = useGetAllProductsQuery();
   const {
     data: orders = [],
     isLoading,
@@ -72,6 +76,57 @@ export const OrderHistory = () => {
     setStatusFilter("all");
     setPaymentFilter("all");
   };
+  const handleReorder = (order) => {
+    if (!Array.isArray(order?.items)) return;
+
+    order.items.forEach((item) => {
+      const foodId = item.food || item._id;
+      if (!foodId) return;
+
+      // Find full food info (to get the image)
+      const foodDetails = allFoods?.find((f) => f._id === foodId);
+
+      // Normalize addons
+      const normalizedAddons = Array.isArray(item.addons)
+        ? item.addons.map((addon) => ({
+            label:
+              addon.qty && addon.qty > 1
+                ? `${addon.name} ×${addon.qty}`
+                : addon.name || addon.label || "Addon",
+            price: addon.price * (addon.qty || 1),
+          }))
+        : [];
+
+      const compositeId = [
+        foodId,
+        item.size || "Regular",
+        ...normalizedAddons.map((a) => a.label),
+      ].join("__");
+
+      const basePrice = item.price || foodDetails?.price || 0;
+      const addonsPrice = normalizedAddons.reduce((sum, a) => sum + a.price, 0);
+      const totalPrice = basePrice + addonsPrice;
+
+      dispatch(
+        addToCart({
+          _id: compositeId,
+          baseId: foodId,
+          name:
+            item.name || foodDetails?.title || foodDetails?.name || "Unnamed",
+          image: item.image || foodDetails?.images?.[0]?.url || "/fallback.jpg",
+          price: totalPrice,
+          size: item.size || "Regular",
+          quantity: item.qty || 1,
+          addons: normalizedAddons,
+        })
+      );
+    });
+
+    showToast({
+      title: "Order added to cart",
+      icon: "success",
+    });
+  };
 
   if (isLoading && !orders.length) return <Loader />;
 
@@ -101,6 +156,7 @@ export const OrderHistory = () => {
           isFetching={isFetching}
           onRefresh={refetch}
           onViewOrder={handleViewOrder}
+          onReorder={handleReorder}
         />
 
         {showModal && selectedOrderId && (
