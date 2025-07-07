@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 
-const InfoBar = () => {
+const InfoBar = ({ isTransparent }) => {
   return (
-    <div className="w-full fixed top-0 left-0 z-50 bg-transparent text-white font-inknut">
+    <div
+      className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 font-inknut ${
+        isTransparent
+          ? "bg-transparent text-white"
+          : "bg-bg-primary text-white shadow-lg"
+      }`}
+    >
       <div className="mx-auto flex justify-between items-center px-6 py-4 h-14 border-b border-b-gray-400">
         <div className="text-sm md:text-base">
           <span>

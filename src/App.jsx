@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Components/SharedComponent/Navbar";
 import Footer from "./Components/SharedComponent/Footer";
@@ -6,12 +6,22 @@ import InfoBar from "./Components/SharedComponent/InfoBar";
 import { ScrollToTop } from "./utils/ScrollToTop";
 
 function App() {
-  const [isTransparent, setIsTransparent] = useState(true);
+  const [showInfoBar, setShowInfoBar] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true);
   const location = useLocation();
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsTransparent(window.scrollY < 80);
+      const currentScrollY = window.scrollY;
+      setIsAtTop(currentScrollY < 80);
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        setShowInfoBar(false);
+      } else if (currentScrollY < lastScrollY.current) {
+        setShowInfoBar(true);
+      }
+
+      lastScrollY.current = currentScrollY;
     };
 
     handleScroll();
@@ -21,10 +31,10 @@ function App() {
 
   return (
     <div className="bg-bg-primary min-h-screen">
-      <ScrollToTop />
-      {isTransparent && <InfoBar />}
-      <Navbar offsetTop={isTransparent ? 56 : 0} />
+      {showInfoBar && <InfoBar isTransparent={isAtTop} />}
+      <Navbar offsetTop={showInfoBar ? 56 : 0} />
       <div className="min-h-[calc(100vh-196px)]">
+        <ScrollToTop />
         <Outlet />
       </div>
       <Footer />

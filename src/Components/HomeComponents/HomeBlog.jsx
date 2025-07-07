@@ -29,7 +29,7 @@ export const HomeBlog = () => {
             key={post._id}
             className="bg-bg-secondary rounded-md text-white flex flex-col h-[480px]"
           >
-            <figure className="h-64 w-full p-2">
+            <figure className="h-64 w-full p-">
               <img
                 src={post.image || "/fallback.jpg"}
                 alt={post.title}
@@ -41,14 +41,14 @@ export const HomeBlog = () => {
               to={`/blog-details/${post._id}`}
               className="flex-1 flex flex-col"
             >
-              <article className="p-4 flex flex-col flex-1 justify-between">
+              <article className="p-3 flex flex-col flex-1 justify-between">
                 <div>
                   <div className="flex justify-between items-center mb-2 text-white/70 text-sm">
                     <p className="flex gap-2 items-center">
                       <FaCalendar className="text-primary w-4 h-4" />{" "}
                       {formatDate(post.createdAt)}
                     </p>
-                    <p className="bg-primary px-2 py-1 rounded-full text-white">
+                    <p className="bg-primary px-2 pb-1 rounded-full text-white">
                       {post.category}
                     </p>
                   </div>
@@ -65,7 +65,7 @@ export const HomeBlog = () => {
                   </p>
                 </div>
 
-                <div className="text-sm hover:text-primary font-normal flex items-center">
+                <div className="text-sm hover:text-primary font-normal flex ">
                   Read More
                   <ChevronRight className="ml-1" />
                 </div>
