@@ -61,9 +61,10 @@ const Footer = () => {
               <li key={link.label}>
                 <Link
                   to={link.to}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-white group relative inline-block transition-colors duration-300"
                 >
                   {link.label}
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-primary transition-all duration-500 group-hover:w-full"></span>
                 </Link>
               </li>
             ))}
