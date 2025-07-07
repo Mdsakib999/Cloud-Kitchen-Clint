@@ -97,7 +97,7 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
       className={`
     flex flex-col font-serif
     ${isAdmin ? "bg-white border-r border-gray-200" : "bg-bg-secondary"}
-    lg:fixed top-16 lg:w-72
+    lg:fixed min-h-screen md:min-h-0 top-16 lg:w-72
     h-[calc(100vh-4rem)]
   `}
     >
