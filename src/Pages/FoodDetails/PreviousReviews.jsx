@@ -2,17 +2,9 @@ import { Star } from "lucide-react";
 import { useGetReviewsQuery } from "../../redux/apiSlice";
 
 export const PreviousReviews = ({ productId, foodTitle }) => {
-  const {
-    data, // data is { reviews: [...], page, pages, total }
-    isLoading,
-    isError,
-  } = useGetReviewsQuery({ productId });
-
-  // 1) Safely grab the inner array
+  const { data, isLoading, isError } = useGetReviewsQuery({ productId });
   const reviewsArray = Array.isArray(data?.reviews) ? data.reviews : [];
-
-  // 2) (Optional) filter by dish if your backend includes a `dish` prop
-  const filtered = reviewsArray.filter((r) => r.dish === foodTitle);
+  const filtered = reviewsArray;
 
   const renderStars = (rating) => {
     const stars = [];
@@ -60,7 +52,7 @@ export const PreviousReviews = ({ productId, foodTitle }) => {
         <div className="space-y-6">
           {filtered.map((review) => {
             const name = review.user?.name || "Anonymous";
-            // your API doesn’t return avatars, so use a placeholder
+
             const avatar =
               review.user?.avatar ||
               `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}`;
