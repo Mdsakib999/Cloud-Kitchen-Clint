@@ -33,7 +33,7 @@ import { BlogDetailPage } from "./Pages/Blogs/BlogDetailPage";
 import ManageCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/ManageCoupon";
 import AddOffer from "./Components/AdminDashBoardPageComponent/Offer/AddOffer";
 import AddFood from "./Components/AdminDashBoardPageComponent/AddFood/AddFood";
-import Faq from "./Components/Faq";
+import Faq from "./Pages/Faq/Faq";
 import ManageFood from "./Components/AdminDashBoardPageComponent/ManageFood/ManageFood";
 import EditFoodForm from "./Components/AdminDashBoardPageComponent/ManageFood/EditFood";
 import CheckoutForm from "./Pages/Checkout/CheckoutForm";
