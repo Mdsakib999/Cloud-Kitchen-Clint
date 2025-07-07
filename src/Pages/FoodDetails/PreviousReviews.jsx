@@ -55,7 +55,7 @@ export const PreviousReviews = ({ productId, foodTitle }) => {
         <div className="space-y-6">
           {filtered.map((review) => {
             const name = review.user?.name || "Anonymous";
-            // your API doesn’t return avatars, so use a placeholder
+
             const avatar =
               review.user?.avatar ||
               `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}`;
