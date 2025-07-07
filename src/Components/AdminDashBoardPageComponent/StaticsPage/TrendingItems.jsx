@@ -10,7 +10,11 @@ export const TrendingItems = () => {
     data = [],
     isLoading,
     error,
-  } = useGetTrendingProductsQuery(selectedPeriod.toLowerCase());
+  } = useGetTrendingProductsQuery(selectedPeriod.toLowerCase(), {
+    pollingInterval: 30000,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
 
   if (isLoading)
     return (
