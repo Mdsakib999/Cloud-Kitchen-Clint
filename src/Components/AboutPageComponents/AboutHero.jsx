@@ -91,7 +91,7 @@ export const AboutHero = () => {
         </div>
       </div>
 
-      <div className="w-full mt-5">
+      <div className="w-full mt-10">
         {/* Features Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {features.map((feature, index) => (
@@ -107,7 +107,7 @@ export const AboutHero = () => {
         {/* Stats Section */}
         <div
           ref={ref}
-          className="grid grid-cols-2 md:grid-cols-4 gap-2 my-8 max-w-7xl mx-auto"
+          className="grid grid-cols-2 md:grid-cols-4 gap-2 my-8 max-w-7xl mx-auto mt-24"
         >
           {stats.map((stat, index) => (
             <div key={index} className="text-start">
