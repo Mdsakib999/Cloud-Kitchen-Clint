@@ -50,28 +50,28 @@ export default function EditFoodForm() {
       title: product?.title || "",
       description: product?.description || "",
       category: product?.category?._id || "",
-      description: product?.description || "",
       cookTime: product?.cookTime || "",
       servings: product?.servings || 1,
       ingredients: product?.ingredients || [""],
       sizes: product?.sizes || [{ label: "", price: 0, discountPrice: 0 }],
       addons: product?.addons || [],
       options: product?.options || [],
-      images: [],
     },
   });
 
   const [uploadedImages, setUploadedImages] = useState([]);
+
   useEffect(() => {
-    if (product?.images && uploadedImages.length === 0) {
-      const initial = product.images.map((url) => ({
+    if (product?.images?.length) {
+      const initial = product.images.map((imgObj) => ({
         file: null,
-        preview: url,
+        preview: imgObj.url,
+        public_id: imgObj.public_id,
       }));
       setUploadedImages(initial);
       setValue("images", initial);
     }
-  }, [product, setValue, uploadedImages.length]);
+  }, [product, setValue]);
 
   const ingredientsArray = useFieldArray({ name: "ingredients", control });
   const sizesArray = useFieldArray({ name: "sizes", control });
@@ -79,6 +79,7 @@ export default function EditFoodForm() {
   const optionsArray = useFieldArray({ name: "options", control });
 
   const onSubmit = async (data) => {
+    const oldOnes = [];
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
@@ -93,10 +94,14 @@ export default function EditFoodForm() {
     formData.append("addons", JSON.stringify(data.addons));
     formData.append("options", JSON.stringify(data.options));
 
-    uploadedImages
-      .filter((u) => u.file)
-      .forEach(({ file }) => formData.append("images", file));
-
+    uploadedImages.forEach((u) => {
+      if (u.file) {
+        formData.append("newImages", u.file);
+      } else {
+        oldOnes.push({ url: u.preview, public_id: u.public_id });
+      }
+    });
+    formData.append("existingImages", JSON.stringify(oldOnes));
     try {
       await editProduct({ id: product._id, data: formData }).unwrap();
       toast.success("Product updated!");
