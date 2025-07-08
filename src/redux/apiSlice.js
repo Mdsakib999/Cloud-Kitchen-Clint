@@ -84,7 +84,10 @@ export const apiSlice = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Product", id },
+        { type: "Product", id: "LIST" },
+      ],
     }),
     deleteProduct: builder.mutation({
       query: (id) => ({

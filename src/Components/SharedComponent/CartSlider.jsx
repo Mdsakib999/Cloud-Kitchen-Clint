@@ -89,12 +89,19 @@ const CartSlider = ({ isOpen, onClose }) => {
                       <ul className="mt-1 text-sm text-gray-400">
                         {item.addons.map((addon, i) => (
                           <li key={i} className="flex justify-between">
-                            <span>+ {addon.label}</span>
-                            <span>{addon.price.toFixed(2)} Tk</span>
+                            <span>
+                              + {addon.label}
+                              <span> ( {addon.price.toFixed(2)} Tk )</span>
+                            </span>
                           </li>
                         ))}
                       </ul>
                     )}
+                    <div className="flex items-end justify-end  px-2">
+                      <p className="text-sm text-gray-300 mt-1 ">
+                        Price {totalPrice.toFixed(2)} Tk
+                      </p>
+                    </div>
                     <div className="flex items-center mt-1">
                       <button
                         onClick={() => handleDecrease(item._id, item.quantity)}
@@ -110,11 +117,7 @@ const CartSlider = ({ isOpen, onClose }) => {
                         +
                       </button>
                     </div>
-                    <p className="text-sm text-gray-300 mt-1">
-                      Price: {totalPrice.toFixed(2)} Tk
-                    </p>
                   </div>
-
                   <button onClick={() => setDeleteTarget(item._id)}>
                     <IoTrashOutline className="cursor-pointer text-xl text-red-500 ml-2" />
                   </button>
@@ -122,7 +125,7 @@ const CartSlider = ({ isOpen, onClose }) => {
               );
             })
           )}
-          <div className="flex justify-between text-lg font-semibold text-white">
+          <div className="flex justify-between  text-lg font-semibold text-white">
             <span>Total:</span>
             <span>
               {cartItems.ids
