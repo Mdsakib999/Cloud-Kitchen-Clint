@@ -36,7 +36,7 @@ const HomeStats = () => {
         </div>
 
         {/* Right: Text and stats */}
-        <div className="space-y-4 sm:space-y-6 order-1 lg:order-2 text-center lg:text-left">
+        <div className="space-y-4 sm:space-y-6 order-1 lg:order-2 text-center lg:text-left font-inter">
           <p className="text-xs sm:text-sm text-primary uppercase tracking-wide">
             Bringing Flavor to Life
           </p>
@@ -46,7 +46,7 @@ const HomeStats = () => {
             Every Occasion
           </h2>
 
-          <p className="text-sm sm:text-base text-gray-300 leading-relaxed max-w-lg mx-auto lg:mx-0">
+          <p className="text-sm sm:text-base text-gray-300 leading-relaxed max-w-lg mx-auto lg:mx-0 font-inter">
             At our cloud kitchen, every dish is crafted with passion and
             precision to turn ordinary moments into unforgettable dining
             experiences. Whether it's a quick lunch, a family dinner, or a
@@ -84,7 +84,7 @@ const HomeStats = () => {
 
           {/* Button */}
           <div className="pt-4">
-            <button className="inline-block bg-primary text-white hover:bg-white hover:text-black px-6 py-3 sm:px-8 sm:py-4 rounded-full font-medium text-sm sm:text-base hover:opacity-90 hover:transform hover:scale-105 transition-all duration-300">
+            <button className="inline-block bg-primary text-white hover:bg-white hover:text-black px-6 py-3 sm:px-8 sm:py-4 rounded-full font-medium text-sm sm:text-base hover:opacity-90 hover:transform transition-all duration-300">
               Book Now
             </button>
           </div>
