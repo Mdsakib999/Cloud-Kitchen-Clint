@@ -1,10 +1,35 @@
-import { useState } from "react";
-import showToast from "../../utils/ShowToast";
+import { useState, useEffect, useMemo, useId } from "react";
 import { Upload, X, Check, AlertCircle } from "lucide-react";
+import showToast from "../../utils/ShowToast";
 
-export const ImageUploader = ({ image, setImage }) => {
-  const [isDragOver, setIsDragOver] = useState(false);
+export const ImageUploader = ({
+  image: externalImage,
+  setImage: externalSetImage,
+  inputId,
+}) => {
+  const uniqueId = useId();
+  const inputFieldId = inputId || `image-input-${uniqueId}`;
+
+  const [internalImage, setInternalImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("idle");
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const image = externalImage ?? internalImage;
+  const setImage = externalSetImage ?? setInternalImage;
+
+  const previewUrl = useMemo(() => {
+    if (!image) return null;
+    if (typeof image === "string") return image;
+    return URL.createObjectURL(image);
+  }, [image]);
+
+  useEffect(() => {
+    return () => {
+      if (image && typeof image !== "string") {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [image, previewUrl]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -27,7 +52,6 @@ export const ImageUploader = ({ image, setImage }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragOver(false);
-
     const file = e.dataTransfer.files[0];
     if (
       file &&
@@ -45,15 +69,6 @@ export const ImageUploader = ({ image, setImage }) => {
     }
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragOver(false);
-  };
-
   const handleRemoveImage = () => {
     setImage(null);
     setUploadStatus("idle");
@@ -61,25 +76,26 @@ export const ImageUploader = ({ image, setImage }) => {
 
   return (
     <div className="space-y-4 w-full mx-auto flex flex-col lg:flex-row items-start gap-6 my-10">
-      {/* Upload Area */}
       <div
         className={`relative w-full lg:w-1/2 border-2 border-dashed rounded-xl p-8 transition-all duration-300 ${
           isDragOver
             ? "border-blue-400 bg-blue-500/10"
             : "border-slate-600/50 bg-bg-secondary hover:border-slate-500/50 hover:bg-bg-input"
         }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setIsDragOver(true);
+        }}
+        onDragLeave={() => setIsDragOver(false)}
         onDrop={handleDrop}
       >
         <input
           type="file"
-          id="blog-cover-image"
+          id={inputFieldId}
           accept="image/*"
           onChange={handleImageChange}
           className="hidden"
         />
-
         <div className="text-center">
           {uploadStatus === "uploading" ? (
             <div className="flex flex-col items-center">
@@ -96,9 +112,7 @@ export const ImageUploader = ({ image, setImage }) => {
               </p>
               <button
                 type="button"
-                onClick={() =>
-                  document.getElementById("blog-cover-image").click()
-                }
+                onClick={() => document.getElementById(inputFieldId).click()}
                 className="text-sm text-blue-400 hover:text-blue-300 underline"
               >
                 Click to change image
@@ -114,12 +128,10 @@ export const ImageUploader = ({ image, setImage }) => {
                   ? "Drop your image here"
                   : "Drag & drop an image here"}
               </p>
-              <p className="text-sm mb-3">or</p>
+              <p className="text-sm mb-3 text-white">or</p>
               <button
                 type="button"
-                onClick={() =>
-                  document.getElementById("blog-cover-image").click()
-                }
+                onClick={() => document.getElementById(inputFieldId).click()}
                 className="bg-primary hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
               >
                 Browse Files
@@ -133,11 +145,10 @@ export const ImageUploader = ({ image, setImage }) => {
         </div>
       </div>
 
-      {/* Preview */}
-      {image && (
+      {previewUrl && (
         <div className="relative w-full lg:w-1/2 group">
           <img
-            src={URL.createObjectURL(image)}
+            src={previewUrl}
             alt="Preview"
             className="w-full h-80 object-cover bg-bg-secondary rounded-xl"
           />

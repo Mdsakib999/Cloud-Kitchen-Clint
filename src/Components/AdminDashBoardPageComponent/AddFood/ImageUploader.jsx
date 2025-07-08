@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { X, Upload } from "lucide-react";
 
 export default function ImageUploader({
