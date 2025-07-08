@@ -203,7 +203,7 @@ export const router = createBrowserRouter([
         element: <ManageOrders />,
       },
       {
-        path: "order-details/:id",
+        path: "orders/order-details/:id",
         element: <OrderDetails />,
       },
       {
@@ -223,7 +223,7 @@ export const router = createBrowserRouter([
         element: <AddFood />,
       },
       {
-        path: "edit-food/:id",
+        path: "manage-food/edit-food/:id",
         element: <EditFoodForm />,
       },
       {

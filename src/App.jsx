@@ -31,7 +31,7 @@ function App() {
 
   return (
     <div className="bg-bg-primary min-h-screen">
-      {showInfoBar && <InfoBar isTransparent={isAtTop} />}
+      <InfoBar isTransparent={isAtTop} isVisible={showInfoBar} />
       <Navbar offsetTop={showInfoBar ? 56 : 0} />
       <div className="min-h-[calc(100vh-196px)]">
         <ScrollToTop />

@@ -33,13 +33,16 @@ export const AllFoodCard = () => {
   // Combined categories with count and image if available
   const sidebarCategories = useMemo(() => {
     if (isCategoriesLoading) return [];
+
     return [
       { label: "All", count: foodItems.length },
-      ...categoriesData.map((cat) => ({
-        label: cat.name || "Uncategorized",
-        count: categoryCounts[cat.name] || 0,
-        image: cat.image || null,
-      })),
+      ...categoriesData
+        .map((cat) => ({
+          label: cat.name || "Uncategorized",
+          count: categoryCounts[cat.name] || 0,
+          image: cat.image || null,
+        }))
+        .filter((cat) => cat.count > 0),
     ];
   }, [categoriesData, foodItems.length, categoryCounts, isCategoriesLoading]);
 

@@ -3,14 +3,12 @@ import { Link, NavLink } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-bg-footer text-gray-200 py-12">
+    <footer className="bg-bg-footer text-gray-200 py-12 font-inter">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {/* Brand & About */}
         <div className="col-span-1">
-          <h2 className="text-2xl md:text-4xl font-bold pb-3 font-inknut">
-            BiteBytes
-          </h2>
-          <p className="text-sm leading-relaxed mb-4 font-inter">
+          <h2 className="text-2xl md:text-4xl font-bold pb-3">BiteBytes</h2>
+          <p className="text-sm leading-relaxed mb-4">
             Fresh flavors delivered fast. Experience gourmet meals from our
             cloud kitchen to your home.
           </p>
@@ -18,10 +16,8 @@ const Footer = () => {
 
         {/* Quick Links */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4 font-inknut">
-            Quick Links
-          </h3>
-          <ul className="space-y-2 text-sm font-inter">
+          <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
+          <ul className="space-y-2 text-sm">
             {[
               { to: "/", label: "Home" },
               { to: "/menu", label: "Menu" },
@@ -48,10 +44,8 @@ const Footer = () => {
 
         {/* Legal */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4 font-inknut">
-            Legal
-          </h3>
-          <ul className="space-y-2 text-sm font-inter">
+          <h3 className="text-lg font-semibold text-white mb-4">Legal</h3>
+          <ul className="space-y-2 text-sm">
             {[
               { to: "/privacy", label: "Privacy Policy" },
               { to: "/terms", label: "Terms of Service" },
@@ -73,10 +67,8 @@ const Footer = () => {
 
         {/* Contact Info */}
         <div className="md:col-span-2 lg:col-span-1">
-          <h3 className="text-lg font-semibold text-white mb-4 font-inknut">
-            Contact Us
-          </h3>
-          <p className="text-sm mb-2 font-inter">
+          <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
+          <p className="text-sm mb-2">
             South Khulshi, Namdabad Properties Ltd.
           </p>
           <p className="text-sm mb-2">+880 1885 877 771</p>
@@ -101,7 +93,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="mt-12 border-t border-gray-500 pt-6 text-center text-white font-inter">
+      <div className="mt-12 border-t border-gray-500 pt-6 text-center text-white">
         © 2025 Byte Bites. All rights reserved.
       </div>
     </footer>
