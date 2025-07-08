@@ -26,7 +26,7 @@ const ManageCoupon = () => {
         setAllCoupons(res.data);
       }
     } catch (error) {
-      console.log("Failed to fetch coupons:", error);
+      console.error("Failed to fetch coupons:", error);
     } finally {
       setLoading(false);
     }
@@ -62,7 +62,7 @@ const ManageCoupon = () => {
         fetchCoupons();
       }
     } catch (error) {
-      console.log("Failed to update coupon:", error);
+      console.error("Failed to update coupon:", error);
       Swal.fire({
         title: "Error!",
         text: "Failed to update coupon. Please try again.",
@@ -105,7 +105,7 @@ const ManageCoupon = () => {
             fetchCoupons();
           }
         } catch (error) {
-          console.log("Failed to delete coupon:", error);
+          console.error("Failed to delete coupon:", error);
           Swal.fire({
             title: "Error!",
             text: "Failed to delete coupon. Please try again.",
