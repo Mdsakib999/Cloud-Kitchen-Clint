@@ -170,7 +170,7 @@ const Navbar = ({ offsetTop = 56 }) => {
 
                 {/* Desktop User Dropdown */}
                 {showUserDropdown && (
-                  <div className="absolute right-0 mt-2 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden font-serif">
+                  <div className="w-full md:w-72 absolute right-0 mt-2 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden font-serif">
                     <div className="flex justify-between items-center p-3 border-b border-white/20">
                       <span className="text-sm font-medium">Profile</span>
                       <button
@@ -180,8 +180,8 @@ const Navbar = ({ offsetTop = 56 }) => {
                         <IoCloseOutline />
                       </button>
                     </div>
-                    <div className="px-5 py-8 space-y-5">
-                      <div className="flex items-center gap-2">
+                    <div className="px-5 pt-5 pb-8">
+                      <div className="flex flex-col items-center gap-2">
                         {user && (
                           <>
                             {photoUrl || imageLoaded ? (
@@ -191,7 +191,7 @@ const Navbar = ({ offsetTop = 56 }) => {
                                 loading="lazy"
                                 onLoad={() => setImageLoaded(true)}
                                 onError={() => setImageLoaded(false)}
-                                className="w-10 h-10 rounded-full object-cover"
+                                className="w-16 h-16 rounded-full object-cover"
                               />
                             ) : (
                               <IoPersonCircleOutline
@@ -205,13 +205,18 @@ const Navbar = ({ offsetTop = 56 }) => {
                           </>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 ml-1 mb-5">
-                        <Mail size={32} className="text-primary" />
-                        <p className="font-medium text-white text-lg">
+                      <div className="flex items-center justify-center gap-2 ml-1 mb-5">
+                        <p className="font-medium text-white font-inter">
                           {user.email}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
+                        <button
+                          onClick={handleLogout}
+                          className="flex-1 px-5 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors cursor-pointer text-center text-sm"
+                        >
+                          Logout
+                        </button>
                         <Link
                           to={
                             user?.role === "admin"
@@ -222,12 +227,6 @@ const Navbar = ({ offsetTop = 56 }) => {
                         >
                           Dashboard
                         </Link>
-                        <button
-                          onClick={handleLogout}
-                          className="flex-1 px-5 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors cursor-pointer text-center text-sm"
-                        >
-                          Logout
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -315,7 +314,7 @@ const Navbar = ({ offsetTop = 56 }) => {
 
                     <div className="flex items-center gap-2 ml-1 mb-5">
                       <Mail size={32} className="text-primary" />
-                      <p className="font-medium text-white text-lg">
+                      <p className="font-medium text-white text-lg font-inter">
                         {user.email}
                       </p>
                     </div>

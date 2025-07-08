@@ -20,9 +20,9 @@ export const apiSlice = createApi({
       providesTags: (result, error) =>
         result && Array.isArray(result)
           ? [
-            { type: "Category", id: "LIST" },
-            ...result.map((cat) => ({ type: "Category", id: cat._id })),
-          ]
+              { type: "Category", id: "LIST" },
+              ...result.map((cat) => ({ type: "Category", id: cat._id })),
+            ]
           : [{ type: "Category", id: "LIST" }],
     }),
 
@@ -100,13 +100,13 @@ export const apiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-            { type: "Product", id: "LIST" },
-            ...result.map(({ _id }) => ({ type: "Product", id: _id })),
-          ]
+              { type: "Product", id: "LIST" },
+              ...result.map(({ _id }) => ({ type: "Product", id: _id })),
+            ]
           : [{ type: "Product", id: "LIST" }],
     }),
     getProductById: builder.query({
-      query: (id) => `/user/products/${id}`,
+      query: (id) => `/admin/products/${id}`,
       providesTags: (result, error, id) => [{ type: "Product", id }],
     }),
     getMenuCategories: builder.query({
@@ -114,18 +114,17 @@ export const apiSlice = createApi({
       providesTags: (result, error) =>
         result && Array.isArray(result)
           ? [
-            { type: "Category", id: "LIST" },
-            ...result.map((cat) => ({ type: "Category", id: cat._id })),
-          ]
+              { type: "Category", id: "LIST" },
+              ...result.map((cat) => ({ type: "Category", id: cat._id })),
+            ]
           : [{ type: "Category", id: "LIST" }],
     }),
 
     // Trending products endpoint
     getTrendingProducts: builder.query({
       query: (period = "weekly") => `/admin/products/trending?period=${period}`,
-      providesTags: ['TrendingProducts'],
+      providesTags: ["TrendingProducts"],
     }),
-
 
     // Blogs
     getAllBlogs: builder.query({

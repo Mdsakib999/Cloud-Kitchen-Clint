@@ -8,7 +8,7 @@ const FoodCard = ({ item }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   return (
-    <div className="text-center group">
+    <div className="text-center group font-inter">
       <div
         key={item._id}
         className="bg-bg-secondary rounded-3xl  shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-700 hover:border-primary overflow-hidden group"
