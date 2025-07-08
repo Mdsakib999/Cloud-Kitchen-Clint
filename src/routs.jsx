@@ -32,7 +32,6 @@ import { BlogDetailPage } from "./Pages/Blogs/BlogDetailPage";
 import ManageCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/ManageCoupon";
 import AddOffer from "./Components/AdminDashBoardPageComponent/Offer/AddOffer";
 import AddFood from "./Components/AdminDashBoardPageComponent/AddFood/AddFood";
-import Faq from "./Pages/Faq/Faq";
 import ManageFood from "./Components/AdminDashBoardPageComponent/ManageFood/ManageFood";
 import EditFoodForm from "./Components/AdminDashBoardPageComponent/ManageFood/EditFood";
 import CheckoutForm from "./Pages/Checkout/CheckoutForm";
@@ -43,6 +42,7 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./Pages/TermsAndConditions/TermsAndConditions";
 import Refund from "./Pages/Refund/Refund";
 import OrderSuccess from "./Pages/Checkout/OrderSuccess";
+import Faq from "./Pages/Faq/Faq";
 
 export const router = createBrowserRouter([
   {
