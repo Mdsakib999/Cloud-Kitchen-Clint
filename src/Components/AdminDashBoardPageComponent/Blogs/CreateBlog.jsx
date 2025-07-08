@@ -89,7 +89,12 @@ export const CreateBlog = () => {
         <label className="text-lg font-semibold block mb-2">
           Featured Image
         </label>
-        <ImageUploader image={image} setImage={setImage} />
+        <ImageUploader
+          key="create-blog"
+          inputId="create-blog-image"
+          image={image}
+          setImage={setImage}
+        />
       </div>
 
       {/* Content Editor */}

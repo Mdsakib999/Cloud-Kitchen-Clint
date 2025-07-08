@@ -28,7 +28,6 @@ import ReRoute from "./Pages/Authentication/ReRoute";
 import ShowPasswordResetSent from "./Pages/Authentication/ShowPasswordResetSent";
 import { AllBlogs } from "./Pages/Blogs/AllBlogs";
 import AddCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/AddCoupon";
-import { ManageCategory } from "./Components/AdminDashBoardPageComponent/ManageCategory/ManageCategory";
 import { BlogDetailPage } from "./Pages/Blogs/BlogDetailPage";
 import ManageCoupon from "./Components/AdminDashBoardPageComponent/CouponPage/ManageCoupon";
 import AddOffer from "./Components/AdminDashBoardPageComponent/Offer/AddOffer";
@@ -86,10 +85,6 @@ export const router = createBrowserRouter([
       {
         path: "/priceList",
         element: <PriceList />,
-      },
-      {
-        path: "/manage-category",
-        element: <ManageCategory />,
       },
       {
         path: "/order-track/:id",
