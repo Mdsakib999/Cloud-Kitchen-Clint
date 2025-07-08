@@ -75,7 +75,25 @@ export const ImageUploader = ({
   };
 
   return (
-    <div className="space-y-4 w-full mx-auto flex flex-col lg:flex-row items-start gap-6 my-10">
+    <div className="space-y-4 w-full mx-auto flex flex-col items-center gap-6 my-10">
+      {previewUrl && (
+        <div className="relative w-full lg:w-1/2 h-[250px] group">
+          <img
+            src={previewUrl}
+            alt="Preview"
+            className="w-full h-full object-cover bg-bg-secondary rounded-xl"
+          />
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
       <div
         className={`relative w-full lg:w-1/2 border-2 border-dashed rounded-xl p-8 transition-all duration-300 ${
           isDragOver
@@ -144,25 +162,6 @@ export const ImageUploader = ({
           )}
         </div>
       </div>
-
-      {previewUrl && (
-        <div className="relative w-full lg:w-1/2 group">
-          <img
-            src={previewUrl}
-            alt="Preview"
-            className="w-full h-80 object-cover bg-bg-secondary rounded-xl"
-          />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
-            <button
-              type="button"
-              onClick={handleRemoveImage}
-              className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
