@@ -43,6 +43,7 @@ import TermsAndConditions from "./Pages/TermsAndConditions/TermsAndConditions";
 import Refund from "./Pages/Refund/Refund";
 import OrderSuccess from "./Pages/Checkout/OrderSuccess";
 import Faq from "./Pages/Faq/Faq";
+import Projects from "./Pages/projects/Projects";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <AllBlogs />,
+      },
+      {
+        path: "/projects",
+        element: <Projects />,
       },
       {
         path: "/faq",
