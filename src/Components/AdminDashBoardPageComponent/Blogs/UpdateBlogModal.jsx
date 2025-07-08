@@ -127,7 +127,12 @@ function UpdateBlogModal({ onClose, data, onSave, isSaving }) {
             <label className="block text-gray-700 font-semibold">
               Upload Image
             </label>
-            <ImageUploader image={selectedImage} setImage={setSelectedImage} />
+            <ImageUploader
+              key={`update-blog-${data?._id || "default"}`}
+              inputId={`update-blog-image-${data?._id || "default"}`}
+              image={selectedImage}
+              setImage={setSelectedImage}
+            />
           </div>
 
           {/* Remove image checkbox */}

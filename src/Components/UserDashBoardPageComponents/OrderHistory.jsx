@@ -137,9 +137,7 @@ export const OrderHistory = () => {
           <h1 className="text-3xl font-bold text-gray-200 mb-2">
             Order History
           </h1>
-          <p className="text-emerald-100 mt-3">
-            Track and manage your food orders
-          </p>
+          <p className="text-white mt-3">Track and manage your food orders</p>
         </div>
 
         <FilterControls
@@ -148,6 +146,7 @@ export const OrderHistory = () => {
           setStatusFilter={setStatusFilter}
           setPaymentFilter={setPaymentFilter}
           handleClearFilters={handleClearFilters}
+          variant="green"
         />
 
         <OrderList

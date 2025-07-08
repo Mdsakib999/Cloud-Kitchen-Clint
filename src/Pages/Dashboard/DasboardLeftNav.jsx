@@ -11,7 +11,7 @@ import {
 import { BadgeDollarSign } from "lucide-react";
 import { IoTicketSharp } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
-import { Link, useLocation } from "react-router-dom";
+import { Link, matchPath, useLocation } from "react-router-dom";
 import { SiGoogletagmanager } from "react-icons/si";
 import { LuNotebookPen } from "react-icons/lu";
 
@@ -97,7 +97,7 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
       className={`
     flex flex-col font-serif
     ${isAdmin ? "bg-white border-r border-gray-200" : "bg-bg-secondary"}
-    lg:fixed top-16 lg:w-72
+    lg:fixed min-h-screen md:min-h-0 top-16 lg:w-72
     h-[calc(100vh-4rem)]
   `}
     >
@@ -133,7 +133,13 @@ export const DashBoardLeftNav = ({ closeSidebar, isAdmin }) => {
       <nav className="flex-1 min-h-0 overflow-y-auto p-4 custom-scrollbar">
         <div className="flex flex-col gap-2">
           {routesToRender.map(({ label, icon, path }) => {
-            const isActive = pathname === path;
+            const isExactMatch = pathname === path;
+
+            const isNestedMatch = matchPath({ path, end: false }, pathname);
+
+            // Avoid matching "" for all routes
+            const isActive =
+              path === "/admin/dashboard" ? isExactMatch : isNestedMatch;
 
             return (
               <Link

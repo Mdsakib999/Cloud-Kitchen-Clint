@@ -82,10 +82,9 @@ const CartSlider = ({ isOpen, onClose }) => {
                   />
                   <div className="flex-1">
                     <h3 className="font-medium ">{item.name}</h3>
-                    <span className="text-sm bg-bg-cart py-1 px-2 rounded-2xl mb-2">
+                    {/* <span className="text-sm bg-bg-cart py-1 px-2 rounded-2xl mb-2">
                       {item.size}
-                    </span>
-
+                    </span> */}
                     {item.addons?.length > 0 && (
                       <ul className="mt-1 text-sm text-gray-400">
                         {item.addons.map((addon, i) => (
