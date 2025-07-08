@@ -255,7 +255,7 @@ const AddOffer = () => {
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Upload className="w-6 h-6 text-purple-500" />
-            Upload Images
+            Save Images
           </h2>
 
           {/* File Upload Area */}
@@ -319,7 +319,7 @@ const AddOffer = () => {
               ) : (
                 <>
                   <Upload className="w-5 h-5" />
-                  Upload Images {images.length > 0 && `(${images.length})`}
+                  Save Images {images.length > 0 && `(${images.length})`}
                 </>
               )}
             </button>

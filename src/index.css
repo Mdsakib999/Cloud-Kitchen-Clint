@@ -47,6 +47,15 @@
    BASE STYLES
    ========================================================================== */
 
+@layer utilities {
+  input:-webkit-autofill {
+    @apply rounded-r-full;
+    -webkit-box-shadow: 0 0 0 1000px rgb(1, 29, 1) inset !important;
+    -webkit-text-fill-color: white !important;
+    background-color: transparent !important;
+  }
+}
+
 @layer base {
   /* Typography */
   .blog-content ul,
@@ -62,6 +71,7 @@
     margin-bottom: 0.5rem;
     margin-left: 1rem;
   }
+
 
   p {
     font-size: medium;

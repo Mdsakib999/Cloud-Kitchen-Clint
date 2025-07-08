@@ -13,19 +13,15 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Lottie from "lottie-react";
-import foodAnimation from "../../assets/food.json"; // path to your file
+import foodAnimation from "../../assets/food.json";
 import { Link } from "react-router-dom";
 
 const Faq = () => {
-  // Initialize an array of booleans, one for each FAQ item, all set to false initially
-  const [openStates, setOpenStates] = useState(
-    new Array(10).fill(false) // Adjust size based on faqData length
-  );
+  // Only one open at a time: store open index or null
+  const [openIndex, setOpenIndex] = useState(null);
 
   const toggleItem = (index) => {
-    setOpenStates((prev) =>
-      prev.map((state, i) => (i === index ? !state : state))
-    );
+    setOpenIndex((prev) => (prev === index ? null : index));
   };
 
   const faqData = [
@@ -70,17 +66,19 @@ const Faq = () => {
   return (
     <div className="font-serif min-h-screen relative w-full mx-auto overflow-hidden py-40 bg-emerald-950 text-emerald-950">
       <div className="relative">
-        <div className="absolute inset-0 bg-emerald-50"></div>
-        <div className="relative container mx-auto px-4 py-16">
+        <div className="absolute inset-0 bg-emerald-900"></div>
+        <div className="relative container mx-auto px-4 py-16 text-emerald-100">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <Home className="w-4 h-4" />
             <Link to="/">
-              <span className="text-sm cursor-pointer hover:text-emerald-600">
+              <span className="text-sm cursor-pointer hover:text-emerald-300">
                 Home
               </span>
             </Link>
             <ChevronDown className="w-4 h-4 rotate-[-90deg]" />
-            <span className="text-sm font-medium">FAQ</span>
+            <span className="text-sm font-medium hover:text-emerald-300">
+              FAQ
+            </span>
           </div>
 
           <div className="flex items-center justify-center">
@@ -99,16 +97,6 @@ const Faq = () => {
 
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-100 mb-3">
-              Everything you need to know about ByteBites
-            </h2>
-            <p className="text-lg text-primary">
-              Can't find the answer you're looking for? Contact our customer
-              support team.
-            </p>
-          </div>
-
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
             <div className="w-full md:w-1/2 h-full mb-8 md:mb-0 flex items-center justify-center">
               <Lottie animationData={foodAnimation} loop={true} />;
@@ -123,7 +111,7 @@ const Faq = () => {
                     <button
                       onClick={() => toggleItem(index)}
                       className={`cursor-pointer w-full px-6 py-5 text-left flex items-center justify-between ${
-                        openStates[index]
+                        openIndex === index
                           ? "bg-emerald-100"
                           : "bg-emerald-50 hover:bg-emerald-100"
                       } transition-colors duration-200`}
@@ -134,13 +122,13 @@ const Faq = () => {
                           {item.question}
                         </span>
                       </div>
-                      {openStates[index] ? (
+                      {openIndex === index ? (
                         <Minus className="w-5 h-5 text-emerald-600" />
                       ) : (
                         <Plus className="w-5 h-5 text-gray-400" />
                       )}
                     </button>
-                    {openStates[index] && (
+                    {openIndex === index && (
                       <div className="px-6 pb-5">
                         <div className="pl-8 pr-8">
                           <p className="text-gray-700 leading-relaxed pt-4">
@@ -155,14 +143,12 @@ const Faq = () => {
             </div>
           </div>
 
-          <div className="mt-16 bg-emerald-50 rounded-lg p-8 text-center">
+          <div className="mt-16 bg-emerald-900 rounded-lg p-8 text-center text-white">
             <div className="flex justify-center mb-4">
-              <Phone className="w-12 h-12 text-emerald-600" />
+              <Phone className="w-12 h-12 text-emerald-200" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Still have questions?
-            </h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-2xl font-bold mb-2">Still have questions?</h3>
+            <p className="mb-6">
               Our customer support team is here to help you with any additional
               questions.
             </p>
