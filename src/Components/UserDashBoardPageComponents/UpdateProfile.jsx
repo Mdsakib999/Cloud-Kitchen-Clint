@@ -210,14 +210,14 @@ export const UpdateProfile = () => {
   }
 
   return (
-    <div className="min-h-screen py-8 font-serif mt-16 md:mt-8 lg:mt-0">
+    <div className="min-h-screen py-8 mt-20 md:mt-8 lg:mt-5 font-inter">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold text-primary mb-4">
             User Profile
           </h1>
-          <p className="text-emerald-300 text-lg">
+          <p className="text-primary text-sm md:text-lg">
             Manage your account information and settings
           </p>
         </div>
