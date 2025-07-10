@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IoClose, IoTrashOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -10,27 +10,22 @@ const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
   const { user } = useAuth();
-
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const handleDecrease = (id, currentQty) => {
-    if (currentQty > 1) {
-      dispatch(updateQuantity({ id, quantity: currentQty - 1 }));
-    } else {
-      setDeleteTarget(id);
-    }
+    currentQty > 1
+      ? dispatch(updateQuantity({ id, quantity: currentQty - 1 }))
+      : setDeleteTarget(id);
   };
 
-  const handleIncrease = (id, currentQty) => {
+  const handleIncrease = (id, currentQty) =>
     dispatch(updateQuantity({ id, quantity: currentQty + 1 }));
-  };
 
   const handleRemove = (id) => {
     dispatch(removeFromCart(id));
     setDeleteTarget(null);
   };
 
-  // Handler for checkout button
   const handleCheckoutClick = (e) => {
     if (user?.role === "admin") {
       e.preventDefault();
@@ -44,32 +39,39 @@ const CartSlider = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  // compute total once
+  const totalAmount = cartItems.ids
+    .reduce((sum, id) => {
+      const item = cartItems.entities[id];
+      const addonTotal = item.addons?.reduce((a, x) => a + x.price, 0) || 0;
+      return sum + (item.price + addonTotal) * item.quantity;
+    }, 0)
+    .toFixed(2);
+
   return (
     <>
       <div
-        className={`fixed top-0 right-0 h-full w-full md:w-96 bg-bg-primary text-gray-200 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-full md:w-96 bg-bg-primary text-gray-200 shadow-lg z-50 transform transition-transform duration-300 ease-in-out
+          flex flex-col  ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         {/* Header */}
-        <div className="flex justify-between items-center px-4 py-8 border-b border-gray-500 pt-16">
+        <div className="flex-shrink-0 flex justify-between items-center px-4 py-8 border-b border-gray-500 pt-16">
           <h2 className="text-2xl font-medium uppercase">Your Cart</h2>
           <button onClick={onClose}>
             <IoClose className="cursor-pointer text-2xl" />
           </button>
         </div>
 
-        {/* Cart Items */}
-        <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(100vh-260px)]">
+        {/* Items */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {cartItems.ids.length === 0 ? (
             <p className="font-serif">Your cart is empty !</p>
           ) : (
             cartItems.ids.map((id) => {
               const item = cartItems.entities[id];
               const addonTotal =
-                item.addons?.reduce((sum, a) => sum + a.price, 0) || 0;
+                item.addons?.reduce((a, x) => a + x.price, 0) || 0;
               const totalPrice = (item.price + addonTotal) * item.quantity;
-
               return (
                 <div
                   key={id}
@@ -81,81 +83,70 @@ const CartSlider = ({ isOpen, onClose }) => {
                     className="w-16 h-16 object-cover rounded mr-3"
                   />
                   <div className="flex-1">
-                    <h3 className="font-medium ">{item.name}</h3>
-                    {/* <span className="text-sm bg-bg-cart py-1 px-2 rounded-2xl mb-2">
-                      {item.size}
-                    </span> */}
+                    <h3 className="font-medium">{item.name}</h3>
                     {item.addons?.length > 0 && (
                       <ul className="mt-1 text-sm text-gray-400">
-                        {item.addons.map((addon, i) => (
+                        {item.addons.map((ad, i) => (
                           <li key={i} className="flex justify-between">
-                            <span>
-                              + {addon.label}
-                              <span> ( {addon.price.toFixed(2)} Tk )</span>
-                            </span>
+                            + {ad.label} ({ad.price.toFixed(2)} Tk)
                           </li>
                         ))}
                       </ul>
                     )}
-                    <div className="flex items-end justify-end  px-2">
-                      <p className="text-sm text-gray-300 mt-1 ">
-                        Price {totalPrice.toFixed(2)} Tk
-                      </p>
-                    </div>
                     <div className="flex items-center mt-1">
                       <button
                         onClick={() => handleDecrease(item._id, item.quantity)}
-                        className="cursor-pointer px-2 py-1 text-sm bg-bg-secondary rounded"
+                        className="px-2 py-1 bg-bg-secondary rounded text-sm"
                       >
-                        -
+                        –
                       </button>
                       <span className="px-3">{item.quantity}</span>
                       <button
                         onClick={() => handleIncrease(item._id, item.quantity)}
-                        className="cursor-pointer px-2 py-1 text-sm bg-bg-secondary rounded"
+                        className="px-2 py-1 bg-bg-secondary rounded text-sm"
                       >
                         +
                       </button>
                     </div>
                   </div>
-                  <button onClick={() => setDeleteTarget(item._id)}>
-                    <IoTrashOutline className="cursor-pointer text-xl text-red-500 ml-2" />
-                  </button>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-300">
+                      {totalPrice.toFixed(2)} Tk
+                    </p>
+                    <button
+                      onClick={() => setDeleteTarget(item._id)}
+                      className="mt-1 text-red-500"
+                    >
+                      <IoTrashOutline className="text-xl" />
+                    </button>
+                  </div>
                 </div>
               );
             })
           )}
-          <div className="flex justify-between  text-lg font-semibold text-white">
-            <span>Total:</span>
-            <span>
-              {cartItems.ids
-                .reduce((total, id) => {
-                  const item = cartItems.entities[id];
-                  const addonTotal =
-                    item.addons?.reduce((sum, a) => sum + a.price, 0) || 0;
-                  const itemTotal = (item.price + addonTotal) * item.quantity;
-                  return total + itemTotal;
-                }, 0)
-                .toFixed(2)}{" "}
-              Tk
-            </span>
-          </div>
         </div>
-        {/* Footer with Total & Buttons - always visible */}
-        <div className="w-full px-4 py-4 border-t border-gray-500 space-y-2 bg-bg-primary sticky bottom-0 z-10">
-          {cartItems.ids.length === 0 ? (
-            <span className="font-inter tracking-wider block w-full text-center bg-[#ddb275] text-white py-2 rounded cursor-not-allowed border border-gray-400">
-              Checkout
-            </span>
-          ) : (
-            <Link
-              to="/checkout"
-              onClick={handleCheckoutClick}
-              className="font-inter tracking-wider block w-full text-center bg-primary hover:bg-white hover:text-black duration-500 border border-primary text-white py-2 rounded cursor-pointer"
-            >
-              Checkout
-            </Link>
-          )}
+
+        {/* Sticky Footer */}
+        <div className="flex-shrink-0 border-t border-gray-500 bg-bg-primary">
+          <div className="flex justify-between items-center px-4 py-3 text-lg font-semibold text-white">
+            <span>Total:</span>
+            <span>{totalAmount} Tk</span>
+          </div>
+          <div className="px-4 pb-4">
+            {cartItems.ids.length === 0 ? (
+              <span className="block w-full text-center bg-[#ddb275] text-white py-2 rounded cursor-not-allowed border border-gray-400">
+                Checkout
+              </span>
+            ) : (
+              <Link
+                to="/checkout"
+                onClick={handleCheckoutClick}
+                className="block w-full text-center bg-primary hover:bg-white hover:text-black duration-500 border border-primary text-white py-2 rounded"
+              >
+                Checkout
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 
@@ -172,13 +163,13 @@ const CartSlider = ({ isOpen, onClose }) => {
             <div className="flex justify-between gap-4">
               <button
                 onClick={() => setDeleteTarget(null)}
-                className="cursor-pointer flex-1 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-100"
+                className="flex-1 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-100"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleRemove(deleteTarget)}
-                className="cursor-pointer flex-1 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                className="flex-1 py-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
                 Remove
               </button>
