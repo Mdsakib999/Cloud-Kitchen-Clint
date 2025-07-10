@@ -121,9 +121,12 @@ export default function ManageFood() {
                 <td className="px-6 py-4 text-center space-x-2 space-y-2">
                   <button
                     onClick={() =>
-                      navigate(`/admin/dashboard/edit-food/${product._id}`, {
-                        state: { product },
-                      })
+                      navigate(
+                        `/admin/dashboard/manage-food/edit-food/${product._id}`,
+                        {
+                          state: { product },
+                        }
+                      )
                     }
                     className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 font-serif cursor-pointer"
                   >

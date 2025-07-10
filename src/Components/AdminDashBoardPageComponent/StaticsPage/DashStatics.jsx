@@ -7,7 +7,7 @@ import { TrendingItems } from "./TrendingItems";
 
 export const DashStatics = () => {
   return (
-    <div className="w-full bg-white mt-10">
+    <div className="w-full bg-white mt-28 md:mt-10">
       <AllTimeSellStat />
       <DailySellStat />
 

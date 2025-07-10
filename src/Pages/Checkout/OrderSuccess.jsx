@@ -3,7 +3,6 @@ import { FaCheckCircle } from "react-icons/fa";
 
 const OrderSuccess = () => {
   const { state: order } = useLocation();
-  console.log(order);
 
   if (!order) {
     return (

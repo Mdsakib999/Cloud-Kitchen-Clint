@@ -78,7 +78,7 @@ export const OrderMenu = () => {
       : { [activeCategory]: filtered };
 
   return (
-    <div className="min-h-screen bg-bg-secondary p-6">
+    <div className="min-h-screen bg-bg-secondary p-6 font-inter">
       <div className="max-w-7xl mx-auto">
         <nav className="flex flex-wrap justify-center gap-4 mb-8">
           {categories.map((cat) => (
@@ -125,7 +125,7 @@ export const OrderMenu = () => {
               }`}
             >
               {/* Big circle image */}
-              <div className="lg:w-1/2 flex justify-center py-8">
+              <div className="lg:w-1/2 flex justify-center py-8 cursor-pointer">
                 <div className="relative w-64 h-64 rounded-full overflow-hidden border-8 border-white shadow-2xl">
                   <img
                     src={bigImage}

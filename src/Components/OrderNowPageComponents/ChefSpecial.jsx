@@ -3,7 +3,7 @@ import { chefSpecials } from "../../FakeDB/chefSpecial";
 import { SectionHeader } from "../SharedComponent/SectionHeader";
 export const ChefSpecial = () => {
   return (
-    <div className="py-16 px-4 max-w-7xl mx-auto">
+    <div className="py-16 px-4 max-w-7xl mx-auto font-inter">
       {/* Header Section */}
       <SectionHeader
         icon={Award}
