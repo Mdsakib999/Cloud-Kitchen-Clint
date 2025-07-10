@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const FoodCard = ({ item }) => {
   const [selectedSize, setSelectedSize] = useState(item.sizes[0]);
+  console.log(item.sizes?.discountPrice);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   return (
@@ -39,6 +40,7 @@ const FoodCard = ({ item }) => {
       {/* Dynamic Price */}
       <p className="font-semibold text-primary text-lg group-hover:text-white">
         {selectedSize.price.toFixed(2)} Tk
+        {/* <span>{selectedSize.disocuntPrice?.toFixed(2)}</span> */}
       </p>
 
       <div className="flex justify-center items-center gap-3 ">

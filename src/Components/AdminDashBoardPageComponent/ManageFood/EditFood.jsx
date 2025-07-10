@@ -10,6 +10,8 @@ import {
 import ImageUploader from "../AddFood/ImageUploader";
 import DynamicFieldArray from "../AddFood/DynamicFieldArray";
 import toast from "react-hot-toast";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export default function EditFoodForm() {
   const { id } = useParams();
@@ -25,6 +27,7 @@ export default function EditFoodForm() {
   } = useGetProductByIdQuery(id, { skip: !!productFromState });
 
   const product = productFromState || fetchedProduct;
+  console.log(product);
 
   useEffect(() => {
     if (!product && prodLoading === false && prodError) {
@@ -49,6 +52,7 @@ export default function EditFoodForm() {
     defaultValues: {
       title: product?.title || "",
       description: product?.description || "",
+      longDescription: product?.longDescription || "",
       category: product?.category?._id || "",
       cookTime: product?.cookTime || "",
       servings: product?.servings || 1,
@@ -184,6 +188,57 @@ export default function EditFoodForm() {
             {...register("description")}
           />
         </div>
+        <div className=" mt-4 mb-14">
+          <Controller
+            name="longDescription"
+            control={control}
+            render={({ field }) => (
+              <div className="mt-4 mb-14">
+                <label className="text-lg font-semibold block mb-2">
+                  Long Description
+                </label>
+                <ReactQuill
+                  theme="snow"
+                  value={field.value}
+                  onChange={field.onChange}
+                  className="rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:outline-none h-[200px] max-w-full"
+                  modules={{
+                    toolbar: [
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      [{ font: ["serif", "monospace", "sans-serif"] }],
+                      ["bold", "italic", "underline", "strike"],
+                      [{ color: [] }, { background: [] }],
+                      [
+                        { list: "ordered" },
+                        { list: "bullet" },
+                        { indent: "-1" },
+                        { indent: "+1" },
+                      ],
+                      [{ align: [] }, "blockquote", "code-block"],
+                      ["clean"],
+                    ],
+                  }}
+                  formats={[
+                    "header",
+                    "font",
+                    "bold",
+                    "italic",
+                    "underline",
+                    "strike",
+                    "color",
+                    "background",
+                    "list",
+                    "bullet",
+                    "indent",
+                    "align",
+                    "blockquote",
+                    "code-block",
+                  ]}
+                />
+              </div>
+            )}
+          />
+        </div>
 
         {/* Images */}
         <div>
@@ -246,23 +301,10 @@ export default function EditFoodForm() {
               name: "discountPrice",
               type: "number",
               placeholder: "Discount Price",
+              required: false,
             },
           ]}
         />
-        {/* description */}
-        <div>
-          <label className="block mb-1 font-semibold">Description *</label>
-          <textarea
-            {...register("description", { required: "Required" })}
-            className="w-full border border-gray-200 p-3 rounded-lg resize-y min-h-[150px] focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-            placeholder="Enter a short description of the dish..."
-          />
-          {errors.description && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.description.message}
-            </p>
-          )}
-        </div>
 
         {/* CookTime & Servings */}
         <div className="flex flex-col sm:flex-row gap-4">
