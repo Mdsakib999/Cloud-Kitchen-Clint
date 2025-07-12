@@ -4,6 +4,7 @@ import {
   useGetMenuCategoriesQuery,
 } from "../../redux/apiSlice";
 import { Link } from "react-router-dom";
+
 export const OrderMenu = () => {
   const { data: products = [] } = useGetAllProductsQuery();
   const { data: categoriesData = [] } = useGetMenuCategoriesQuery();
@@ -20,11 +21,10 @@ export const OrderMenu = () => {
 
   // Static placeholder URLs for the big category circles
   const staticCategoryImages = {
-    // Unsplash Images (high quality, free to use)
     BURGER:
       "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&h=400&fit=crop",
     PIZZA:
-      "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=500&h=400&fit=crophttps://images.pexels.com/photos/315755/pexels-photo-315755.jpeg?auto=compress&cs=tinysrgb&w=500&h=400&dpr=1",
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=500&h=400&fit=crop",
     COFFEE:
       "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=400&fit=crop",
     SANDWICHES:
@@ -43,17 +43,30 @@ export const OrderMenu = () => {
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&h=400&fit=crop",
   };
 
-  // Build our tabs list
+  // Only include categories that have products
+  const usedCats = new Set(
+    products.map((p) => p.category?.name ?? "Uncategorized")
+  );
+
   const categories = [
     { name: "All", image: null },
-    ...categoriesData.map((cat) => ({
-      name: cat.name,
-      // if your API doesn’t provide a thumbnail, fall back to our static map
-      image:
-        cat.image?.[0]?.url ||
-        staticCategoryImages[cat.name] ||
-        staticCategoryImages.Uncategorized,
-    })),
+    ...categoriesData
+      .filter((cat) => usedCats.has(cat.name))
+      .map((cat) => ({
+        name: cat.name,
+        image:
+          cat.image?.[0]?.url ||
+          staticCategoryImages[cat.name] ||
+          staticCategoryImages.Uncategorized,
+      })),
+    ...(usedCats.has("Uncategorized")
+      ? [
+          {
+            name: "Uncategorized",
+            image: staticCategoryImages.Uncategorized,
+          },
+        ]
+      : []),
   ];
 
   // Filtered list of products by tab & search
@@ -64,7 +77,6 @@ export const OrderMenu = () => {
     return inCat && matches;
   });
 
-  // When “All,” group by category for sections
   const grouped =
     activeCategory === "All"
       ? products.reduce((acc, item) => {
