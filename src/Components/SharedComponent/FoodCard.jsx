@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const FoodCard = ({ item }) => {
   const [selectedSize, setSelectedSize] = useState(item.sizes[0]);
-  console.log(item.sizes?.discountPrice);
+  const discountPrice = item.sizes?.[0]?.discountPrice;
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   return (
@@ -38,10 +38,24 @@ const FoodCard = ({ item }) => {
       )}
 
       {/* Dynamic Price */}
-      <p className="font-semibold text-primary text-lg group-hover:text-white">
-        {selectedSize.price.toFixed(2)} Tk
-        {/* <span>{selectedSize.disocuntPrice?.toFixed(2)}</span> */}
-      </p>
+      <div className="mt-2 ">
+        {selectedSize.discountPrice > 0 ? (
+          <div className="flex justify-center items-center gap-2.5">
+            {/* discounted price, highlighted */}
+            <span className="font-semibold text-primary text-lg">
+              {selectedSize.discountPrice.toFixed(2)} Tk
+            </span>
+            {/* original price, strikethrough */}
+            <span className="text-gray-400 line-through text-sm">
+              {selectedSize.price.toFixed(2)} Tk
+            </span>
+          </div>
+        ) : (
+          <span className="font-semibold text-primary text-lg">
+            {selectedSize.price.toFixed(2)} Tk
+          </span>
+        )}
+      </div>
 
       <div className="flex justify-center items-center gap-3 ">
         <div
