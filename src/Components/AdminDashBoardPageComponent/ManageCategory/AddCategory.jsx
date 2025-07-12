@@ -120,7 +120,7 @@ export const AddCategory = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-2 place-items-start">
+          <div className="grid grid-cols-1 gap-2 place-items-center">
             <div className="space-y-4 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 ">
               <label className="block text-sm font-semibold mb-3">
                 Category Name *
@@ -147,6 +147,8 @@ export const AddCategory = () => {
               image={newCategoryImage}
               setImage={setNewCategoryImage}
             />
+            {/* <div className="flex items-center justify-center">
+            </div> */}
 
             {/* submit button */}
             <button

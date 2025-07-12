@@ -8,7 +8,8 @@ import {
 import ImageUploader from "./ImageUploader";
 import DynamicFieldArray from "./DynamicFieldArray";
 import toast from "react-hot-toast";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 export default function AddFood() {
   const [uploadedImages, setUploadedImages] = useState([]);
   const { data: categories = [], isLoading: catLoading } =
@@ -30,7 +31,7 @@ export default function AddFood() {
       cookTime: "",
       servings: 1,
       ingredients: [""],
-      sizes: [{ label: "", price: 0, discountPrice: 0 }],
+      sizes: [{ label: "", price: 0 }],
       addons: [],
       options: [],
       images: [],
@@ -46,6 +47,7 @@ export default function AddFood() {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
+    formData.append("longDescription", data.longDescription);
     formData.append("category", data.category);
     formData.append("cookTime", data.cookTime);
     formData.append("servings", data.servings.toString());
@@ -148,70 +150,217 @@ export default function AddFood() {
             />
           </div>
         </div>
-        {/* Ingredients */}
-        <fieldset className="mb-6 sm:mb-8">
-          <legend className="flex flex-col lg:flex-row justify-between items-start sm:items-center mb-2 sm:mb-4 gap-2">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-              Ingredients
-            </h3>
-            <button
-              type="button"
-              onClick={() => ingredientsArray.append("")}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-base"
-            >
-              <Plus className="w-4 h-4" /> Add Ingredient
-            </button>
-          </legend>
-
-          <div className="space-y-2 lg:space-y-3">
-            {ingredientsArray.fields.map((field, idx) => (
-              <div key={field.id} className="flex flex-col lg:flex-row gap-2">
-                <input
-                  type="text"
-                  placeholder="Ingredient"
-                  className="flex-1 border-2 border-gray-200 rounded-lg p-2 sm:p-3 focus:border-blue-500 transition-colors text-xs sm:text-base"
-                  {...register(`ingredients.${idx}`, {
-                    required: "Ingredient is required",
-                  })}
+        {/* Long Description */}
+        <div className=" mt-4 mb-14">
+          <Controller
+            name="longDescription"
+            control={control}
+            render={({ field }) => (
+              <div className="mt-4 mb-14">
+                <label className="text-lg font-semibold block mb-2">
+                  Long Description
+                </label>
+                <ReactQuill
+                  theme="snow"
+                  value={field.value}
+                  onChange={field.onChange}
+                  className="rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:outline-none h-[200px] max-w-full"
+                  modules={{
+                    toolbar: [
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      [{ font: ["serif", "monospace", "sans-serif"] }],
+                      ["bold", "italic", "underline", "strike"],
+                      [{ color: [] }, { background: [] }],
+                      [
+                        { list: "ordered" },
+                        { list: "bullet" },
+                        { indent: "-1" },
+                        { indent: "+1" },
+                      ],
+                      [{ align: [] }, "blockquote", "code-block"],
+                      ["clean"],
+                    ],
+                  }}
+                  formats={[
+                    "header",
+                    "font",
+                    "bold",
+                    "italic",
+                    "underline",
+                    "strike",
+                    "color",
+                    "background",
+                    "list",
+                    "bullet",
+                    "indent",
+                    "align",
+                    "blockquote",
+                    "code-block",
+                  ]}
                 />
-                <button
-                  type="button"
-                  onClick={() => ingredientsArray.remove(idx)}
-                  className="px-2 py-2  sm:px-4 sm:py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors text-xs sm:text-base"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
               </div>
-            ))}
-          </div>
+            )}
+          />
+        </div>
 
-          {errors.ingredients && (
-            <p className="text-red-500 text-xs sm:text-sm mt-2">
-              {errors.ingredients.message}
-            </p>
-          )}
-        </fieldset>
+        {/* Ingredients */}
+        <div className="mb-2 sm:mb-8">
+          <fieldset className="">
+            <legend className="flex flex-col lg:flex-row justify-between items-start sm:items-center mb-2 sm:mb-4 gap-2">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800">
+                Ingredients
+              </h3>
+              <button
+                type="button"
+                onClick={() => ingredientsArray.append("")}
+                className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-base"
+              >
+                <Plus className="w-4 h-4" /> Add Ingredient
+              </button>
+            </legend>
+
+            <div className="space-y-2 lg:space-y-3">
+              {ingredientsArray.fields.map((field, idx) => (
+                <div key={field.id} className="flex flex-col lg:flex-row gap-2">
+                  <input
+                    type="text"
+                    placeholder="Ingredient"
+                    className="flex-1 border-2 border-gray-200 rounded-lg p-2 sm:p-3 focus:border-blue-500 transition-colors text-xs sm:text-base"
+                    {...register(`ingredients.${idx}`, {
+                      required: "Ingredient is required",
+                    })}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => ingredientsArray.remove(idx)}
+                    className="px-2 py-2  sm:px-4 sm:py-3 text-red-600 hover:text-red-700 border-2 border-red-200 rounded-lg transition-colors text-xs sm:text-base"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {errors.ingredients && (
+              <p className="text-red-500 text-xs sm:text-sm mt-2">
+                {errors.ingredients.message}
+              </p>
+            )}
+          </fieldset>
+        </div>
+
         {/* Size & Price */}
         <div className="mb-6 sm:mb-8">
-          <DynamicFieldArray
-            name="sizes"
-            label="Sizes"
-            control={control}
-            register={register}
-            errors={errors}
-            fieldDefs={[
-              { name: "label", type: "text", placeholder: "Size" },
-              { name: "price", type: "number", placeholder: "Price" },
-              {
-                name: "discountPrice",
-                type: "number",
-                placeholder: "Discount Price",
-              },
-            ]}
-            inputClassName="p-2 text-xs min-w-0 w-full"
-            rowClassName="flex flex-col xs:flex-row gap-2 w-full"
-            colClassName="flex-1 min-w-0 w-full xs:min-w-[80px]"
-          />
+          <fieldset>
+            <legend className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Sizes</h3>
+              <button
+                type="button"
+                onClick={() =>
+                  sizesArray.append({ label: "", price: 0, discountPrice: 0 })
+                }
+                className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+              >
+                <Plus className="w-4 h-4" /> Add Size
+              </button>
+            </legend>
+
+            <div className="space-y-4">
+              {sizesArray.fields.map((field, idx) => (
+                <div
+                  key={field.id}
+                  className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start"
+                >
+                  {/* Label (required) */}
+                  <div className="flex-1">
+                    <label
+                      htmlFor={`sizes.${idx}.label`}
+                      className="block text-sm font-medium mb-1"
+                    >
+                      Size name *
+                    </label>
+                    <input
+                      id={`sizes.${idx}.label`}
+                      type="text"
+                      placeholder="e.g. Small"
+                      className="w-full border border-gray-200 rounded p-2 focus:outline-none "
+                      {...register(`sizes.${idx}.label`, {
+                        required: "Label is required",
+                      })}
+                    />
+                    {errors.sizes?.[idx]?.label && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.sizes[idx].label.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Price (required) */}
+                  <div className="flex-1">
+                    <label
+                      htmlFor={`sizes.${idx}.price`}
+                      className="block text-sm font-medium mb-1"
+                    >
+                      Price *
+                    </label>
+                    <input
+                      id={`sizes.${idx}.price`}
+                      type="number"
+                      step="0.01"
+                      placeholder="0.00"
+                      className="w-full border border-gray-200 rounded p-2 focus:outline-none"
+                      {...register(`sizes.${idx}.price`, {
+                        required: "Price is required",
+                        valueAsNumber: true,
+                        min: { value: 0, message: "Must be ≥ 0" },
+                      })}
+                    />
+                    {errors.sizes?.[idx]?.price && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.sizes[idx].price.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Discount Price (optional) */}
+                  <div className="flex-1">
+                    <label
+                      htmlFor={`sizes.${idx}.discountPrice`}
+                      className="block text-sm font-medium mb-1"
+                    >
+                      Discount Price
+                    </label>
+                    <input
+                      id={`sizes.${idx}.discountPrice`}
+                      type="number"
+                      step="0.01"
+                      placeholder="0.00"
+                      className="w-full border border-gray-200 rounded p-2 focus:outline-none"
+                      {...register(`sizes.${idx}.discountPrice`, {
+                        valueAsNumber: true,
+                        min: { value: 0, message: "Must be ≥ 0" },
+                      })}
+                    />
+                    {errors.sizes?.[idx]?.discountPrice && (
+                      <p className="text-red-500 text-xs mt-2">
+                        {errors.sizes[idx].discountPrice.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Remove button */}
+                  <button
+                    type="button"
+                    onClick={() => sizesArray.remove(idx)}
+                    className="text-red-600 hover:text-red-700 p-2"
+                    aria-label="Remove size"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </fieldset>
         </div>
         {/* Image Upload Section */}
         <div className="mb-6 sm:mb-8">

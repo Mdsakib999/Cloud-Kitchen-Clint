@@ -43,7 +43,7 @@ export default function DynamicFieldArray({
           >
             {fieldDefs.map((def) => {
               const rules = {};
-              if (!noRequired) {
+              if (!noRequired && def.required !== false) {
                 rules.required = `${def.name} is required`;
               }
               if (def.type === "number") {

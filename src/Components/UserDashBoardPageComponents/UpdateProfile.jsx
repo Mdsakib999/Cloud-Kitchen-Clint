@@ -210,14 +210,14 @@ export const UpdateProfile = () => {
   }
 
   return (
-    <div className="min-h-screen py-8 font-serif mt-16 md:mt-8 lg:mt-0">
+    <div className="min-h-screen py-8 mt-20 md:mt-8 lg:mt-5 font-inter">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold text-black mb-4">
             User Profile
           </h1>
-          <p className="text-emerald-300 text-lg">
+          <p className="text-gray-500 text-sm md:text-lg">
             Manage your account information and settings
           </p>
         </div>
@@ -225,7 +225,7 @@ export const UpdateProfile = () => {
         {/* Profile Card */}
         <div className="bg-emerald-900 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
           {/* Cover Section with Gradient */}
-          <div className="h-40 bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-800 relative">
+          <div className="h-40 bg-gradient-to-r from-emerald-00 via-green-400 to-emerald-800 relative">
             <div className="absolute inset-0 bg-black/20"></div>
           </div>
 
@@ -246,8 +246,8 @@ export const UpdateProfile = () => {
 
               {/* User Info */}
               <div className="text-center lg:text-left flex-1">
-                <p className="flex items-center justify-center lg:justify-normal gap-x-1 text-slate-300 text-sm md:text-lg mb-2 break-all">
-                  <span className="text-emerald-100">
+                <p className="flex justify-center lg:justify-normal gap-x-1 text-white text-sm md:text-lg mb-2 break-all">
+                  <span className="text-white">
                     {user?.role === "admin" ? (
                       <MdAdminPanelSettings size={24} />
                     ) : (
@@ -258,7 +258,7 @@ export const UpdateProfile = () => {
                     {user?.role === "admin" ? "Admin" : "User"}
                   </span>
                 </p>
-                <div className="flex items-center justify-center lg:justify-start gap-2 text-slate-400">
+                <div className="flex items-center justify-center lg:justify-start gap-2 text-slate-300">
                   <Calendar size={16} />
                   <span className="text-sm">
                     Member since{" "}

@@ -170,7 +170,7 @@ const Navbar = ({ offsetTop = 56 }) => {
 
                 {/* Desktop User Dropdown */}
                 {showUserDropdown && (
-                  <div className="w-full md:w-72 absolute right-0 mt-2 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden font-serif">
+                  <div className="w-full md:w-72 absolute right-0 mt-2 bg-bg-primary border border-white/20 rounded-lg shadow-lg overflow-hidden ">
                     <div className="flex justify-between items-center p-3 border-b border-white/20">
                       <span className="text-sm font-medium">Profile</span>
                       <button
@@ -206,7 +206,7 @@ const Navbar = ({ offsetTop = 56 }) => {
                         )}
                       </div>
                       <div className="flex items-center justify-center gap-2 ml-1 mb-5">
-                        <p className="font-medium text-white font-inter">
+                        <p className=" text-gray-300 font-inter text-sm">
                           {user.email}
                         </p>
                       </div>
