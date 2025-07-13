@@ -19,6 +19,7 @@ import {
 import { useAuth } from "../../providers/AuthProvider";
 import RelatedProduct from "./RelatedProduct";
 import { Loader } from "../../Components/SharedComponent/Loader";
+import DOMPurify from "dompurify";
 
 export const FoodDetails = () => {
   const { id: productId } = useParams();
@@ -219,7 +220,7 @@ export const FoodDetails = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Image Section */}
             <div className="relative">
-              <div className="aspect-square lg:aspect-auto lg:h-[600px] relative overflow-hidden">
+              <div className="aspect-square lg:aspect-auto lg:h-[500px] relative overflow-hidden ">
                 <img
                   src={mainImage}
                   alt={food.title}
@@ -373,7 +374,7 @@ export const FoodDetails = () => {
 
               {/* Description */}
               <div className="text-xs md:text-base text-gray-200">
-                <p>{food?.description?.slice(0, 100)}...</p>
+                <p>{food?.description}</p>
               </div>
 
               {/* Size Selection */}
@@ -514,6 +515,12 @@ export const FoodDetails = () => {
                   </h3>
                   <div className="prose prose-gray max-w-none">
                     <p>{food.description}</p>
+                    <div
+                      className="prose prose-gray max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(food.longDescription || ""),
+                      }}
+                    />
                   </div>
                 </div>
 

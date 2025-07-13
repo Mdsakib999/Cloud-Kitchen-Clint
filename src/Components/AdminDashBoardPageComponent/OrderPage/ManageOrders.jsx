@@ -220,7 +220,7 @@ export const ManageOrders = () => {
           </div>
         ) : (
           <table className="min-w-full bg-white text-black text-left rounded-md">
-            <thead className="bg-bg-secondary text-sm uppercase text-white tracking-wider">
+            <thead className="bg-bg-secondary uppercase text-white tracking-wider text-lg">
               <tr>
                 <th className="px-4 py-3">OID</th>
                 <th className="px-4 py-3">Name</th>
@@ -235,7 +235,7 @@ export const ManageOrders = () => {
               {paginatedOrders.map((order) => (
                 <tr
                   key={order._id}
-                  className="border-t border-black hover:bg-gray-300 hover:text-black transition-colors"
+                  className="border-t border-gray-300 hover:bg-gray-300 hover:text-black transition-colors"
                 >
                   <td className="px-2 py-1 text-sm">
                     OID{order._id.slice(-4)}
@@ -259,7 +259,7 @@ export const ManageOrders = () => {
                       onChange={(e) =>
                         handleStatusChange(order._id, e.target.value)
                       }
-                      className={`px-2 py-1 rounded-lg text-xs transition-colors cursor-pointer ${GetStatusColor(
+                      className={`px-2 py-1 rounded-lg text-md transition-colors cursor-pointer ${GetStatusColor(
                         order.order_status || order.status
                       )}`}
                     >
@@ -276,7 +276,7 @@ export const ManageOrders = () => {
                     <Link
                       to={`/admin/dashboard/orders/order-details/${order._id}`}
                     >
-                      <button className="cursor-pointer bg-primary/80 text-white text-xs rounded-md px-2 py-1 whitespace-nowrap">
+                      <button className="cursor-pointer bg-primary/80 text-white text-md rounded-md px-2 py-1 whitespace-nowrap">
                         Details
                       </button>
                     </Link>

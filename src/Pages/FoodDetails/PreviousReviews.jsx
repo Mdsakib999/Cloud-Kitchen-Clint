@@ -64,6 +64,7 @@ export const PreviousReviews = ({ productId, foodTitle }) => {
               review.user?.avatar ||
               `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}`;
             const comment = review.comment || "No comment provided";
+            const title = review?.title;
 
             return (
               <article
@@ -81,9 +82,9 @@ export const PreviousReviews = ({ productId, foodTitle }) => {
                     <h4 className="text-white font-semibold text-base">
                       {name}
                     </h4>
-                    {review.title && (
+                    {title && (
                       <p className="text-sm text-primary font-medium">
-                        {review.title}
+                        {title}
                       </p>
                     )}
                   </header>

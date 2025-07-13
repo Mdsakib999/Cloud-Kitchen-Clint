@@ -26,10 +26,11 @@ const FoodCard = ({ item }) => {
           </span>
         </div>
       </div>
-
-      <p className="mt-4 font-medium text-lg text-gray-200 group-hover:text-white">
-        {item.title}
-      </p>
+      <Link to={`/food-details/${item._id}`} state={{ item }}>
+        <p className="mt-4 font-medium text-lg text-gray-200 group-hover:text-white hover:text-primary">
+          {item.title}
+        </p>
+      </Link>
       {/* Added cook time */}
       {item.cookTime && (
         <div className="text-sm text-gray-400 my-1 flex items-center justify-center gap-1">
@@ -45,7 +46,7 @@ const FoodCard = ({ item }) => {
             <span className="font-semibold text-primary text-lg">
               {selectedSize.discountPrice.toFixed(2)} Tk
             </span>
-            {/* original price, strikethrough */}
+            {/* original price */}
             <span className="text-gray-400 line-through text-sm">
               {selectedSize.price.toFixed(2)} Tk
             </span>
