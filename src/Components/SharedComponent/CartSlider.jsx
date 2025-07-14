@@ -1,29 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IoClose, IoTrashOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { updateQuantity, removeFromCart } from "../../redux/cartSlice";
 import { useAuth } from "../../providers/AuthProvider";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const CartSlider = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
   const { user } = useAuth();
-  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const handleDecrease = (id, currentQty) => {
-    currentQty > 1
-      ? dispatch(updateQuantity({ id, quantity: currentQty - 1 }))
-      : setDeleteTarget(id);
+    if (currentQty > 1) {
+      dispatch(updateQuantity({ id, quantity: currentQty - 1 }));
+    } else {
+      handleRemove(id);
+    }
   };
 
   const handleIncrease = (id, currentQty) =>
     dispatch(updateQuantity({ id, quantity: currentQty + 1 }));
 
   const handleRemove = (id) => {
-    dispatch(removeFromCart(id));
-    setDeleteTarget(null);
+    Swal.fire({
+      title: "Are you sure? 🚨",
+      text: "This will permanently remove the item from your cart.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(removeFromCart(id));
+        toast.success("Item removed");
+      }
+    });
   };
 
   const handleCheckoutClick = (e) => {
@@ -114,8 +129,8 @@ const CartSlider = ({ isOpen, onClose }) => {
                       {totalPrice.toFixed(2)} Tk
                     </p>
                     <button
-                      onClick={() => setDeleteTarget(item._id)}
-                      className="mt-1 text-red-500"
+                      onClick={() => handleRemove(item._id)}
+                      className="mt-1 text-red-500 cursor-pointer"
                     >
                       <IoTrashOutline className="text-xl" />
                     </button>
@@ -149,34 +164,6 @@ const CartSlider = ({ isOpen, onClose }) => {
           </div>
         </div>
       </div>
-
-      {/* Confirm Delete Modal */}
-      {deleteTarget && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-[9999]">
-          <div className="bg-white rounded-lg p-6 w-80 text-center">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Remove item?
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to remove this item from your cart?
-            </p>
-            <div className="flex justify-between gap-4">
-              <button
-                onClick={() => setDeleteTarget(null)}
-                className="flex-1 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-100"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => handleRemove(deleteTarget)}
-                className="flex-1 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };
