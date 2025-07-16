@@ -40,7 +40,7 @@ export const AboutHero = () => {
   ];
 
   return (
-    <div className="text-white font-inter px-6 py-16 mt-8">
+    <div className="text-white font-inter px-6  py-16 mt-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
         {/* Left Content */}
         <div className="order-2 lg:order-1 w-full mx-auto pt-24 lg:pt-0">
@@ -74,7 +74,7 @@ export const AboutHero = () => {
           </div>
 
           {/* Overlapping ChefTeam Image */}
-          <div className="absolute bottom-[-6rem] right-[-4rem] md:bottom-[-8rem] md:right-[-6rem] lg:bottom-[-4 rem] lg:right-[-7rem] w-48 h-64 md:w-56 md:h-72 lg:w-64 lg:h-72 rounded-xl overflow-hidden shadow-md">
+          <div className="absolute bottom-[-4rem] right-[-2rem] md:bottom-[-8rem] md:right-[-6rem] lg:bottom-[-4 rem] lg:right-[-7rem] w-48 h-64 md:w-56 md:h-72 lg:w-64 lg:h-72 rounded-xl overflow-hidden shadow-md">
             <img
               src={ChefTeam}
               alt="Chef Team"
@@ -83,7 +83,7 @@ export const AboutHero = () => {
           </div>
 
           {/* Rotated Title */}
-          <div className="absolute top-1/2 right-[-17rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap">
+          <div className="absolute top-1/2 md:right-[-17rem] transform -translate-y-1/2 -translate-x-1/2 rotate-[-90deg] whitespace-nowrap">
             <h1 className="text-5xl font-semibold text-white font-inknut">
               About Us
             </h1>

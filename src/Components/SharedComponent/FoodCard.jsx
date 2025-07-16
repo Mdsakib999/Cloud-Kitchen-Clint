@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 const FoodCard = ({ item }) => {
   const [selectedSize, setSelectedSize] = useState(item.sizes[0]);
-  const discountPrice = item.sizes?.[0]?.discountPrice;
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   return (
@@ -20,10 +19,12 @@ const FoodCard = ({ item }) => {
             alt={item.title}
             className="w-full h-58 object-cover group-hover:scale-105 transition-transform duration-300"
           />
-          <span className="absolute top-3 right-3 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
-            <FiStar className="text-sm text-white" />
-            <span>{item.rating}</span>
-          </span>
+          {item.rating > 0 && (
+            <span className="absolute top-3 right-3 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
+              <FiStar className="text-sm text-white" />
+              <span>{item.rating}</span>
+            </span>
+          )}
         </div>
       </div>
       <Link to={`/food-details/${item._id}`} state={{ item }}>
