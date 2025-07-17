@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { formatDate } from "../../utils/formatDate";
 import DOMPurify from "dompurify";
-export const BlogDetail = ({ blog }) => {
+export const BlogContent = ({ blog }) => {
   return (
     <div className="bg-bg-secondary rounded-lg shadow-lg overflow-hidden mb-8">
       {/* Date Badge */}

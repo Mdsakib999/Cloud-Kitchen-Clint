@@ -5,7 +5,7 @@ import { SectionHeader } from "../../Components/SharedComponent/SectionHeader";
 import { Newspaper } from "lucide-react";
 import { Loader } from "../../Components/SharedComponent/Loader";
 
-export const AllBlogs = () => {
+export const Blogs = () => {
   const { data: blogs = [], isLoading, isError, error } = useGetAllBlogsQuery();
 
   if (isLoading) {

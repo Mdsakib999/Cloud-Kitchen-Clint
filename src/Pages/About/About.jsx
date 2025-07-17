@@ -1,5 +1,5 @@
-import { AboutHero } from "../../Components/AboutPageComponents/AboutHero";
-import { EatSocially } from "../../Components/AboutPageComponents/EatSocially";
+import { AboutHero } from "../../Components/AboutComponents/AboutHero";
+import { EatSocially } from "../../Components/AboutComponents/EatSocially";
 
 const About = () => {
   return (

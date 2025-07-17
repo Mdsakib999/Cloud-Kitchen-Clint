@@ -19,7 +19,7 @@ import toast from "react-hot-toast";
 import { useCreateOrderMutation } from "../../redux/orderSlice";
 import { useNavigate } from "react-router-dom";
 
-const CheckoutForm = () => {
+const Checkout = () => {
   const { user, loading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [coupons, setCoupons] = useState([]);
@@ -558,4 +558,4 @@ const CheckoutForm = () => {
   );
 };
 
-export default CheckoutForm;
+export default Checkout;
