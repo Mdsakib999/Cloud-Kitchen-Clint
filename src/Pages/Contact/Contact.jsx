@@ -1,5 +1,5 @@
-import { Booking } from "../../Components/ContactPageComponents/Booking";
-import { ContactHero } from "../../Components/ContactPageComponents/ContactHero";
+import { Booking } from "../../Components/ContactComponents/Booking";
+import { ContactHero } from "../../Components/ContactComponents/ContactHero";
 
 const Contact = () => {
   return (

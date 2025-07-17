@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BlogDetail } from "./BlogDetail";
-import { CategoriesWidget } from "./CategoriesWidget";
-import { PromotionalWidget } from "./PromotionalWidget";
-import { SearchWidget } from "./SearchWidget";
+import { BlogContent } from "../../Components/BlogComponents/BlogContent";
+import { CategoriesWidget } from "../../Components/BlogComponents/CategoriesWidget";
+import { PromotionalWidget } from "../../Components/BlogComponents/PromotionalWidget";
+import { SearchWidget } from "../../Components/BlogComponents/SearchWidget";
 import {
   useGetBlogByIdQuery,
   useGetCategoriesQuery,
@@ -11,7 +11,7 @@ import {
 import { UIStates } from "../../Components/SharedComponent/UIStates";
 import axiosInstance from "../../Utils/axios";
 
-export const BlogDetailPage = () => {
+export const BlogDetails = () => {
   const { id } = useParams();
   const { data: blog, isLoading, isError, error } = useGetBlogByIdQuery(id);
   const { data: categories = [] } = useGetCategoriesQuery();
@@ -67,7 +67,7 @@ export const BlogDetailPage = () => {
             />
             {!isLoading && !isError && blog && (
               <div className="min-h-screen container mx-auto px-4">
-                <BlogDetail blog={blog} />
+                <BlogContent blog={blog} />
               </div>
             )}
           </div>

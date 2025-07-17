@@ -1,6 +1,6 @@
-import { ChefSpecial } from "../../Components/OrderNowPageComponents/ChefSpecial";
-import { OrderMenu } from "../../Components/OrderNowPageComponents/OrderMenu";
-import { PriceListBanner } from "../../Components/OrderNowPageComponents/OrderNowBanner";
+import { ChefSpecial } from "../../Components/PriceListComponents/ChefSpecial";
+import { OrderMenu } from "../../Components/PriceListComponents/OrderMenu";
+import { PriceListBanner } from "../../Components/PriceListComponents/PriceListBanner";
 
 export const PriceList = () => {
   return (

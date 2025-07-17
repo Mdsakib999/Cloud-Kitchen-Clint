@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import DOMPurify from "dompurify";
 import { toast } from "react-hot-toast";
 import UpdateBlogModal from "./UpdateBlogModal";
-import { BlogCardSkeleton } from "../../SharedComponent/BlogCardSkeleton";
+import { BlogCardSkeleton } from "../../BlogComponents/BlogCardSkeleton";
 import {
   useGetAllBlogsQuery,
   useUpdateBlogMutation,

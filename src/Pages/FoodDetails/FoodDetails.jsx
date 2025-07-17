@@ -4,8 +4,8 @@ import { ArrowLeft, Clock, Users, Star, Heart, Share2 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useGetProductByIdQuery } from "../../redux/apiSlice";
-import { PreviousReviews } from "./PreviousReviews";
-import { ReviewForm } from "./ReviewForm";
+import { PreviousReviews } from "../../Components/FoodDetailsComponents/PreviousReviews";
+import { ReviewForm } from "../../Components/FoodDetailsComponents/ReviewForm";
 import { addToCart } from "../../redux/cartSlice";
 import { useGetOrdersByUserQuery } from "../../redux/orderSlice";
 import {
@@ -17,7 +17,7 @@ import {
 } from "react-icons/fa";
 
 import { useAuth } from "../../providers/AuthProvider";
-import RelatedProduct from "./RelatedProduct";
+import RelatedProduct from "../../Components/FoodDetailsComponents/RelatedProduct";
 import { Loader } from "../../Components/SharedComponent/Loader";
 import DOMPurify from "dompurify";
 

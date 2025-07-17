@@ -1,10 +1,10 @@
 import { Package } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../../redux/orderSlice";
-import StatusSteps from "./StatusSteps";
-import BillingInfo from "./BillingInfo";
-import OrderSummary from "./OrderSummary";
-import RiderInfo from "./RiderInfo";
+import StatusSteps from "../../Components/TrackOrderComponents/StatusSteps";
+import BillingInfo from "../../Components/TrackOrderComponents/BillingInfo";
+import OrderSummary from "../../Components/TrackOrderComponents/OrderSummary";
+import RiderInfo from "../../Components/TrackOrderComponents/RiderInfo";
 import { Loader } from "../../Components/SharedComponent/Loader";
 
 const TrackOrder = () => {
